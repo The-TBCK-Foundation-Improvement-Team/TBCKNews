@@ -1,13 +1,13 @@
-package tbcktimes.dal.api;
+package com.tbck.news_service.news_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ApiApplication {
+public class NewsServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ApiApplication.class, args);
+		SpringApplication.run(NewsServiceApplication.class, args);
 	}
 
 }

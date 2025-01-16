@@ -1,10 +1,10 @@
-package tbcktimes.dal.api;
+package com.tbck.news_service.news_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ApiApplicationTests {
+class NewsServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
