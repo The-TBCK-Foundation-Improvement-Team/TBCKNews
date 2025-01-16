@@ -1,17 +1,17 @@
-.secondary-news-card {
+.secondary-news-box {
     display: flex;
     align-items: center;
     max-width: 400px;
 }
 
-.secondary-news-card img {
+.secondary-news-box img {
     margin-right: 10px;
 }
 
-.main-news-card {
+.main-news-box {
     max-width: 470px;
 }
 
-.title-news-card {
+.title-news-box {
     max-width: 470px;
 }
