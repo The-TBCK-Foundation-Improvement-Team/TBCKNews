@@ -8,7 +8,7 @@ const Signup = () => {
     return (
         <div>
         <MuiNavBar />
-        <div className="container">
+        <div className="content">
             
             <h2>Sign Up</h2>
             <form>

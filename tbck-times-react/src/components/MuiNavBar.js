@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 export const MuiNavBar = () => {
     return (
         
-        <AppBar position="static"  sx={{backgroundColor: "green"}}>
+        <AppBar position="fixed"  sx={{backgroundColor: "green"}}>
             <Toolbar>
                 <Typography variant="h6" edge='start' component={"div"} sx={{flexGrow: 1}}>
                     TBCK Times

@@ -7,8 +7,8 @@ import { MuiFooter } from '../components/MuiFooter';
 const Login = () => {
     return (
       <div>
-        <MuiNavBar />
-        <div className="container">
+      <MuiNavBar />
+        <div className="content">
             <h2>Login</h2>
             <form>
                 <input type="email" placeholder="Email" required />
@@ -16,8 +16,9 @@ const Login = () => {
                 <button type="submit">Log In</button>
             </form>
             <Link to="/Signup">Don't have an account? Sign up instead!</Link>
-            </div>
-            <MuiFooter />
+            
+        </div>
+        <MuiFooter />
         </div>
     );
 };
