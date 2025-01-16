@@ -1,0 +1,8 @@
+.secondary-news-card {
+    display: flex;
+    align-items: center;
+}
+
+.secondary-news-card img {
+    margin-right: 10px;
+}
