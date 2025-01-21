@@ -58,6 +58,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>news-service</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
