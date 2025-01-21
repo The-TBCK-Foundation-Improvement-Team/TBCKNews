@@ -1,5 +1,6 @@
 package com.tbck.news_service.news_service;
 
+import java.util.List;
 import java.util.UUID;
 
 public class News {
@@ -10,7 +11,7 @@ public class News {
     private String author;
     private String date;
     private String category;
-    private String image;
+    private List<Image> image;
     private String template;
 
     public UUID getNewsId() {
@@ -49,18 +50,19 @@ public class News {
     public void setCategory(String category) {
         this.category = category;
     }
-    public String getImage() {
-        return image;
-    }
-    public void setImage(String image) {
-        this.image = image;
-    }
     public String getTemplate() {
         return template;
     }
     public void setTemplate(String template) {
         this.template = template;
     }
+    public List<Image> getImage() {
+        return image;
+    }
+    public void setImage(List<Image> image) {
+        this.image = image;
+    }
+    
 
     
 }
