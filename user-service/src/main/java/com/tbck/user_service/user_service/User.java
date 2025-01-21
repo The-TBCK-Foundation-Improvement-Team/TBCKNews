@@ -1,12 +1,17 @@
 package com.tbck.user_service.user_service;
 
+import java.util.UUID;
+
 public class User {
 
+    private UUID userId;
     private String FirstName;
     private String LastName;
     private String email;
     private String password;
    
+
+    
     public String getFirstName() {
         return FirstName;
     }
@@ -30,6 +35,12 @@ public class User {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    public UUID getUserId() {
+        return userId;
+    }
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
     
