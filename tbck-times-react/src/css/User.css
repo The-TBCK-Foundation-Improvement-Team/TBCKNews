@@ -1,0 +1,68 @@
+/* User.css */
+
+/* General body styling for the entire application */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f7f9fc; /* Light gray background */
+    color: #333; /* Dark text for good contrast */
+  }
+  
+  /* Container styling */
+  .MuiContainer-root {
+    background-color: #ffffff; /* White background for main container */
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    padding: 20px;
+  }
+  
+  /* Typography for headings */
+  .MuiTypography-h4 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2c3e50; /* Dark blue for headers */
+    margin-bottom: 20px;
+  }
+  
+  /* Form styling */
+  .MuiTextField-root {
+    margin-bottom: 15px;
+  }
+  
+  .MuiButton-containedPrimary {
+    background-color: #007bff; /* Blue for Save button */
+    color: white;
+    font-weight: 500;
+    text-transform: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .MuiButton-containedPrimary:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  .MuiButton-outlinedSecondary {
+    color: #555; /* Gray text for Cancel button */
+    border-color: #e0e0e0;
+    text-transform: none;
+    font-weight: 500;
+  }
+  
+  .MuiButton-outlinedSecondary:hover {
+    background-color: #f0f0f0; /* Light gray background on hover */
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .MuiTypography-h4 {
+      font-size: 1.5rem;
+    }
+  
+    .MuiButton-containedPrimary,
+    .MuiButton-outlinedSecondary {
+      font-size: 0.9rem;
+      padding: 8px 16px;
+    }
+  }
+  

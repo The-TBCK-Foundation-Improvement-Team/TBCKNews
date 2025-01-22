@@ -6,6 +6,7 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 
 import App from './App.js';
 import Login from './pages/Login.js';
+import User from './pages/User.js'; //freaks out for some reason - it works???
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   path: '/Login',
   element: <Login />,
   },
+  {
+    path: '/User',
+    element: <User />,
+    }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
