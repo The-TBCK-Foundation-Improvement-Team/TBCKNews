@@ -1,5 +1,6 @@
 import { MuiNavBar } from './components/MuiNavBar';
 import { MuiFooter } from './components/MuiFooter';
+import { MuiCategoryBar } from './components/MuiCategoryBar';
 import "./css/GenericNews.css";
 import { SecondaryNewsCard } from './components/news-cards/SecondaryNewsCard';
 
@@ -7,6 +8,7 @@ function GenericNews() {
     return (
         <div className="GenericNews">
             <MuiNavBar/>
+            <MuiCategoryBar/>
                 <div className="container">
                     <div className="news-layout">
                         <h1 className='title'>
