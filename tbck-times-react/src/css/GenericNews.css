@@ -1,0 +1,33 @@
+.title {
+    background-color: #f5a742;
+    color: white;
+    text-align: left;
+    padding: 5px;
+}
+
+.news-layout {
+    flex: 5;
+    background-color: white;
+    border: 1px solid white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    padding: 20px;
+}
+
+.suggested-stories {
+    flex: 2;
+    background-color: white;
+    border: 1px solid lightblue;
+    text-align: left;
+    padding-top: 50px;
+}
+
+.container {
+    display: flex;
+    height: 100vh; /* Full screen height */
+}
+
+.image-description {
+    opacity: 0.5;
+    color: lightslategrey;
+}
