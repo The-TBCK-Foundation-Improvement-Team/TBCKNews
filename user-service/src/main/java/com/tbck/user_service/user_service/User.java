@@ -9,9 +9,24 @@ public class User {
     private String LastName;
     private String email;
     private String password;
+    private String role; //geust, admin
+    private boolean verified; //is this user a verified by admin or not
+    //verified users can comment on news articles
    
 
     
+    public boolean isVerified() {
+        return verified;
+    }
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+    public String getRole() {
+        return role;
+    }
+    public void setRole(String role) {
+        this.role = role;
+    }
     public String getFirstName() {
         return FirstName;
     }
