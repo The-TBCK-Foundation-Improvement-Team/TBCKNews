@@ -1,6 +1,7 @@
 package com.tbck.user_service.user_service;
 
 import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 //NEED TO SET UP DATABSE CONNECTION FOR THESE ROUTES TO FUNCTION
 @RestController
 @RequestMapping("/user")
-public class UserRestContreoller {
+public class UserRestController {
 
     @GetMapping(path = "/{userId}")
     @ResponseStatus(code = HttpStatus.OK)
