@@ -12,6 +12,7 @@ public class News {
     private String date;
     private String category;
     private List<Image> image;
+    private List<Comment> comment;
     private String template;
 
     public UUID getNewsId() {
@@ -61,6 +62,13 @@ public class News {
     }
     public void setImage(List<Image> image) {
         this.image = image;
+    }
+
+    public List<Comment> getComment() {
+        return comment;
+    }
+    public void setComment(List<Comment> comment) {
+        this.comment = comment;
     }
     
 
