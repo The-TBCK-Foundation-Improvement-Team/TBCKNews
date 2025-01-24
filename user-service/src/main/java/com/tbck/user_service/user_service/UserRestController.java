@@ -1,6 +1,9 @@
 package com.tbck.user_service.user_service;
 
+import java.util.Map;
 import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,17 +16,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
+
 
 //NEED TO SET UP DATABSE CONNECTION FOR THESE ROUTES TO FUNCTION
 @RestController
 @RequestMapping("/user")
-public class UserRestContreoller {
+public class UserRestController {
+
+    private final DynamoDbClient dynamoDbClient;
+
+    @Autowired
+    public UserRestController(DynamoDbClient dynamoDbClient) {
+        this.dynamoDbClient = dynamoDbClient;
+    }
 
     @GetMapping(path = "/{userId}")
     @ResponseStatus(code = HttpStatus.OK)
     public User getUser(@PathVariable("userId") UUID userId) {
 
-         return null;
+        return null;
     }
 
     @GetMapping
@@ -44,9 +58,17 @@ public class UserRestContreoller {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String hashedPassword = passwordEncoder.encode(userPassword);
         user.setPassword(hashedPassword);
-        
 
-        return null;
+        Map<String, AttributeValue> item = user.toMap();
+        
+        PutItemRequest request = PutItemRequest.builder()
+            .tableName("TBCKUsers")
+            .item(item)
+            .build();
+
+        dynamoDbClient.putItem(request);
+
+        return user;
     }
 
     @PatchMapping(path = "/{userId}")
