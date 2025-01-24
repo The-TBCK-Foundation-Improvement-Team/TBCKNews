@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
 
 
@@ -37,14 +40,23 @@ public class UserRestController {
     @ResponseStatus(code = HttpStatus.OK)
     public User getUser(@PathVariable("userId") UUID userId) {
 
-        return null;
-    }
+        // Get the user from the database
+        GetItemRequest getItemRequest = GetItemRequest.builder()
+            .tableName("TBCKUsers") // Your DynamoDB table name
+            .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build())) // Primary key
+            .build();
 
-    @GetMapping
-    @ResponseStatus(code = HttpStatus.OK)
-    public Iterable<User> getUsers() {
+        // Get the item from the database
+        GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
 
-        return null;
+        // Check if the item exists
+        if (getItemResponse.hasItem()) {
+            System.out.println("User found: " + getItemResponse.item());
+            return User.fromMap(getItemResponse.item()); // Return the user
+        } else {
+            System.out.println("User with ID " + userId + " not found.");
+            return null; // User not found
+        }
     }
 
     @PostMapping
@@ -75,10 +87,24 @@ public class UserRestController {
     @ResponseStatus(code = HttpStatus.OK)
     public User updateUser(@PathVariable(required = true) UUID userId, @RequestBody User user) {
 
-        //get the user to update
-        User existingUser = null;
-    
+        //get the user from the db
+        GetItemRequest getItemRequest = GetItemRequest.builder()
+                .tableName("TBCKUsers") 
+                .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))
+                .build();
 
+        //check the user response
+        GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
+
+        //if the user is not found return an error
+        if (!getItemResponse.hasItem()) {
+            throw new RuntimeException("User with ID " + userId + " not found.");
+        }
+
+        //Map the data we want to update
+        Map<String, AttributeValue> existingUserMap = getItemResponse.item();
+        User existingUser = User.fromMap(existingUserMap); 
+    
         if (user.getFirstName() != null) {
             existingUser.setFirstName(user.getFirstName());
         }
@@ -89,20 +115,38 @@ public class UserRestController {
             existingUser.setEmail(user.getEmail());
         }
         if (user.getPassword() != null) {
-            existingUser.setPassword(user.getPassword());
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String hashedPassword = passwordEncoder.encode(user.getPassword());
+            existingUser.setPassword(hashedPassword);
         }
 
+        //remap the user to a map
+        Map<String, AttributeValue> item = existingUser.toMap();
+        
+        //update the user in the db
+        PutItemRequest request = PutItemRequest.builder()
+            .tableName("TBCKUsers")
+            .item(item)
+            .build();
 
-        //save the existing user to the DB
-        return null;
+        dynamoDbClient.putItem(request);
+
+        //return the updated user
+        return user;
     }
     
     @DeleteMapping(path = "/{userId}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable(required = true) UUID userId) {
 
-        
-        //delete the user from the DB
+        //get the user to delete
+        DeleteItemRequest deleteItemRequest = DeleteItemRequest.builder()
+            .tableName("TBCKUsers")
+            .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))
+            .build();
+
+        // delete the user from the db
+        dynamoDbClient.deleteItem(deleteItemRequest);
     }
 
 
