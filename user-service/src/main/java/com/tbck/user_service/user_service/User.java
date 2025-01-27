@@ -3,7 +3,6 @@ package com.tbck.user_service.user_service;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 public class User {
@@ -65,8 +64,8 @@ public class User {
     public HashMap<String, AttributeValue> toMap() {
         HashMap<String, AttributeValue> item = new HashMap<>();
         item.put("userId", AttributeValue.builder().s(userId.toString()).build());
-        item.put("FirstName", AttributeValue.builder().s(firstName).build());
-        item.put("LastName", AttributeValue.builder().s(lastName).build());
+        item.put("firstName", AttributeValue.builder().s(firstName).build());
+        item.put("lastName", AttributeValue.builder().s(lastName).build());
         item.put("email", AttributeValue.builder().s(email).build());
         item.put("password", AttributeValue.builder().s(password).build());
         item.put("role", AttributeValue.builder().s(role).build());

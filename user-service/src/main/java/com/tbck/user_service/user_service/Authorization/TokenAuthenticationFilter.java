@@ -33,7 +33,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     //routes listed here should not need to go through the filter/ anyone can access them
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         // List routes where token authentication is not required
-        return request.getRequestURI().equals("/authenticate");
+        return request.getRequestURI().equals("/authenticate") || request.getRequestURI().equals("/user/**");
         //only things not filtered is the home page, news pages, and login
         //we need to filter any post/update/delete requests
         //commenting needs to be filtered, only verfied users can comment

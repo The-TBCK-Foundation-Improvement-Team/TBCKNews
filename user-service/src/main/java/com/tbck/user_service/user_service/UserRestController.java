@@ -2,7 +2,6 @@ package com.tbck.user_service.user_service;
 
 import java.util.Map;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
@@ -104,6 +102,8 @@ public class UserRestController {
         //Map the data we want to update
         Map<String, AttributeValue> existingUserMap = getItemResponse.item();
         User existingUser = User.fromMap(existingUserMap); 
+
+        existingUser.setUserId(userId);
     
         if (user.getFirstName() != null) {
             existingUser.setFirstName(user.getFirstName());
@@ -119,6 +119,12 @@ public class UserRestController {
             String hashedPassword = passwordEncoder.encode(user.getPassword());
             existingUser.setPassword(hashedPassword);
         }
+        if (user.getRole() != null) {
+            existingUser.setRole(user.getRole());
+        }
+        if (user.getVerified() != null) {
+            existingUser.setVerified(user.getVerified());
+        }
 
         //remap the user to a map
         Map<String, AttributeValue> item = existingUser.toMap();
@@ -132,7 +138,7 @@ public class UserRestController {
         dynamoDbClient.putItem(request);
 
         //return the updated user
-        return user;
+        return existingUser;
     }
     
     @DeleteMapping(path = "/{userId}")
