@@ -2,6 +2,7 @@ package com.tbck.news_service.news_service;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,10 +15,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+
 //NEED TO SET UP DATABSE CONNECTION FOR THESE ROUTES TO FUNCTION
 @RestController
 @RequestMapping("/news")
 public class NewsRestController {
+
+    private final DynamoDbClient dynamoDbClient;
+
+    @Autowired
+    public NewsRestController(DynamoDbClient dynamoDbClient) {
+        this.dynamoDbClient = dynamoDbClient;
+    }
 
     @GetMapping(path = "/{NewsId}")
     @ResponseStatus(code = HttpStatus.OK)
