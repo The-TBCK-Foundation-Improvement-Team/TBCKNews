@@ -56,4 +56,16 @@ public class Image {
 
         return itemMap;
    }
+
+   public static Image fromMap(Map<String, AttributeValue> item) {
+        Image image = new Image();
+
+        image.setImageId(UUID.fromString(item.get("imageId").s()));
+        image.setNewsId(UUID.fromString(item.get("newsId").s()));
+        image.setUrl(item.get("url").s());
+        image.setAltText(item.get("altText").s());
+        image.setCaption(item.get("caption").s());
+
+        return image;
+   }
 }

@@ -91,4 +91,17 @@ public class News {
         return itemMap;
     }
     
+    public static News fromMap(Map<String, AttributeValue> map) {
+        News news = new News();
+        news.setNewsId(UUID.fromString(map.get("newsId").s()));
+        news.setTitle(map.get("title").s());
+        news.setContent(map.get("content").s());
+        news.setAuthor(map.get("author").s());
+        news.setDate(map.get("date").s());
+        news.setCategory(map.get("category").s());
+        news.setTemplate(map.get("template").s());
+        news.setImage(map.get("image").l().stream().map(img -> Image.fromMap(img.m())).toList());
+        news.setComment(map.get("comment").l().stream().map(cmt -> Comment.fromMap(cmt.m())).toList());
+        return news;
+    }
 }

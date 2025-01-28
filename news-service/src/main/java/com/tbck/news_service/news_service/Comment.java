@@ -57,6 +57,18 @@ public class Comment {
 
         return itemMap;
     }
+
+    public static Comment fromMap(Map<String, AttributeValue> item) {
+        Comment comment = new Comment();
+
+        comment.setCommentId(UUID.fromString(item.get("commentId").s()));
+        comment.setUserId(UUID.fromString(item.get("userId").s()));
+        comment.setNewsId(item.get("newsId").s());
+        comment.setContent(item.get("content").s());
+        comment.setDate(item.get("date").s());
+
+        return comment;
+    }
 }
 
     
