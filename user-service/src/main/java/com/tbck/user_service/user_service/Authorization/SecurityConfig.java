@@ -26,7 +26,7 @@ public class SecurityConfig {
         http
         .csrf().disable()  // Disable CSRF for APIs
             .authorizeHttpRequests()
-                .requestMatchers("/authenticate", "/user/**").permitAll()  // Allows access to these paths without authentication
+                .requestMatchers("/authenticate/login", "/user/**").permitAll()  // Allows access to these paths without authentication
                 .anyRequest().authenticated()  // Requires authentication for other paths
                 .and()
                 .addFilterBefore(new TokenAuthenticationFilter(jwtTokenUtil), UsernamePasswordAuthenticationFilter.class);
