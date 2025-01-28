@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,8 @@ import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.QueryRequest;
+import software.amazon.awssdk.services.dynamodb.model.QueryResponse;
 
 
 //NEED TO SET UP DATABSE CONNECTION FOR THESE ROUTES TO FUNCTION
@@ -62,6 +65,37 @@ public class UserRestController {
     public User createUser(@RequestBody User user) {
 
         user.setUserId(UUID.randomUUID());
+
+        //check if the email is already in use
+        QueryRequest queryRequest = QueryRequest.builder()
+        .tableName("TBCKUsers") // Replace with your table name
+        .indexName("email-index") // Replace with your actual index name
+        .keyConditionExpression("email = :email")
+        .expressionAttributeValues(Map.of(":email", AttributeValue.builder().s(user.getEmail()).build()))
+        .build();
+
+        QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
+
+
+        if (queryResponse.count() != 0) {
+            System.out.println("User with email " + user.getEmail() + " already exists.");
+            throw new RuntimeException("User with email " + user.getEmail() + " already exists."); // User already exists
+            
+        }
+
+        //check is password is valid lenth, has 1 capital letter, 1 number, and 1 special character
+        if (user.getPassword().length() < 8) {
+            throw new RuntimeException("Password must be at least 8 characters long.");
+        }
+        if (!user.getPassword().matches(".*[A-Z].*")) {
+            throw new RuntimeException("Password must contain at least one capital letter.");
+        }
+        if (!user.getPassword().matches(".*[0-9].*")) {
+            throw new RuntimeException("Password must contain at least one number.");
+        }
+        if (!user.getPassword().matches(".*[!@#$%^&*()].*")) {
+            throw new RuntimeException("Password must contain at least one special character.");
+        }
 
         //hash user password 
         String userPassword = user.getPassword();
