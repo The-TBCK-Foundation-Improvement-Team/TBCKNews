@@ -1,7 +1,11 @@
 package com.tbck.news_service.news_service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 public class News {
 
@@ -71,6 +75,20 @@ public class News {
         this.comment = comment;
     }
     
+    public Map<String, AttributeValue> toMap() {
+        Map<String, AttributeValue> itemMap = new HashMap<>();
 
+        itemMap.put("newsId", AttributeValue.builder().s(newsId.toString()).build());
+        itemMap.put("title", AttributeValue.builder().s(title).build());
+        itemMap.put("content", AttributeValue.builder().s(content).build());
+        itemMap.put("author", AttributeValue.builder().s(author).build());
+        itemMap.put("date", AttributeValue.builder().s(date).build());
+        itemMap.put("category", AttributeValue.builder().s(category).build());
+        itemMap.put("template", AttributeValue.builder().s(template).build());
+        itemMap.put("image", AttributeValue.builder().l(image.stream().map(img -> AttributeValue.builder().m(img.toMap()).build()).toList()).build());
+        itemMap.put("comment", AttributeValue.builder().l(comment.stream().map(cmt -> AttributeValue.builder().m(cmt.toMap()).build()).toList()).build());
+
+        return itemMap;
+    }
     
 }
