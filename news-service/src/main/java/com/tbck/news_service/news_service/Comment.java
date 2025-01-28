@@ -10,7 +10,7 @@ public class Comment {
 
     private UUID commentId;
     private UUID userId;
-    private String newsId;
+    private UUID newsId;
     private String content;
     private String date;
 
@@ -27,10 +27,10 @@ public class Comment {
     public void setUserId(UUID userId) {
         this.userId = userId;
     }
-    public String getNewsId() {
+    public UUID getNewsId() {
         return newsId;
     }
-    public void setNewsId(String newsId) {
+    public void setNewsId(UUID newsId) {
         this.newsId = newsId;
     }
     public String getContent() {
@@ -51,7 +51,7 @@ public class Comment {
 
         itemMap.put("commentId", AttributeValue.builder().s(commentId.toString()).build());
         itemMap.put("userId", AttributeValue.builder().s(userId.toString()).build());
-        itemMap.put("newsId", AttributeValue.builder().s(newsId).build());
+        itemMap.put("newsId", AttributeValue.builder().s(newsId.toString()).build());
         itemMap.put("content", AttributeValue.builder().s(content).build());
         itemMap.put("date", AttributeValue.builder().s(date).build());
 
@@ -63,7 +63,7 @@ public class Comment {
 
         comment.setCommentId(UUID.fromString(item.get("commentId").s()));
         comment.setUserId(UUID.fromString(item.get("userId").s()));
-        comment.setNewsId(item.get("newsId").s());
+        comment.setNewsId(UUID.fromString(item.get("newsId").s()));
         comment.setContent(item.get("content").s());
         comment.setDate(item.get("date").s());
 

@@ -15,8 +15,8 @@ public class News {
     private String author;
     private String date;
     private String category;
-    private List<Image> image;
-    private List<Comment> comment;
+    private List<Image> images;
+    private List<Comment> comments;
     private String template;
 
     public UUID getNewsId() {
@@ -61,18 +61,18 @@ public class News {
     public void setTemplate(String template) {
         this.template = template;
     }
-    public List<Image> getImage() {
-        return image;
+    public List<Image> getImages() {
+        return images;
     }
-    public void setImage(List<Image> image) {
-        this.image = image;
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 
-    public List<Comment> getComment() {
-        return comment;
+    public List<Comment> getComments() {
+        return comments;
     }
-    public void setComment(List<Comment> comment) {
-        this.comment = comment;
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
     
     public Map<String, AttributeValue> toMap() {
@@ -85,8 +85,8 @@ public class News {
         itemMap.put("date", AttributeValue.builder().s(date).build());
         itemMap.put("category", AttributeValue.builder().s(category).build());
         itemMap.put("template", AttributeValue.builder().s(template).build());
-        itemMap.put("image", AttributeValue.builder().l(image.stream().map(img -> AttributeValue.builder().m(img.toMap()).build()).toList()).build());
-        itemMap.put("comment", AttributeValue.builder().l(comment.stream().map(cmt -> AttributeValue.builder().m(cmt.toMap()).build()).toList()).build());
+        itemMap.put("images", AttributeValue.builder().l(images.stream().map(img -> AttributeValue.builder().m(img.toMap()).build()).toList()).build());
+        itemMap.put("comments", AttributeValue.builder().l(comments.stream().map(cmt -> AttributeValue.builder().m(cmt.toMap()).build()).toList()).build());
 
         return itemMap;
     }
@@ -100,8 +100,8 @@ public class News {
         news.setDate(map.get("date").s());
         news.setCategory(map.get("category").s());
         news.setTemplate(map.get("template").s());
-        news.setImage(map.get("image").l().stream().map(img -> Image.fromMap(img.m())).toList());
-        news.setComment(map.get("comment").l().stream().map(cmt -> Comment.fromMap(cmt.m())).toList());
+        news.setImages(map.get("images").l().stream().map(img -> Image.fromMap(img.m())).toList());
+        news.setComments(map.get("comments").l().stream().map(cmt -> Comment.fromMap(cmt.m())).toList());
         return news;
     }
 }
