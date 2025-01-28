@@ -1,9 +1,10 @@
 package com.tbck.news_service.news_service;
 
+import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,23 +15,58 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.DeleteItemResponse;
+import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
+import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.PutItemResponse;
+import software.amazon.awssdk.services.dynamodb.model.ScanRequest;
+import software.amazon.awssdk.services.dynamodb.model.ScanResponse;
+
 //NEED TO SET UP DATABSE CONNECTION FOR THESE ROUTES TO FUNCTION
 @RestController
 @RequestMapping("/news")
 public class NewsRestController {
 
-    @GetMapping(path = "/{NewsId}")
-    @ResponseStatus(code = HttpStatus.OK)
-    public News getNews(@PathVariable("NewsId") UUID NewsId) {
+    private final DynamoDbClient dynamoDbClient;
 
-         return null;
+    @Autowired
+    public NewsRestController(DynamoDbClient dynamoDbClient) {
+        this.dynamoDbClient = dynamoDbClient;
+    }
+
+    @GetMapping(path = "/{newsId}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public News getNews(@PathVariable("newsId") UUID newsId) {
+
+        GetItemRequest getItemRequest = GetItemRequest.builder()
+            .tableName("TBCKStories")
+            .key(Map.of("newsId", AttributeValue.builder().s(newsId.toString()).build()))
+            .build();
+
+        GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
+
+        if (getItemResponse.hasItem()) {
+            return News.fromMap(getItemResponse.item());
+        } else {
+            return null;
+        }
     }
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
     public Iterable<News> getNews() {
 
-        return null;
+        ScanRequest scanRequest = ScanRequest.builder()
+            .tableName("TBCKStories")
+            .build();
+
+        ScanResponse response = dynamoDbClient.scan(scanRequest);
+
+        return response.items().stream().map(News::fromMap).toList();
     }
 
     @PostMapping
@@ -38,53 +74,100 @@ public class NewsRestController {
     public News createNews(@RequestBody News News) {
 
         News.setNewsId(UUID.randomUUID());
-        
 
-        return null;
+        for (Image image : News.getImages()) {
+            image.setImageId(UUID.randomUUID());
+            image.setNewsId(News.getNewsId());
+        }
+
+        for (Comment comment : News.getComments()) {
+            comment.setCommentId(UUID.randomUUID());
+            comment.setNewsId(News.getNewsId());
+        }
+
+        Map<String, AttributeValue> item = News.toMap();
+
+        PutItemRequest request = PutItemRequest.builder()
+            .tableName("TBCKStories")
+            .item(item)
+            .build();
+
+        PutItemResponse response = dynamoDbClient.putItem(request);
+
+        if (response.sdkHttpResponse().isSuccessful()) {
+            return News;
+        } else {
+            return null;
+        }
     }
 
-    @PatchMapping(path = "/{NewsId}")
+    @PatchMapping(path = "/{newsId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public News updateNews(@PathVariable(required = true) UUID NewsId, @RequestBody News News) {
+    public News updateNews(@PathVariable(required = true) UUID newsId, @RequestBody News news) {
 
         //get the News to update
-        News existingNews = null;
-    
+        GetItemRequest getItemRequest = GetItemRequest.builder()
+                .tableName("TBCKStories")
+                .key(Map.of("newsId", AttributeValue.builder().s(newsId.toString()).build()))
+                .build();
 
-        if (News.getTitle() != null) {
-            existingNews.setTitle(News.getTitle());
+        GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
+
+        if (!getItemResponse.hasItem()) { return null; }
+
+        News existingNews = News.fromMap(getItemResponse.item());
+
+        if (news.getTitle() != null) {
+            existingNews.setTitle(news.getTitle());
         }
-        if (News.getContent() != null) {
-            existingNews.setContent(News.getContent());
+        if (news.getContent() != null) {
+            existingNews.setContent(news.getContent());
         }
-        if (News.getAuthor() != null) {
-            existingNews.setAuthor(News.getAuthor());
+        if (news.getAuthor() != null) {
+            existingNews.setAuthor(news.getAuthor());
         }
-        if (News.getDate() != null) {
-            existingNews.setDate(News.getDate());
+        if (news.getDate() != null) {
+            existingNews.setDate(news.getDate());
         }
-        if (News.getCategory() != null) {
-            existingNews.setCategory(News.getCategory());
+        if (news.getCategory() != null) {
+            existingNews.setCategory(news.getCategory());
         }
-        if (News.getImage() != null) {
-            existingNews.setImage(News.getImage());
+        if (news.getImages() != null) {
+            existingNews.setImages(news.getImages());
         }
-        if (News.getTemplate() != null) {
-            existingNews.setTemplate(News.getTemplate());
+        if (news.getTemplate() != null) {
+            existingNews.setTemplate(news.getTemplate());
         }
         
+        Map<String, AttributeValue> item = existingNews.toMap();
 
+        PutItemRequest request = PutItemRequest.builder()
+                .tableName("TBCKStories")
+                .item(item)
+                .build();
 
-        //save the existing News to the DB
-        return null;
+        PutItemResponse response = dynamoDbClient.putItem(request);
+
+        if (response.sdkHttpResponse().isSuccessful()) {
+            return existingNews;
+        } else {
+            return null;
+        }
     }
     
-    @DeleteMapping(path = "/{NewsId}")
+    @DeleteMapping(path = "/{newsId}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void deleteNews(@PathVariable(required = true) UUID NewsId) {
+    public void deleteNews(@PathVariable(required = true) UUID newsId) {
 
-        
-        //delete the News from the DB
+        DeleteItemRequest deleteItemRequest = DeleteItemRequest.builder()
+                .tableName("TBCKStories")
+                .key(Map.of("newsId", AttributeValue.builder().s(newsId.toString()).build()))
+                .build();
+
+        DeleteItemResponse response = dynamoDbClient.deleteItem(deleteItemRequest);
+
+        if (!response.sdkHttpResponse().isSuccessful()) {
+            throw new RuntimeException("Failed to delete item");
+        }
     }
-    
 }
