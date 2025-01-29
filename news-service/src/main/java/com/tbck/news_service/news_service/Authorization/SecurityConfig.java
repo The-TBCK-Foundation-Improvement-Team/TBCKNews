@@ -1,4 +1,4 @@
-package com.tbck.user_service.user_service.Authorization;
+package com.tbck.news_service.news_service.Authorization;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ public class SecurityConfig {
         http
         .csrf().disable()  // Disable CSRF for APIs
             .authorizeHttpRequests()
-                .requestMatchers("/authenticate/login", "/user", "/user/{userId}").permitAll()  // Allows access to these paths without authentication
+                .requestMatchers("/news", "/news/get/{newsId}").permitAll()  // Allows access to these paths without authentication
                 .anyRequest().authenticated()  // Requires authentication for other paths
                 .and()
                 .addFilterBefore(new TokenAuthenticationFilter(jwtTokenUtil), UsernamePasswordAuthenticationFilter.class);

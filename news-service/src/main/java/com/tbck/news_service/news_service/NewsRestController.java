@@ -40,7 +40,7 @@ public class NewsRestController {
         this.dynamoDbClient = dynamoDbClient;
     }
 
-    @GetMapping(path = "/{newsId}")
+    @GetMapping(path = "/get/{newsId}")
     @ResponseStatus(code = HttpStatus.OK)
     public News getNews(@PathVariable("newsId") UUID newsId) {
 
