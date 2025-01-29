@@ -6,183 +6,138 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
-import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
-import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
-import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
-import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
-import software.amazon.awssdk.services.dynamodb.model.QueryRequest;
-import software.amazon.awssdk.services.dynamodb.model.QueryResponse;
+import software.amazon.awssdk.services.dynamodb.model.*;
 
-
-//NEED TO SET UP DATABSE CONNECTION FOR THESE ROUTES TO FUNCTION
+/**
+ * Handles user authentication and account management.
+ */
 @RestController
 @RequestMapping("/user")
 public class UserRestController {
 
     private final DynamoDbClient dynamoDbClient;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     public UserRestController(DynamoDbClient dynamoDbClient) {
         this.dynamoDbClient = dynamoDbClient;
     }
 
-    @GetMapping(path = "/{userId}")
-    @ResponseStatus(code = HttpStatus.OK)
+    /**
+     * Retrieves a user by their user ID.
+     */
+    @GetMapping("/{userId}")
+    @ResponseStatus(HttpStatus.OK)
     public User getUser(@PathVariable("userId") UUID userId) {
-
-        // Get the user from the database
         GetItemRequest getItemRequest = GetItemRequest.builder()
-            .tableName("TBCKUsers") // Your DynamoDB table name
-            .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build())) // Primary key
+            .tableName("TBCKUsers")
+            .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))
             .build();
 
-        // Get the item from the database
         GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
 
-        // Check if the item exists
         if (getItemResponse.hasItem()) {
-            System.out.println("User found: " + getItemResponse.item());
-            return User.fromMap(getItemResponse.item()); // Return the user
+            return User.fromMap(getItemResponse.item());
         } else {
-            System.out.println("User with ID " + userId + " not found.");
-            return null; // User not found
+            throw new RuntimeException("User with ID " + userId + " not found.");
         }
     }
 
-    @PostMapping
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public User createUser(@RequestBody User user) {
+    /**
+     * Handles user signup. Ensures unique emails, password validation, and stores user securely.
+     */
+    @PostMapping("/signup")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Map<String, String>> createUser(@RequestBody User user) {
+        System.out.println("Received Signup Request: " + user);
 
         user.setUserId(UUID.randomUUID());
         user.setRole("guest");
         user.setVerified(false);
 
-        //check if the email is already in use
+        // Check if email is already in use
         QueryRequest queryRequest = QueryRequest.builder()
-        .tableName("TBCKUsers") // Replace with your table name
-        .indexName("email-index") // Replace with your actual index name
-        .keyConditionExpression("email = :email")
-        .expressionAttributeValues(Map.of(":email", AttributeValue.builder().s(user.getEmail()).build()))
-        .build();
+            .tableName("TBCKUsers")
+            .indexName("email-index")
+            .keyConditionExpression("email = :email")
+            .expressionAttributeValues(Map.of(":email", AttributeValue.builder().s(user.getEmail()).build()))
+            .build();
 
         QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
-
-
         if (queryResponse.count() != 0) {
-            System.out.println("User with email " + user.getEmail() + " already exists.");
-            throw new RuntimeException("User with email " + user.getEmail() + " already exists."); // User already exists
-            
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "User with this email already exists."));
         }
 
-        //check is password is valid lenth, has 1 capital letter, 1 number, and 1 special character
-        if (user.getPassword().length() < 8) {
-            throw new RuntimeException("Password must be at least 8 characters long.");
-        }
-        if (!user.getPassword().matches(".*[A-Z].*")) {
-            throw new RuntimeException("Password must contain at least one capital letter.");
-        }
-        if (!user.getPassword().matches(".*[0-9].*")) {
-            throw new RuntimeException("Password must contain at least one number.");
-        }
-        if (!user.getPassword().matches(".*[!@#$%^&*()].*")) {
-            throw new RuntimeException("Password must contain at least one special character.");
-        }
+        // Validate and hash password
+        validatePassword(user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        
-
-        //hash user password 
-        String userPassword = user.getPassword();
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String hashedPassword = passwordEncoder.encode(userPassword);
-        user.setPassword(hashedPassword);
-
+        // Save user
         Map<String, AttributeValue> item = user.toMap();
-        
         PutItemRequest request = PutItemRequest.builder()
             .tableName("TBCKUsers")
             .item(item)
             .build();
 
         dynamoDbClient.putItem(request);
-
-        return user;
+        return ResponseEntity.ok(Map.of("message", "User created successfully."));
     }
 
-    @PatchMapping(path = "verify/{userId}/{role}")
-    @ResponseStatus(code = HttpStatus.OK)
-    public User verifyUser(@PathVariable(required = true) UUID userId, @PathVariable(required = true) String role) {
+    /**
+     * Handles user login. Verifies credentials and returns user data.
+     */
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody Map<String, String> credentials) {
+        String email = credentials.get("email");
+        String password = credentials.get("password");
 
-        //get the user from the db
-        GetItemRequest getItemRequest = GetItemRequest.builder()
-                .tableName("TBCKUsers") 
-                .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))
-                .build();
-
-        //check the user response
-        GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
-
-        //if the user is not found return an error
-        if (!getItemResponse.hasItem()) {
-            throw new RuntimeException("User with ID " + userId + " not found.");
-        }
-
-        //Map the data we want to update
-        Map<String, AttributeValue> existingUserMap = getItemResponse.item();
-        User existingUser = User.fromMap(existingUserMap); 
-
-        existingUser.setVerified(true);
-        existingUser.setRole(role);
-        
-        //remap the user to a map
-        Map<String, AttributeValue> item = existingUser.toMap();
-        
-        //update the user in the db
-        PutItemRequest request = PutItemRequest.builder()
+        // Query the user by email
+        QueryRequest queryRequest = QueryRequest.builder()
             .tableName("TBCKUsers")
-            .item(item)
+            .indexName("email-index")
+            .keyConditionExpression("email = :email")
+            .expressionAttributeValues(Map.of(":email", AttributeValue.builder().s(email).build()))
             .build();
 
-        dynamoDbClient.putItem(request);
+        QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
+        if (queryResponse.count() == 0) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+        }
 
-        //return the updated user
-        return existingUser;
+        // Retrieve the user
+        User user = User.fromMap(queryResponse.items().get(0));
+
+        // Verify password
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+        }
+
+        return ResponseEntity.ok(user);
     }
 
-    @PatchMapping(path = "/{userId}")
-    @ResponseStatus(code = HttpStatus.OK)
-    public User updateUser(@PathVariable(required = true) UUID userId, @RequestBody User user) {
-
-        //get the user from the db
+    /**
+     * Updates an existing user.
+     */
+    @PatchMapping("/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public User updateUser(@PathVariable UUID userId, @RequestBody User user) {
         GetItemRequest getItemRequest = GetItemRequest.builder()
-                .tableName("TBCKUsers") 
-                .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))
-                .build();
+            .tableName("TBCKUsers")
+            .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))
+            .build();
 
-        //check the user response
         GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
-
-        //if the user is not found return an error
         if (!getItemResponse.hasItem()) {
             throw new RuntimeException("User with ID " + userId + " not found.");
         }
 
-        //Map the data we want to update
+        // Map existing user data
         Map<String, AttributeValue> existingUserMap = getItemResponse.item();
-        User existingUser = User.fromMap(existingUserMap); 
+        User existingUser = User.fromMap(existingUserMap);
 
         existingUser.setUserId(userId);
-    
         if (user.getFirstName() != null) {
             existingUser.setFirstName(user.getFirstName());
         }
@@ -193,42 +148,90 @@ public class UserRestController {
             existingUser.setEmail(user.getEmail());
         }
         if (user.getPassword() != null) {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String hashedPassword = passwordEncoder.encode(user.getPassword());
-            existingUser.setPassword(hashedPassword);
+            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        
-        //remap the user to a map
+        if (user.getRole() != null) {
+            existingUser.setRole(user.getRole());
+        }
+        if (user.getVerified() != null) {
+            existingUser.setVerified(user.getVerified());
+        }
+
+        // Save updates to database
         Map<String, AttributeValue> item = existingUser.toMap();
-        
-        //update the user in the db
         PutItemRequest request = PutItemRequest.builder()
             .tableName("TBCKUsers")
             .item(item)
             .build();
 
         dynamoDbClient.putItem(request);
-
-        //return the updated user
         return existingUser;
     }
-    
-    @DeleteMapping(path = "/{userId}")
-    @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable(required = true) UUID userId) {
 
-        //get the user to delete
+    /**
+     * Verifies a user and assigns a role.
+     */
+    @PatchMapping(path = "verify/{userId}/{role}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public User verifyUser(@PathVariable UUID userId, @PathVariable String role) {
+        GetItemRequest getItemRequest = GetItemRequest.builder()
+            .tableName("TBCKUsers")
+            .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))
+            .build();
+
+        GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
+        if (!getItemResponse.hasItem()) {
+            throw new RuntimeException("User with ID " + userId + " not found.");
+        }
+
+        // Map existing user data
+        Map<String, AttributeValue> existingUserMap = getItemResponse.item();
+        User existingUser = User.fromMap(existingUserMap);
+
+        existingUser.setVerified(true);
+        existingUser.setRole(role);
+
+        // Save updates to database
+        Map<String, AttributeValue> item = existingUser.toMap();
+        PutItemRequest request = PutItemRequest.builder()
+            .tableName("TBCKUsers")
+            .item(item)
+            .build();
+
+        dynamoDbClient.putItem(request);
+        return existingUser;
+    }
+
+    /**
+     * Deletes a user by their ID.
+     */
+    @DeleteMapping("/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable UUID userId) {
         DeleteItemRequest deleteItemRequest = DeleteItemRequest.builder()
             .tableName("TBCKUsers")
             .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))
             .build();
 
-        // delete the user from the db
         dynamoDbClient.deleteItem(deleteItemRequest);
     }
 
-
-
-
-    
+    /**
+     * Helper function to validate password strength.
+     */
+    private void validatePassword(String password) {
+        if (password.length() < 8) {
+            throw new RuntimeException("Password must be at least 8 characters long.");
+        }
+        if (!password.matches(".*[A-Z].*")) {
+            throw new RuntimeException("Password must contain at least one capital letter.");
+        }
+        if (!password.matches(".*[0-9].*")) {
+            throw new RuntimeException("Password must contain at least one number.");
+        }
+        if (!password.matches(".*[!@#$%^&*()].*")) {
+            throw new RuntimeException("Password must contain at least one special character.");
+        }
+    }
 }
+

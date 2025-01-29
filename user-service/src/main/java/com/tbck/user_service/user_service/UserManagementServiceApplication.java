@@ -14,15 +14,17 @@ public class UserManagementServiceApplication {
 	}
 
 	@Bean
-    public WebMvcConfigurer corsConfig(){
+    public WebMvcConfigurer corsConfig() {
         return new WebMvcConfigurer() {
-            //turns cors off
-            @Override public void addCorsMappings(CorsRegistry registry){
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("*")
-                        .allowedMethods("*");
+                        .allowedOrigins("http://localhost:3000")  // Restrict to frontend origin
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .exposedHeaders("Authorization")  // Allow access to auth headers
+                        .allowCredentials(true);  // Required for cookies/auth
             }
         };
     }
-
 }
