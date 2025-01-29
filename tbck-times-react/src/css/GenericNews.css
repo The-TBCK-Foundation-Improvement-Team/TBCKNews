@@ -1,8 +1,13 @@
 .title {
-    background-color: #f5a742;
+    background-color: #EEA800;
+    text-shadow: 0px 0px 1px black;
     color: white;
-    text-align: left;
     padding: 5px;
+}
+
+.image-layout {
+    float: left;
+    
 }
 
 .news-layout {
@@ -10,16 +15,39 @@
     background-color: white;
     border: 1px solid white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    vertical-align:auto;
     text-align: left;
-    padding: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.sidebar-layout {
+    flex: 2;
+}
+
+.comment-section {
+    background-color: #11595A;
+    color: white;
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    align-items: center;
 }
 
 .suggested-stories {
-    flex: 2;
-    background-color: white;
-    border: 1px solid lightblue;
+    background-color: #11595A;
+    color: white;
     text-align: left;
-    padding-top: 50px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    align-items: center;
+    padding-left: 25px;
+}
+
+.story-reccomend {
+    padding: 5px;
+    align-items: center;
+    padding-inline: 5px;
 }
 
 .container {
