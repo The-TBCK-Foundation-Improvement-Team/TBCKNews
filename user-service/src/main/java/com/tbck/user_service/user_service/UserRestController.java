@@ -49,31 +49,41 @@ public class UserRestController {
      * Handles user signup. Ensures unique emails, password validation, and stores user securely.
      */
     @PostMapping("/signup")
-@ResponseStatus(HttpStatus.CREATED)
-public ResponseEntity<Map<String, String>> createUser(@RequestBody User user) {
-    System.out.println("Received Signup Request: " + user);
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Map<String, String>> createUser(@RequestBody User user) {
+        System.out.println("Received Signup Request: " + user);
 
-    user.setUserId(UUID.randomUUID());
-    user.setRole("guest");
-
-    // Ensure verified is set to false
-    if (user.getVerified() == null) {
+        user.setUserId(UUID.randomUUID());
+        user.setRole("guest");
         user.setVerified(false);
+
+        // Check if email is already in use
+        QueryRequest queryRequest = QueryRequest.builder()
+            .tableName("TBCKUsers")
+            .indexName("email-index")
+            .keyConditionExpression("email = :email")
+            .expressionAttributeValues(Map.of(":email", AttributeValue.builder().s(user.getEmail()).build()))
+            .build();
+
+        QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
+        if (queryResponse.count() != 0) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "User with this email already exists."));
+        }
+
+        // Validate and hash password
+        validatePassword(user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        // Save user
+        Map<String, AttributeValue> item = user.toMap();
+        PutItemRequest request = PutItemRequest.builder()
+            .tableName("TBCKUsers")
+            .item(item)
+            .build();
+
+        dynamoDbClient.putItem(request);
+        return ResponseEntity.ok(Map.of("message", "User created successfully."));
     }
-
-    // Save user
-    Map<String, AttributeValue> item = user.toMap();
-    item.put("verified", AttributeValue.builder().bool(user.getVerified()).build());
-
-    PutItemRequest request = PutItemRequest.builder()
-        .tableName("TBCKUsers")
-        .item(item)
-        .build();
-
-    dynamoDbClient.putItem(request);
-    return ResponseEntity.ok(Map.of("message", "User created successfully. Waiting for admin approval."));
-}
-
 
     /**
      * Handles user login. Verifies credentials and returns user data.
@@ -168,6 +178,40 @@ public ResponseEntity<?> loginUser(@RequestBody Map<String, String> credentials)
     }
 
     /**
+     * Verifies a user and assigns a role.
+     */
+    @PatchMapping(path = "verify/{userId}/{role}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public User verifyUser(@PathVariable UUID userId, @PathVariable String role) {
+        GetItemRequest getItemRequest = GetItemRequest.builder()
+            .tableName("TBCKUsers")
+            .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))
+            .build();
+
+        GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
+        if (!getItemResponse.hasItem()) {
+            throw new RuntimeException("User with ID " + userId + " not found.");
+        }
+
+        // Map existing user data
+        Map<String, AttributeValue> existingUserMap = getItemResponse.item();
+        User existingUser = User.fromMap(existingUserMap);
+
+        existingUser.setVerified(true);
+        existingUser.setRole(role);
+
+        // Save updates to database
+        Map<String, AttributeValue> item = existingUser.toMap();
+        PutItemRequest request = PutItemRequest.builder()
+            .tableName("TBCKUsers")
+            .item(item)
+            .build();
+
+        dynamoDbClient.putItem(request);
+        return existingUser;
+    }
+
+    /**
      * Deletes a user by their ID.
      */
     @DeleteMapping("/{userId}")
@@ -199,3 +243,4 @@ public ResponseEntity<?> loginUser(@RequestBody Map<String, String> credentials)
         }
     }
 }
+
