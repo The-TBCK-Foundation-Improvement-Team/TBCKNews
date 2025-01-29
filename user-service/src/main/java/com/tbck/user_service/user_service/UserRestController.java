@@ -89,33 +89,42 @@ public class UserRestController {
      * Handles user login. Verifies credentials and returns user data.
      */
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody Map<String, String> credentials) {
-        String email = credentials.get("email");
-        String password = credentials.get("password");
+public ResponseEntity<?> loginUser(@RequestBody Map<String, String> credentials) {
+    String email = credentials.get("email");
+    String password = credentials.get("password");
 
-        // Query the user by email
-        QueryRequest queryRequest = QueryRequest.builder()
-            .tableName("TBCKUsers")
-            .indexName("email-index")
-            .keyConditionExpression("email = :email")
-            .expressionAttributeValues(Map.of(":email", AttributeValue.builder().s(email).build()))
-            .build();
+    // Query the user by email
+    QueryRequest queryRequest = QueryRequest.builder()
+        .tableName("TBCKUsers")
+        .indexName("email-index")
+        .keyConditionExpression("email = :email")
+        .expressionAttributeValues(Map.of(":email", AttributeValue.builder().s(email).build()))
+        .build();
 
-        QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
-        if (queryResponse.count() == 0) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
-        }
-
-        // Retrieve the user
-        User user = User.fromMap(queryResponse.items().get(0));
-
-        // Verify password
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
-        }
-
-        return ResponseEntity.ok(user);
+    QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
+    if (queryResponse.count() == 0) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
     }
+
+    // Retrieve the user
+    User user = User.fromMap(queryResponse.items().get(0));
+
+    // DEBUG: Print the `verified` field
+    System.out.println("User Verified Status: " + user.getVerified());
+
+    // Check if the user is verified
+    if (user.getVerified() == null || !user.getVerified()) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+            .body("Account not verified. Please wait for admin approval.");
+    }
+
+    // Verify password
+    if (!passwordEncoder.matches(password, user.getPassword())) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+    }
+
+    return ResponseEntity.ok("Logged in successfully!");
+}
 
     /**
      * Updates an existing user.
