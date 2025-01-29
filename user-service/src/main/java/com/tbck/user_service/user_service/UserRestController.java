@@ -65,6 +65,8 @@ public class UserRestController {
     public User createUser(@RequestBody User user) {
 
         user.setUserId(UUID.randomUUID());
+        user.setRole("guest");
+        user.setVerified(false);
 
         //check if the email is already in use
         QueryRequest queryRequest = QueryRequest.builder()
@@ -97,6 +99,8 @@ public class UserRestController {
             throw new RuntimeException("Password must contain at least one special character.");
         }
 
+        
+
         //hash user password 
         String userPassword = user.getPassword();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -113,6 +117,46 @@ public class UserRestController {
         dynamoDbClient.putItem(request);
 
         return user;
+    }
+
+    @PatchMapping(path = "verify/{userId}/{role}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public User verifyUser(@PathVariable(required = true) UUID userId, @PathVariable(required = true) String role) {
+
+        //get the user from the db
+        GetItemRequest getItemRequest = GetItemRequest.builder()
+                .tableName("TBCKUsers") 
+                .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))
+                .build();
+
+        //check the user response
+        GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
+
+        //if the user is not found return an error
+        if (!getItemResponse.hasItem()) {
+            throw new RuntimeException("User with ID " + userId + " not found.");
+        }
+
+        //Map the data we want to update
+        Map<String, AttributeValue> existingUserMap = getItemResponse.item();
+        User existingUser = User.fromMap(existingUserMap); 
+
+        existingUser.setVerified(true);
+        existingUser.setRole(role);
+        
+        //remap the user to a map
+        Map<String, AttributeValue> item = existingUser.toMap();
+        
+        //update the user in the db
+        PutItemRequest request = PutItemRequest.builder()
+            .tableName("TBCKUsers")
+            .item(item)
+            .build();
+
+        dynamoDbClient.putItem(request);
+
+        //return the updated user
+        return existingUser;
     }
 
     @PatchMapping(path = "/{userId}")
@@ -153,13 +197,7 @@ public class UserRestController {
             String hashedPassword = passwordEncoder.encode(user.getPassword());
             existingUser.setPassword(hashedPassword);
         }
-        if (user.getRole() != null) {
-            existingUser.setRole(user.getRole());
-        }
-        if (user.getVerified() != null) {
-            existingUser.setVerified(user.getVerified());
-        }
-
+        
         //remap the user to a map
         Map<String, AttributeValue> item = existingUser.toMap();
         
