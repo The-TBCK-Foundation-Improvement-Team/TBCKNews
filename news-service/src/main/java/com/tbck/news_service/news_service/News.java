@@ -1,7 +1,11 @@
 package com.tbck.news_service.news_service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 public class News {
 
@@ -11,7 +15,8 @@ public class News {
     private String author;
     private String date;
     private String category;
-    private List<Image> image;
+    private List<Image> images;
+    private List<Comment> comments;
     private String template;
 
     public UUID getNewsId() {
@@ -56,13 +61,47 @@ public class News {
     public void setTemplate(String template) {
         this.template = template;
     }
-    public List<Image> getImage() {
-        return image;
+    public List<Image> getImages() {
+        return images;
     }
-    public void setImage(List<Image> image) {
-        this.image = image;
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
-    
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
     
+    public Map<String, AttributeValue> toMap() {
+        Map<String, AttributeValue> itemMap = new HashMap<>();
+
+        itemMap.put("newsId", AttributeValue.builder().s(newsId.toString()).build());
+        itemMap.put("title", AttributeValue.builder().s(title).build());
+        itemMap.put("content", AttributeValue.builder().s(content).build());
+        itemMap.put("author", AttributeValue.builder().s(author).build());
+        itemMap.put("date", AttributeValue.builder().s(date).build());
+        itemMap.put("category", AttributeValue.builder().s(category).build());
+        itemMap.put("template", AttributeValue.builder().s(template).build());
+        itemMap.put("images", AttributeValue.builder().l(images.stream().map(img -> AttributeValue.builder().m(img.toMap()).build()).toList()).build());
+        itemMap.put("comments", AttributeValue.builder().l(comments.stream().map(cmt -> AttributeValue.builder().m(cmt.toMap()).build()).toList()).build());
+
+        return itemMap;
+    }
+    
+    public static News fromMap(Map<String, AttributeValue> map) {
+        News news = new News();
+        news.setNewsId(UUID.fromString(map.get("newsId").s()));
+        news.setTitle(map.get("title").s());
+        news.setContent(map.get("content").s());
+        news.setAuthor(map.get("author").s());
+        news.setDate(map.get("date").s());
+        news.setCategory(map.get("category").s());
+        news.setTemplate(map.get("template").s());
+        news.setImages(map.get("images").l().stream().map(img -> Image.fromMap(img.m())).toList());
+        news.setComments(map.get("comments").l().stream().map(cmt -> Comment.fromMap(cmt.m())).toList());
+        return news;
+    }
 }

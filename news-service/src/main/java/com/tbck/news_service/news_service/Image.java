@@ -1,6 +1,10 @@
 package com.tbck.news_service.news_service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 public class Image {
 
@@ -41,8 +45,27 @@ public class Image {
         this.caption = caption;
     }
 
-   
+   public Map<String, AttributeValue> toMap() {
+        Map<String, AttributeValue> itemMap = new HashMap<>();
 
-    
-    
+        itemMap.put("imageId", AttributeValue.builder().s(imageId.toString()).build());
+        itemMap.put("newsId", AttributeValue.builder().s(newsId.toString()).build());
+        itemMap.put("url", AttributeValue.builder().s(url).build());
+        itemMap.put("altText", AttributeValue.builder().s(altText).build());
+        itemMap.put("caption", AttributeValue.builder().s(caption).build());
+
+        return itemMap;
+   }
+
+   public static Image fromMap(Map<String, AttributeValue> item) {
+        Image image = new Image();
+
+        image.setImageId(UUID.fromString(item.get("imageId").s()));
+        image.setNewsId(UUID.fromString(item.get("newsId").s()));
+        image.setUrl(item.get("url").s());
+        image.setAltText(item.get("altText").s());
+        image.setCaption(item.get("caption").s());
+
+        return image;
+   }
 }
