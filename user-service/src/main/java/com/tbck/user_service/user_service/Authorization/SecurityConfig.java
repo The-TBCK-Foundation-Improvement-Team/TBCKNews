@@ -1,4 +1,5 @@
 package com.tbck.user_service.user_service.Authorization;
+import org.springframework.http.HttpMethod;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,16 +21,17 @@ public class SecurityConfig {
     @SuppressWarnings("removal")
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-        .csrf().disable()  // Disable CSRF for APIs
-            .authorizeHttpRequests()
-                .requestMatchers("/authenticate/login", "/user", "/user/{userId}").permitAll()  // Allows access to these paths without authentication
-                .anyRequest().authenticated()  // Requires authentication for other paths
-                .and()
-                .addFilterBefore(new TokenAuthenticationFilter(jwtTokenUtil), UsernamePasswordAuthenticationFilter.class);
+    http
+        .cors().and()
+        .csrf().disable()  //Disable CSRF for APIs
+        .authorizeHttpRequests()
+            .requestMatchers(HttpMethod.POST, "/user").permitAll() //Allow signup
+            .requestMatchers("/authenticate/login", "/user/{userId}").permitAll()  //Allow these paths
+            .anyRequest().authenticated()  //Requires authentication for other paths
+        .and()
+        .addFilterBefore(new TokenAuthenticationFilter(jwtTokenUtil), UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-                
-    }
+    return http.build();
+}
 
 }

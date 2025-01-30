@@ -22,7 +22,6 @@ public class UserManagementServiceApplication {
                         .allowedOrigins("http://localhost:3000")  // Restrict to frontend origin
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
-                        .exposedHeaders("Authorization")  // Allow access to auth headers
                         .allowCredentials(true);  // Required for cookies/auth
             }
         };

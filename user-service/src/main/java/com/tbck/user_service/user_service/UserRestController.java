@@ -1,5 +1,5 @@
 package com.tbck.user_service.user_service;
-
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import software.amazon.awssdk.services.dynamodb.model.*;
 /**
  * Handles user authentication and account management.
  */
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RestController
 @RequestMapping("/user")
 public class UserRestController {
@@ -49,15 +50,19 @@ public class UserRestController {
      * Handles user signup. Ensures unique emails, password validation, and stores user securely.
      */
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Map<String, String>> createUser(@RequestBody User user) {
-        System.out.println("Received Signup Request: " + user);
+@PostMapping
+@ResponseStatus(HttpStatus.CREATED)
+public ResponseEntity<Map<String, String>> createUser(@RequestBody User user, HttpServletResponse response) {
+    // Set CORS headers
+    response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+    response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    response.setHeader("Access-Control-Allow-Headers", "*");
+    response.setHeader("Access-Control-Allow-Credentials", "true");
 
-    // ✅ Ensure userId is a valid UUID
+    System.out.println("Received Signup Request: " + user);
+
     user.setUserId(UUID.randomUUID());
 
-    // Check if email is already in use
     QueryRequest queryRequest = QueryRequest.builder()
         .tableName("TBCKUsers")
         .indexName("email-index")
@@ -74,11 +79,21 @@ public class UserRestController {
     validatePassword(user.getPassword());
     user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 
-    // ✅ Ensure verification field is always set
+    // Ensure verification field is set
     if (user.getVerified() == null) {
         user.setVerified(false);
     }
-        return ResponseEntity.ok(Map.of("message", "User created successfully."));
+
+    // Save user to database
+    Map<String, AttributeValue> item = user.toMap();
+    PutItemRequest request = PutItemRequest.builder()
+        .tableName("TBCKUsers")
+        .item(item)
+        .build();
+
+    dynamoDbClient.putItem(request); // Save user
+
+    return ResponseEntity.ok(Map.of("message", "User created successfully."));
 }
     /**
      * Updates an existing user.

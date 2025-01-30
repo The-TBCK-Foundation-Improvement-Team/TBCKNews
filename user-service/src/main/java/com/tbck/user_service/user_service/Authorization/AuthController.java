@@ -36,10 +36,12 @@ public class AuthController {
 
     
     @PostMapping("/login")
-public ResponseEntity<Map<String, Object>> login(@RequestBody User loginRequest) {
+public ResponseEntity<Map<String, String>> login(@RequestBody User loginRequest) {
+    // Step 1: Validate the user's credentials
+
     QueryRequest queryRequest = QueryRequest.builder()
-        .tableName("TBCKUsers")
-        .indexName("email-index")
+        .tableName("TBCKUsers") 
+        .indexName("email-index") 
         .keyConditionExpression("email = :email")
         .expressionAttributeValues(Map.of(":email", AttributeValue.builder().s(loginRequest.getEmail()).build()))
         .build();
@@ -54,21 +56,28 @@ public ResponseEntity<Map<String, Object>> login(@RequestBody User loginRequest)
     Map<String, AttributeValue> item = queryResponse.items().get(0);
     User user = User.fromMap(item);
 
-    if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+    // If the user is null or password is incorrect
+    if (user == null || !passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid username or password"));
     }
 
-    // ✅ Generate JWT Token
-    String token = jwtTokenUtil.generateToken(user);
+    // Ensure user is verified before login
+    if (!user.getVerified()) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Account is not verified. Contact admin."));
+    }
 
-    // ✅ Return both token & user details
-    Map<String, Object> response = Map.of(
+    // Step 2: Generate JWT token when the user is valid
+    String token = jwtTokenUtil.generateToken(user); // Generate token with the user's UUID
+
+    // Send back user data and token
+    return ResponseEntity.ok(Map.of(
+        "message", "Login successful",
         "token", token,
-        "user", user
-    );
-
-    return ResponseEntity.ok(response);
+        "userId", user.getUserId().toString(),
+        "email", user.getEmail(),
+        "firstName", user.getFirstName(),
+        "lastName", user.getLastName(),
+        "role", user.getRole()
+    ));
 }
-
-    
 }

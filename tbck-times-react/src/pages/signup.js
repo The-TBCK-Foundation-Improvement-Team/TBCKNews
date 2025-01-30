@@ -1,32 +1,23 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom"; // ✅ Import this
 import { MuiNavBar } from '../components/MuiNavBar';
 import { MuiFooter } from '../components/MuiFooter';
 import '../css/Logsign.css';
-const API_BASE_URL = "http://localhost:8080";
 
 const Signup = () => {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();  // ✅ Define navigate
 
-    const handleSignup = async (e) => {
-        e.preventDefault();
-        setError(null);
-        setSuccess(null);
-
-        if (!firstName.trim() || !lastName.trim() || !email.trim() || !password.trim()) {
-            setError("All fields are required.");
-            return;
-        }
-
+    const handleSignup = async (event) => {
+        event.preventDefault();  // ✅ Prevent default form submission
         try {
             const response = await axios.post(
-                `${API_BASE_URL}/user/signup`, 
+                "http://localhost:8080/user",
                 { 
                     firstName: firstName.trim(),
                     lastName: lastName.trim(),
@@ -38,14 +29,11 @@ const Signup = () => {
                 { withCredentials: true }
             );
 
-            if (response.status === 200 || response.status === 201) {
-                setSuccess(response.data.message || "Signup successful! You can now log in.");
-            } else {
-                setError("Unexpected response from server.");
-            }
-        } catch (err) {
-            console.error("Signup Error:", err);
-            setError(err.response?.data?.error || "Signup failed. Please try again.");
+            alert("Signup successful!");
+            navigate("/login");  // ✅ Redirect to login page after signup
+
+        } catch (error) {
+            alert("Signup failed: " + (error.response?.data?.error || "Unknown error"));
         }
     };
 
@@ -54,17 +42,17 @@ const Signup = () => {
             <MuiNavBar />
             <div className="content">
                 <h2>Sign Up</h2>
-                <form onSubmit={handleSignup}>
+                <form onSubmit={handleSignup}>  {/* ✅ Add onSubmit */}
                     <input 
                         type="text" 
-                        placeholder="First Name" 
+                        placeholder="First name" 
                         value={firstName} 
                         onChange={(e) => setFirstName(e.target.value)} 
                         required 
                     />
                     <input 
                         type="text" 
-                        placeholder="Last Name" 
+                        placeholder="Last name" 
                         value={lastName} 
                         onChange={(e) => setLastName(e.target.value)} 
                         required 
@@ -83,11 +71,9 @@ const Signup = () => {
                         onChange={(e) => setPassword(e.target.value)} 
                         required 
                     />
-                    {error && <p style={{ color: "red" }}>{error}</p>}
-                    {success && <p style={{ color: "green" }}>{success}</p>}
                     <button type="submit">Sign Up</button>
                 </form>
-                <Link to="/Login">Have an account? Log in instead!</Link>
+                <Link to="/Login">Already have an account? Log in!</Link>
             </div>
             <MuiFooter />
         </div>
