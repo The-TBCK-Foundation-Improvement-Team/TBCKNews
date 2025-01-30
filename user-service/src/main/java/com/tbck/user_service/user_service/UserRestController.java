@@ -49,51 +49,55 @@ public class UserRestController {
      * Handles user signup. Ensures unique emails, password validation, and stores user securely.
      */
     @PostMapping("/signup")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Map<String, String>> createUser(@RequestBody User user) {
-        System.out.println("Received Signup Request: " + user);
+@ResponseStatus(HttpStatus.CREATED)
+public ResponseEntity<Map<String, String>> createUser(@RequestBody User user) {
+    System.out.println("Received Signup Request: " + user);
 
-        user.setUserId(UUID.randomUUID());
-        user.setRole("guest");
-        user.setVerified(false);
+    // ✅ Ensure userId is a valid UUID
+    user.setUserId(UUID.randomUUID());
 
-        // Check if email is already in use
-        QueryRequest queryRequest = QueryRequest.builder()
-            .tableName("TBCKUsers")
-            .indexName("email-index")
-            .keyConditionExpression("email = :email")
-            .expressionAttributeValues(Map.of(":email", AttributeValue.builder().s(user.getEmail()).build()))
-            .build();
+    // Check if email is already in use
+    QueryRequest queryRequest = QueryRequest.builder()
+        .tableName("TBCKUsers")
+        .indexName("email-index")
+        .keyConditionExpression("email = :email")
+        .expressionAttributeValues(Map.of(":email", AttributeValue.builder().s(user.getEmail()).build()))
+        .build();
 
-        QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
-        if (queryResponse.count() != 0) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "User with this email already exists."));
-        }
-
-        // Validate and hash password
-        validatePassword(user.getPassword());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        // Save user
-        Map<String, AttributeValue> item = user.toMap();
-        PutItemRequest request = PutItemRequest.builder()
-            .tableName("TBCKUsers")
-            .item(item)
-            .build();
-
-        dynamoDbClient.putItem(request);
-        return ResponseEntity.ok(Map.of("message", "User created successfully."));
+    QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
+    if (queryResponse.count() != 0) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "User with this email already exists."));
     }
+
+    // Validate and hash password
+    validatePassword(user.getPassword());
+    user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+
+    // ✅ Ensure verification field is always set
+    if (user.getVerified() == null) {
+        user.setVerified(false);
+    }
+
+    // Save user
+    Map<String, AttributeValue> item = user.toMap();
+    PutItemRequest request = PutItemRequest.builder()
+        .tableName("TBCKUsers")
+        .item(item)
+        .build();
+
+    dynamoDbClient.putItem(request);
+
+    return ResponseEntity.ok(Map.of("message", "User created successfully."));
+}
 
     /**
      * Handles user login. Verifies credentials and returns user data.
      */
-    @PostMapping("/login")
+   @PostMapping("/login")
 public ResponseEntity<?> loginUser(@RequestBody Map<String, String> credentials) {
     String email = credentials.get("email");
     String password = credentials.get("password");
 
-    // Query the user by email
     QueryRequest queryRequest = QueryRequest.builder()
         .tableName("TBCKUsers")
         .indexName("email-index")
@@ -102,30 +106,43 @@ public ResponseEntity<?> loginUser(@RequestBody Map<String, String> credentials)
         .build();
 
     QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
+    
     if (queryResponse.count() == 0) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
     }
 
-    // Retrieve the user
     User user = User.fromMap(queryResponse.items().get(0));
 
-    // DEBUG: Print the `verified` field
+    // ✅ Debugging: Print all user fields
+    System.out.println("User Found: " + user.getEmail());
     System.out.println("User Verified Status: " + user.getVerified());
+    System.out.println("User First Name: " + user.getFirstName());
+    System.out.println("User Last Name: " + user.getLastName());
+    System.out.println("User Role: " + user.getRole());
+    System.out.println("User Password: " + user.getPassword());
 
-    // Check if the user is verified
-    if (user.getVerified() == null || !user.getVerified()) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-            .body("Account not verified. Please wait for admin approval.");
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    // 🚨 Ensure no null fields are causing issues
+    if (user.getPassword() == null) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: Password is missing for this user.");
     }
 
-    // Verify password
     if (!passwordEncoder.matches(password, user.getPassword())) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
     }
 
-    return ResponseEntity.ok("Logged in successfully!");
-}
+    // ✅ Return user details (without password)
+    Map<String, Object> userData = Map.of(
+        "userId", user.getUserId(),
+        "firstName", user.getFirstName() != null ? user.getFirstName() : "Unknown",
+        "lastName", user.getLastName() != null ? user.getLastName() : "Unknown",
+        "email", user.getEmail(),
+        "role", user.getRole() != null ? user.getRole() : "guest"
+    );
 
+    return ResponseEntity.ok(userData);
+}
     /**
      * Updates an existing user.
      */
