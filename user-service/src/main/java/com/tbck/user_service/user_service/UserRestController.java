@@ -78,8 +78,7 @@ public class UserRestController {
     if (user.getVerified() == null) {
         user.setVerified(false);
     }
-
-    return ResponseEntity.ok(userData);
+        return ResponseEntity.ok(Map.of("message", "User created successfully."));
 }
     /**
      * Updates an existing user.
