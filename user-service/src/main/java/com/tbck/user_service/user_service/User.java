@@ -79,13 +79,14 @@ public class User {
     user.setFirstName(map.get("firstName") != null ? map.get("firstName").s() : null);
     user.setLastName(map.get("lastName") != null ? map.get("lastName").s() : null);
     user.setEmail(map.get("email") != null ? map.get("email").s() : null);
+    user.setRole(map.get("role") != null ? map.get("role").s() : "guest");
     user.setPassword(map.get("password") != null ? map.get("password").s() : null);
 
-    // ✅ Fix: Read `verified` field properly
+    //Fix: Read `verified` field properly
     if (map.containsKey("verified") && map.get("verified").bool() != null) {
         user.setVerified(map.get("verified").bool());
     } else {
-        user.setVerified(false); // 🔥 Default to false if not present
+        user.setVerified(false); //Default to false if not present
     }
 
     return user;
