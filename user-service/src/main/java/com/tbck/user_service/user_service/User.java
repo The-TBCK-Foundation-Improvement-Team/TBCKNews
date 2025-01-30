@@ -12,7 +12,7 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-    private String role; //geust, admin
+    private String role; //guest, admin
     private Boolean verified; //is this user a verified by admin or not
     //verified users can comment on news articles
    
@@ -74,14 +74,23 @@ public class User {
     }
 
     public static User fromMap(Map<String, AttributeValue> map) {
-        User user = new User();
-        user.setUserId(UUID.fromString(map.get("userId").s()));
-        user.setFirstName(map.get("firstName") != null ? map.get("firstName").s() : null);
-        user.setLastName(map.get("lastName") != null ? map.get("lastName").s() : null);
-        user.setEmail(map.get("email") != null ? map.get("email").s() : null);
-        user.setPassword(map.get("password") != null ? map.get("password").s() : null);
-        return user;
+    User user = new User();
+    user.setUserId(UUID.fromString(map.get("userId").s()));
+    user.setFirstName(map.get("firstName") != null ? map.get("firstName").s() : null);
+    user.setLastName(map.get("lastName") != null ? map.get("lastName").s() : null);
+    user.setEmail(map.get("email") != null ? map.get("email").s() : null);
+    user.setRole(map.get("role") != null ? map.get("role").s() : "guest");
+    user.setPassword(map.get("password") != null ? map.get("password").s() : null);
+
+    //Fix: Read `verified` field properly
+    if (map.containsKey("verified") && map.get("verified").bool() != null) {
+        user.setVerified(map.get("verified").bool());
+    } else {
+        user.setVerified(false); //Default to false if not present
     }
+
+    return user;
+}
 
     @Override
     public String toString() {

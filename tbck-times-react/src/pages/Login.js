@@ -1,40 +1,37 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { MuiNavBar } from '../components/MuiNavBar';
 import { MuiFooter } from '../components/MuiFooter';
-
 import '../css/Logsign.css';
 
-const API_BASE_URL = "http://localhost:8080";
-
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        setError(null); // Clear previous errors
-
-        if (!email.trim() || !password.trim()) {
-            setError("Email and password are required.");
-            return;
-        }
-
+    const handleLogin = async (event) => {
+        event.preventDefault();
         try {
-            const response = await axios.post(
-                `${API_BASE_URL}/user/login`, 
-                { email: email.trim(), password: password.trim() },
-                { withCredentials: true }
-            );
+            const response = await axios.post("http://localhost:8080/authenticate/login", {
+                email,
+                password
+            }, { withCredentials: true });
+    
+            console.log("Login Response:", response.data); // ✅ Debugging output
+    
+            const { token, user } = response.data; // ✅ Extract both values
+            sessionStorage.setItem("jwt", token);  // ✅ Store JWT
+            sessionStorage.setItem("user", JSON.stringify(user)); // ✅ Store user data
+    
             alert("Login successful!");
-            console.log(response.data);
-        } catch (err) {
-            setError(err.response?.data || "Invalid credentials. Please try again.");
-            console.error(err);
+            navigate("/user");
+        } catch (error) {
+            console.error("Login Error:", error);
+            alert("Login failed: " + (error.response?.data?.error || "Unknown error"));
         }
     };
+    
 
     return (
         <div>
@@ -56,7 +53,6 @@ const Login = () => {
                         onChange={(e) => setPassword(e.target.value)} 
                         required 
                     />
-                    {error && <p style={{ color: "red" }}>{error}</p>}
                     <button type="submit">Log In</button>
                 </form>
                 <Link to="/Signup">Don't have an account? Sign up instead!</Link>

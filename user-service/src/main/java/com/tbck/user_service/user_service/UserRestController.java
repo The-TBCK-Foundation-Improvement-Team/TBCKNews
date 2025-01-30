@@ -48,44 +48,39 @@ public class UserRestController {
     /**
      * Handles user signup. Ensures unique emails, password validation, and stores user securely.
      */
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Map<String, String>> createUser(@RequestBody User user) {
         System.out.println("Received Signup Request: " + user);
 
-        user.setUserId(UUID.randomUUID());
-        user.setRole("guest");
-        user.setVerified(false);
+    // ✅ Ensure userId is a valid UUID
+    user.setUserId(UUID.randomUUID());
 
-        // Check if email is already in use
-        QueryRequest queryRequest = QueryRequest.builder()
-            .tableName("TBCKUsers")
-            .indexName("email-index")
-            .keyConditionExpression("email = :email")
-            .expressionAttributeValues(Map.of(":email", AttributeValue.builder().s(user.getEmail()).build()))
-            .build();
+    // Check if email is already in use
+    QueryRequest queryRequest = QueryRequest.builder()
+        .tableName("TBCKUsers")
+        .indexName("email-index")
+        .keyConditionExpression("email = :email")
+        .expressionAttributeValues(Map.of(":email", AttributeValue.builder().s(user.getEmail()).build()))
+        .build();
 
-        QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
-        if (queryResponse.count() != 0) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "User with this email already exists."));
-        }
-
-        // Validate and hash password
-        validatePassword(user.getPassword());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        // Save user
-        Map<String, AttributeValue> item = user.toMap();
-        PutItemRequest request = PutItemRequest.builder()
-            .tableName("TBCKUsers")
-            .item(item)
-            .build();
-
-        dynamoDbClient.putItem(request);
-        return ResponseEntity.ok(Map.of("message", "User created successfully."));
+    QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
+    if (queryResponse.count() != 0) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "User with this email already exists."));
     }
 
+    // Validate and hash password
+    validatePassword(user.getPassword());
+    user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 
+    // ✅ Ensure verification field is always set
+    if (user.getVerified() == null) {
+        user.setVerified(false);
+    }
+
+    return ResponseEntity.ok(userData);
+}
     /**
      * Updates an existing user.
      */

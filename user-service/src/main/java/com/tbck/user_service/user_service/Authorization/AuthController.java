@@ -36,38 +36,39 @@ public class AuthController {
 
     
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User loginRequest) {
-        // Step 1: Validate the user's credentials
-
-          QueryRequest queryRequest = QueryRequest.builder()
-        .tableName("TBCKUsers") // Replace with your table name
-        .indexName("email-index") // Replace with your actual index name
+public ResponseEntity<Map<String, Object>> login(@RequestBody User loginRequest) {
+    QueryRequest queryRequest = QueryRequest.builder()
+        .tableName("TBCKUsers")
+        .indexName("email-index")
         .keyConditionExpression("email = :email")
         .expressionAttributeValues(Map.of(":email", AttributeValue.builder().s(loginRequest.getEmail()).build()))
         .build();
 
-        QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
+    QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
 
-
-        if (queryResponse.count() == 0) {
-            System.out.println("User with email " + loginRequest.getEmail() + " not found.");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password"); // User not found
-        }
-
-        Map<String, AttributeValue> item = queryResponse.items().get(0);
-        User user = User.fromMap(item);
-
-        //if the user is null or the password is not correct
-        if (user == null || !passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
-        }
-
-        
-        // Step 2: Generate JWT token when the user is valid
-        String token = jwtTokenUtil.generateToken(user); // Generate token with the user's uuid
-
-        // Step 3: Return the token to the client
-        return ResponseEntity.ok(token);
+    if (queryResponse.count() == 0) {
+        System.out.println("User with email " + loginRequest.getEmail() + " not found.");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid username or password"));
     }
+
+    Map<String, AttributeValue> item = queryResponse.items().get(0);
+    User user = User.fromMap(item);
+
+    if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid username or password"));
+    }
+
+    // ✅ Generate JWT Token
+    String token = jwtTokenUtil.generateToken(user);
+
+    // ✅ Return both token & user details
+    Map<String, Object> response = Map.of(
+        "token", token,
+        "user", user
+    );
+
+    return ResponseEntity.ok(response);
+}
+
     
 }
