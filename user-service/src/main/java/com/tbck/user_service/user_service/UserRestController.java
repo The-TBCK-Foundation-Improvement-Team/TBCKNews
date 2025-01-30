@@ -48,10 +48,11 @@ public class UserRestController {
     /**
      * Handles user signup. Ensures unique emails, password validation, and stores user securely.
      */
-    @PostMapping("/signup")
-@ResponseStatus(HttpStatus.CREATED)
-public ResponseEntity<Map<String, String>> createUser(@RequestBody User user) {
-    System.out.println("Received Signup Request: " + user);
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Map<String, String>> createUser(@RequestBody User user) {
+        System.out.println("Received Signup Request: " + user);
 
     // ✅ Ensure userId is a valid UUID
     user.setUserId(UUID.randomUUID());
@@ -77,69 +78,6 @@ public ResponseEntity<Map<String, String>> createUser(@RequestBody User user) {
     if (user.getVerified() == null) {
         user.setVerified(false);
     }
-
-    // Save user
-    Map<String, AttributeValue> item = user.toMap();
-    PutItemRequest request = PutItemRequest.builder()
-        .tableName("TBCKUsers")
-        .item(item)
-        .build();
-
-    dynamoDbClient.putItem(request);
-
-    return ResponseEntity.ok(Map.of("message", "User created successfully."));
-}
-
-    /**
-     * Handles user login. Verifies credentials and returns user data.
-     */
-   @PostMapping("/login")
-public ResponseEntity<?> loginUser(@RequestBody Map<String, String> credentials) {
-    String email = credentials.get("email");
-    String password = credentials.get("password");
-
-    QueryRequest queryRequest = QueryRequest.builder()
-        .tableName("TBCKUsers")
-        .indexName("email-index")
-        .keyConditionExpression("email = :email")
-        .expressionAttributeValues(Map.of(":email", AttributeValue.builder().s(email).build()))
-        .build();
-
-    QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
-    
-    if (queryResponse.count() == 0) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
-    }
-
-    User user = User.fromMap(queryResponse.items().get(0));
-
-    // ✅ Debugging: Print all user fields
-    System.out.println("User Found: " + user.getEmail());
-    System.out.println("User Verified Status: " + user.getVerified());
-    System.out.println("User First Name: " + user.getFirstName());
-    System.out.println("User Last Name: " + user.getLastName());
-    System.out.println("User Role: " + user.getRole());
-    System.out.println("User Password: " + user.getPassword());
-
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-    // 🚨 Ensure no null fields are causing issues
-    if (user.getPassword() == null) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: Password is missing for this user.");
-    }
-
-    if (!passwordEncoder.matches(password, user.getPassword())) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
-    }
-
-    // ✅ Return user details (without password)
-    Map<String, Object> userData = Map.of(
-        "userId", user.getUserId(),
-        "firstName", user.getFirstName() != null ? user.getFirstName() : "Unknown",
-        "lastName", user.getLastName() != null ? user.getLastName() : "Unknown",
-        "email", user.getEmail(),
-        "role", user.getRole() != null ? user.getRole() : "guest"
-    );
 
     return ResponseEntity.ok(userData);
 }
