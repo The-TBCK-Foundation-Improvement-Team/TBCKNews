@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, TextField, Button, IconButton, Tooltip, Typography, Stack } from "@mui/material";
+import { AppBar, Toolbar, TextField, Button, IconButton, Tooltip, Stack } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SearchIcon from '@mui/icons-material/Search';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
@@ -23,23 +23,21 @@ export const MuiNavBar = () => {
                             width: '300px',
                             padding: 0,
                             input: {
-                                paddingLeft: '10px', // Space between icon and text
+                                paddingLeft: '10px',
                             },
                             '& .MuiInput-underline:before': {
-                                borderBottom: 'none', // Removes underline
+                                borderBottom: 'none',
                             },
                             '& .MuiInputBase-root': {
-                                background: 'none', // Ensures no background color
-                                borderRadius: 0, // Ensure no border-radius
-                                boxShadow: 'none', // Removes any shadow
+                                background: 'none',
+                                borderRadius: 0,
+                                boxShadow: 'none',
                             }
                         }}
-                        slotProps={{
-                            input: {
-                                startAdornment: (
-                                    <SearchIcon sx={{ color: 'rgba(0, 0, 0, 0.7)', marginRight: '8px' }} />
-                                ),
-                            },
+                        InputProps={{
+                            startAdornment: (
+                                <SearchIcon sx={{ color: 'rgba(0, 0, 0, 0.7)', marginRight: '8px' }} />
+                            ),
                         }}
                     />
                 </div>
@@ -53,9 +51,9 @@ export const MuiNavBar = () => {
                         <Tooltip
                             title={
                                 <div style={{ padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                                    <Button variant="text" color="White" size="small" startIcon={<AccountCircleIcon />}>Profile</Button>
-                                    <Button variant="text" color="White" size="small" startIcon={<AdminPanelSettingsIcon />}>Admin Page</Button>
-                                    <Button variant="text" color="White" size="small" startIcon={<LoginIcon />} component={Link} to={'/Login'}>Login/Logout</Button>
+                                    <Button variant="text" color="inherit" size="small" startIcon={<AccountCircleIcon />} component={Link} to={'/User'}>Profile</Button>
+                                    <Button variant="text" color="inherit" size="small" startIcon={<AdminPanelSettingsIcon />}>Admin Page</Button>
+                                    <Button variant="text" color="inherit" size="small" startIcon={<LoginIcon />} component={Link} to={'/Login'}>Login/Logout</Button>
                                 </div>
                             }
                             placement="bottom"

@@ -6,10 +6,10 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 
 import App from './App.js';
 
+import User from './pages/User.js'; //freaks out for some reason - it works???
 import Login from '../src/pages/Login';
 import GenericNews from './GenericNews.js';
 import Signup from './pages/signup.js';
-
 const router = createBrowserRouter([
   {
   path: '/',
@@ -20,6 +20,9 @@ const router = createBrowserRouter([
   element: <Login />,
   },
   {
+    path: '/User',
+    element: <User />,
+    },
   path: '/Signup',
   element: <Signup />,
   },
