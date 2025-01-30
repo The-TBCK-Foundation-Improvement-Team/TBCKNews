@@ -1,5 +1,7 @@
 package com.tbck.user_service.user_service.Authorization;
 
+import com.tbck.user_service.user_service.SecretsManagerUtil;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
@@ -16,12 +18,11 @@ import javax.crypto.spec.SecretKeySpec;
 @Component
 public class JwtTokenUtil {
     
-
-    private final static String secretKeyString = "5paCEZO84dhJsfJSbU9oq7bgqwqhZrLT0wcGgNe7Nyo";  // Example secret key
+    private static final String JWT_SECRET = SecretsManagerUtil.getSecret("JWT_SECRET");
     private final long expirationTime = 86400000L;  // 1 day expiration
 
     private static Key getSigningKey() {
-        return new SecretKeySpec(secretKeyString.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
+        return new SecretKeySpec(JWT_SECRET.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
     }
 
 
