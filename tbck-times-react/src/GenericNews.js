@@ -1,9 +1,9 @@
-import { MuiNavBar } from './components/MuiNavBar';
-import { MuiFooter } from './components/MuiFooter';
-import { MuiCategoryBar } from './components/MuiCategoryBar';
-import { SecondaryNewsCard } from './components/news-cards/SecondaryNewsCard';
+import { MuiNavBar } from './components/MuiNavBar.js';
+import { MuiFooter } from './components/MuiFooter.js';
+import { MuiCategoryBar } from './components/MuiCategoryBar.js';
+import { SecondaryNewsCard } from './components/news-cards/SecondaryNewsCard.js';
 import { MuiCommentBox } from './components/MuiCommentBox.js'
-import {MuiLikeButton } from './components/MuiLikeButton'
+import {MuiLikeButton } from './components/MuiLikeButton.js'
 
 import "./css/GenericNews.css";
 
@@ -29,7 +29,7 @@ function GenericNews() {
                         <img className='image-layout' src="https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"/>
                         <MuiLikeButton/>
                         <p >
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultricies nisi sapien, ut sollicitudin ipsum ullamcorper malesuada. Aliquam tincidunt eleifend viverra. Phasellus sagittis bibendum euismod. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Fusce ac lectus ut libero maximus iaculis. Sed ultricies maximus eleifend. Aenean consectetur mauris non consequat ultricies. Nunc ac magna ex. Fusce sapien libero, aliquet scelerisque ultricies in, bibendum id neque. Duis sit amet lacus nec elit venenatis placerat. Ut et ex facilisis, dignissim enim lobortis, mollis mauris. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent malesuada a metus sit amet sagittis. Sed dapibus pharetra ligula eget efficitur.
+                        TBCK Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultricies nisi sapien, ut sollicitudin ipsum ullamcorper malesuada. Aliquam tincidunt eleifend viverra. Phasellus sagittis bibendum euismod. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Fusce ac lectus ut libero maximus iaculis. Sed ultricies maximus eleifend. Aenean consectetur mauris non consequat ultricies. Nunc ac magna ex. Fusce sapien libero, aliquet scelerisque ultricies in, bibendum id neque. Duis sit amet lacus nec elit venenatis placerat. Ut et ex facilisis, dignissim enim lobortis, mollis mauris. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent malesuada a metus sit amet sagittis. Sed dapibus pharetra ligula eget efficitur.
 
             Ut tincidunt dolor non velit tincidunt ullamcorper. Vestibulum commodo mauris et bibendum congue. Suspendisse eget mauris vitae tellus auctor facilisis varius eget urna. Etiam faucibus luctus mattis. Sed varius felis sit amet felis convallis aliquam. Sed arcu purus, lobortis non lorem non, tincidunt porttitor metus.
             <br/>
@@ -71,8 +71,9 @@ function GenericNews() {
                     </div>
                 </div>  */}
             </div>
-        </div>
             <MuiFooter/>
+        </div>
+            
         </div>
       );
 }
