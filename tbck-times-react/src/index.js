@@ -6,10 +6,9 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 
 import App from './App.js';
 import User from './pages/User.js'; //freaks out for some reason - it works???
-import GenericNews from './GenericNews.js';
+import GenericNews from './pages/GenericNews.js';
 import Signup from './pages/Signup.js';
 import Login from './pages/Login.js';
-import GenericNews from './pages/GenericNews.js';
 import Newsletter from './pages/NewsletterTemplate.js';
 
 const router = createBrowserRouter([
