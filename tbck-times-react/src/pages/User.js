@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import '../css/User.css';
 
 const User = () => {
     const navigate = useNavigate();
@@ -14,7 +15,7 @@ const User = () => {
                 setUser(parsedUser);
             } catch (error) {
                 console.error("Error parsing stored user data:", error);
-                sessionStorage.removeItem("user"); // ✅ Prevent broken data from persisting
+                sessionStorage.removeItem("user");
                 navigate("/login");
             }
         } else {
@@ -24,15 +25,15 @@ const User = () => {
     }, [navigate]);
 
     const handleLogout = () => {
-        sessionStorage.clear(); // Clear user session on logout
+        sessionStorage.clear();
         navigate("/login");
     };
 
     return (
-        <div>
+        <div className="user-container">
             <h2>User Profile</h2>
             {user ? (
-                <div>
+                <div className="user-info">
                     <p><strong>First Name:</strong> {user.firstName}</p>
                     <p><strong>Last Name:</strong> {user.lastName}</p>
                     <p><strong>Email:</strong> {user.email}</p>
