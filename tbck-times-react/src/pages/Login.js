@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { MuiNavBar } from '../components/MuiNavBar';
 import { MuiFooter } from '../components/MuiFooter';
-
+import '../css/Login.css';
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -17,13 +17,13 @@ const Login = () => {
                 email,
                 password
             }, { withCredentials: true });
-    
-            console.log("Login Response:", response.data); // ✅ Debugging output
-    
-            const { token, ...user } = response.data; // ✅ Extract token separately
-            sessionStorage.setItem("jwt", token);  // ✅ Store JWT
-            sessionStorage.setItem("user", JSON.stringify(user)); // ✅ Store full user data
-    
+
+            console.log("Login Response:", response.data);
+
+            const { token, ...user } = response.data;
+            sessionStorage.setItem("jwt", token);
+            sessionStorage.setItem("user", JSON.stringify(user));
+
             alert("Login successful!");
             navigate("/User");
         } catch (error) {
@@ -34,10 +34,13 @@ const Login = () => {
 
     return (
         <div>
-            <MuiNavBar />
-            <div className="content">
+        <MuiNavBar />
+        
+        <div className="login-container">
+            
+            <div className="login-content">
                 <h2>Login</h2>
-                <form onSubmit={handleLogin}>
+                <form className="login-form" onSubmit={handleLogin}>
                     <input 
                         type="email" 
                         placeholder="Email" 
@@ -57,6 +60,7 @@ const Login = () => {
                 <Link to="/Signup">Don't have an account? Sign up instead!</Link>
             </div>
             <MuiFooter />
+        </div>
         </div>
     );
 };

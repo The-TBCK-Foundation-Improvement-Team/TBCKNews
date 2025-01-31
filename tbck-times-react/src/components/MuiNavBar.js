@@ -51,7 +51,7 @@ export const MuiNavBar = () => {
                     <Tooltip
                         title={
                             <div style={{ padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                                <Button variant="text" color="White" size="small" startIcon={<AccountCircleIcon/>}>Profile</Button>
+                                <Button variant="text" color="White" size="small" startIcon={<AccountCircleIcon/>}component={Link} to={'/User'}>Profile</Button>
                                 <Button variant="text" color="White" size="small" startIcon={<AdminPanelSettingsIcon/>}>Admin Page</Button>
                                 <Button variant="text" color="White" size="small" startIcon={<LoginIcon/>} component={Link} to={'/Login'}>Login/Logout</Button>
                             </div>
