@@ -13,7 +13,7 @@ function GenericNews() {
         <div className="GenericNews">
             <MuiNavBar/>
             <MuiCategoryBar/>
-                <div className="container">
+                <div className="content">
                     
                     <div className="news-layout">
 

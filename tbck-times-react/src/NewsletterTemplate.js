@@ -10,7 +10,7 @@ function NewsletterTemplate() {
         <div>
             <MuiNavBar/>
             <MuiCategoryBar/>
-                <div className='container'>
+                <div className='content'>
                     <div className='newsletter-section'>
                     <img className='header-image' src="https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"/>
                         
