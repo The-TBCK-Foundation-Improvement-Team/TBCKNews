@@ -20,18 +20,17 @@ const Login = () => {
     
             console.log("Login Response:", response.data); // ✅ Debugging output
     
-            const { token, user } = response.data; // ✅ Extract both values
+            const { token, ...user } = response.data; // ✅ Extract token separately
             sessionStorage.setItem("jwt", token);  // ✅ Store JWT
-            sessionStorage.setItem("user", JSON.stringify(user)); // ✅ Store user data
+            sessionStorage.setItem("user", JSON.stringify(user)); // ✅ Store full user data
     
             alert("Login successful!");
-            navigate("/user");
+            navigate("/User");
         } catch (error) {
             console.error("Login Error:", error);
             alert("Login failed: " + (error.response?.data?.error || "Unknown error"));
         }
     };
-    
 
     return (
         <div>
