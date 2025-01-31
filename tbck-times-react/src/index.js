@@ -6,7 +6,8 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 
 import App from './App.js';
 import Login from './pages/Login.js';
-import GenericNews from './GenericNews.js';
+import GenericNews from './pages/GenericNews.js';
+import Newsletter from './pages/NewsletterTemplate.js';
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,11 @@ const router = createBrowserRouter([
   {
     path: '/GenericNews',
     element: <GenericNews />,
-    },
+  },
+  {
+    path: '/Newsletter',
+    element: <Newsletter />,
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

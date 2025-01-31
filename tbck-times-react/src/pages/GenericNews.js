@@ -1,11 +1,11 @@
-import { MuiNavBar } from './components/MuiNavBar';
-import { MuiFooter } from './components/MuiFooter';
-import { MuiCategoryBar } from './components/MuiCategoryBar';
-import { SecondaryNewsCard } from './components/news-cards/SecondaryNewsCard';
-import { MuiCommentBox } from './components/MuiCommentBox.js'
-import {MuiLikeButton } from './components/MuiLikeButton'
+import { MuiNavBar } from '../components/MuiNavBar.js';
+import { MuiFooter } from '../components/MuiFooter.js';
+import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
+import { SecondaryNewsCard } from '../components/news-cards/SecondaryNewsCard.js';
+import { MuiCommentBox } from '../components/MuiCommentBox.js'
+import {MuiLikeButton } from '../components/MuiLikeButton.js'
 
-import "./css/GenericNews.css";
+import "../css/GenericNews.css";
 
 function GenericNews() {
 
