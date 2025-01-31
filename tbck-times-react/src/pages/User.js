@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,10 +6,17 @@ const User = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        // ✅ Load user data from sessionStorage
         const storedUser = sessionStorage.getItem("user");
-        if (storedUser) {
-            setUser(JSON.parse(storedUser));
+    
+        if (storedUser && storedUser !== "undefined") {
+            try {
+                const parsedUser = JSON.parse(storedUser);
+                setUser(parsedUser);
+            } catch (error) {
+                console.error("Error parsing stored user data:", error);
+                sessionStorage.removeItem("user"); // ✅ Prevent broken data from persisting
+                navigate("/login");
+            }
         } else {
             alert("No user session found. Redirecting to login.");
             navigate("/login");
@@ -18,7 +24,7 @@ const User = () => {
     }, [navigate]);
 
     const handleLogout = () => {
-        sessionStorage.clear(); // ✅ Clear user session on logout
+        sessionStorage.clear(); // Clear user session on logout
         navigate("/login");
     };
 
