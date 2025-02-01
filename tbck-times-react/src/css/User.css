@@ -1,0 +1,44 @@
+/* user.css */
+.user-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.user-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+}
+
+.user-content h2 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.user-content p {
+  font-size: 1rem;
+  color: #555;
+  margin: 8px 0;
+}
+
+.user-content button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 1rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.user-content button:hover {
+  background-color: #c82333;
+}

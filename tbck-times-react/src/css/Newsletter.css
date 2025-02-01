@@ -1,0 +1,22 @@
+.news-container {
+    display: flex;
+}
+
+.newsletter-section {
+    flex: 5;
+}
+
+.sidebar-section {
+    flex: 2;
+    background-color: #11595A;
+    color: white;
+    text-align: left;
+    padding-top: 5px;
+    align-items: center;
+}
+
+.header-Image {
+    height: 10px;
+    width: 10px;
+    float: right;
+}

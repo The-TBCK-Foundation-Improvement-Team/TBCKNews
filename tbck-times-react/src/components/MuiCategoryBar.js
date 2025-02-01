@@ -11,6 +11,7 @@ export const MuiCategoryBar = () => {
                 <Button color="inherit" component={Link} to={''}>Warrior Of The Month</Button>
                 <Button color="inherit" component={Link} to={''}>Events</Button>
                 <Button color="inherit" component={Link} to={'/GenericNews'}>Test News</Button>
+                <Button color="inherit" component={Link} to={'/Newsletter'}>Newsletter</Button>
             </Stack>
         </AppBar>
     )

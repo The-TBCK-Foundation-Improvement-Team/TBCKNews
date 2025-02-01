@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from "react-router-dom"; // ✅ Import this
+import { useNavigate } from "react-router-dom";
 import { MuiNavBar } from '../components/MuiNavBar';
 import { MuiFooter } from '../components/MuiFooter';
-
+import '../css/Signup.css';
 
 const Signup = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();  // ✅ Define navigate
+    const navigate = useNavigate();
 
     const handleSignup = async (event) => {
-        event.preventDefault();  // ✅ Prevent default form submission
+        event.preventDefault();
         try {
             const response = await axios.post(
                 "http://localhost:8080/user",
@@ -30,7 +30,7 @@ const Signup = () => {
             );
 
             alert("Signup successful!");
-            navigate("/login");  // ✅ Redirect to login page after signup
+            navigate("/login");
 
         } catch (error) {
             alert("Signup failed: " + (error.response?.data?.error || "Unknown error"));
@@ -40,9 +40,11 @@ const Signup = () => {
     return (
         <div>
             <MuiNavBar />
-            <div className="content">
+        <div className="signup-container">
+            
+            <div className="signup-content">
                 <h2>Sign Up</h2>
-                <form onSubmit={handleSignup}>  {/* ✅ Add onSubmit */}
+                <form className="signup-form" onSubmit={handleSignup}>
                     <input 
                         type="text" 
                         placeholder="First name" 
@@ -76,6 +78,7 @@ const Signup = () => {
                 <Link to="/Login">Already have an account? Log in!</Link>
             </div>
             <MuiFooter />
+        </div>
         </div>
     );
 };
