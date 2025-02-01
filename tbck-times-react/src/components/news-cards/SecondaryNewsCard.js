@@ -3,10 +3,10 @@ import { Card, CardMedia, CardContent, Typography, Box } from '@mui/material';
 import '../../css/NewsCards.css';
 import { Link } from 'react-router-dom';
 
-export function SecondaryNewsCard({ imgSrc, imgAlt, title }) {
+export function SecondaryNewsCard({ className, imgSrc, imgAlt, title }) {
     return (
-        <Box className="secondary-news-box">
-            <Link to="/placeholder" style={{ textDecoration: 'none' }}>
+        <Box className={className + " secondary-news-box"}>
+            <Link to="/GenericNews" style={{ textDecoration: 'none' }}>
                 <Card className="secondary-news-card news-card">
                     <Box display="flex" alignItems="center">
                         <CardMedia

@@ -11,7 +11,7 @@
 	<groupId>com.tbck.news-service</groupId>
 	<artifactId>news-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>news-service</name>
 	<description>A service for managing news posts, including creation, editing, publishing, and categorization of news content.</description>
 	<url/>
