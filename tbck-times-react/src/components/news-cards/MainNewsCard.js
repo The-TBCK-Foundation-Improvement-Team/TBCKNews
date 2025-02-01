@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 export function MainNewsCard({ className, imgSrc, imgAlt, title, author, date }) {
     return (
         <Box className={className + " main-news-box"}>
-            <Link to="/placeholder" style={{ textDecoration: 'none', display: 'block' }}>
+            <Link to="/GenericNews" style={{ textDecoration: 'none', display: 'block' }}>
                 <Card className="news-card">
                     <CardMedia
                         component="img"

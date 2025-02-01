@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 export function SecondaryNewsCard({ className, imgSrc, imgAlt, title }) {
     return (
         <Box className={className + " secondary-news-box"}>
-            <Link to="/placeholder" style={{ textDecoration: 'none' }}>
+            <Link to="/GenericNews" style={{ textDecoration: 'none' }}>
                 <Card className="secondary-news-card news-card">
                     <Box display="flex" alignItems="center">
                         <CardMedia
