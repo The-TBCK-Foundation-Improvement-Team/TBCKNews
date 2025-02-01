@@ -2,9 +2,9 @@ import React from 'react';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-export function TitleNewsCard({ title }) {
+export function TitleNewsCard({ className, title }) {
     return (
-        <Box className="title-news-box">
+        <Box className={className + " title-news-box"}>
             <Link to="/placeholder" style={{ textDecoration: 'none' }}>
                 <Card className="title-news-card news-card">
                     <CardContent>
