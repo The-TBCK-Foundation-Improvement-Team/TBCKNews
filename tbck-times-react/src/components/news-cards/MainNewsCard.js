@@ -2,10 +2,10 @@ import React from 'react';
 import { Card, CardMedia, CardContent, Typography, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-export function MainNewsCard({ imgSrc, imgAlt, title, author, date }) {
+export function MainNewsCard({ className, imgSrc, imgAlt, title, author, date }) {
     return (
-        <Box className="main-news-box">
-            <Link to="/placeholder" style={{ textDecoration: 'none', display: 'block' }}>
+        <Box className={className + " main-news-box"}>
+            <Link to="/GenericNews" style={{ textDecoration: 'none', display: 'block' }}>
                 <Card className="news-card">
                     <CardMedia
                         component="img"

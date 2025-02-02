@@ -1,0 +1,23 @@
+.home-page{
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin-bottom: 40px;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    align-items: center;
+}
+
+.left-column, .center-column, .right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.news-grid-item {
+    margin-bottom: 20px;
+}

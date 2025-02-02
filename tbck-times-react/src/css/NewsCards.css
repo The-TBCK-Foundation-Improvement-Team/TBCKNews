@@ -1,7 +1,7 @@
 .secondary-news-box {
     display: flex;
     align-items: center;
-    max-width: 400px;
+    max-width: 350px;
 }
 
 .secondary-news-box img {
@@ -9,9 +9,9 @@
 }
 
 .main-news-box {
-    max-width: 470px;
+    max-width: 350px;
 }
 
 .title-news-box {
-    max-width: 470px;
+    max-width: 350px;
 }
