@@ -1,6 +1,10 @@
 import { MuiNavBar } from '../components/MuiNavBar.js';
 import { MuiFooter } from '../components/MuiFooter.js';
+import { MuiNewsLetterTop } from '../components/MuiNewsLetterTop.js';
+import { MuiCommentBox } from '../components/MuiCommentBox.js';
 import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
+import { MuiSuggestedStories } from '../components/MuiSuggestedStories.js';
+import { MuiLikeButton } from '../components/MuiLikeButton.js'
 
 import "../css/Newsletter.css";
 
@@ -10,17 +14,19 @@ function NewsletterTemplate() {
         <div>
             <MuiNavBar/>
             <MuiCategoryBar/>
-                <div className='news-container'>
-                    <div className='newsletter-section'>
-                    <img className='header-image' src="https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"/>
+            <div className="news-container">
+                <div className="newsletter-section">
+                    <MuiNewsLetterTop/>
+                    <MuiLikeButton/>
+                    <h1>
                         
-                    <image className="header-image" src="https://static.vecteezy.com/system/resources/thumbnails/022/803/876/small/light-blue-brush-isolated-on-transparent-background-light-blue-watercolor-png.jpg"/>
-                        
-                    </div>
-                    <div className='sidebar-section'>
-
-                    </div>
+                    </h1>
                 </div>
+                <div className='sidebar-section'>
+                    <MuiSuggestedStories/>
+                    <MuiCommentBox/>
+                </div>
+            </div>
             <MuiFooter/>
         </div>
     );

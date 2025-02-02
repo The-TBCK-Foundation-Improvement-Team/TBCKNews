@@ -1,9 +1,9 @@
 import { MuiNavBar } from '../components/MuiNavBar.js';
 import { MuiFooter } from '../components/MuiFooter.js';
 import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
-import { SecondaryNewsCard } from '../components/news-cards/SecondaryNewsCard.js';
 import { MuiCommentBox } from '../components/MuiCommentBox.js'
-import {MuiLikeButton } from '../components/MuiLikeButton.js'
+import { MuiLikeButton } from '../components/MuiLikeButton.js'
+import { MuiSuggestedStories } from '../components/MuiSuggestedStories.js';
 
 import "../css/GenericNews.css";
 
@@ -45,19 +45,7 @@ function GenericNews() {
                                     </p>
             </div>
             <div className='sidebar-layout'>
-            <div className="suggested-stories">
-                <h2>
-                    Suggested Stories:
-                </h2>
-                <div className='story-reccomend'>
-                <SecondaryNewsCard   className="additional-pad"        imgSrc={"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Spider-Firework-Omiya-Japan.jpg/220px-Spider-Firework-Omiya-Japan.jpg"}           imgAlt={"Image for news"}           title={"This is an example of what it would look like when a story is posted"}         />
-                <br/>
-                <SecondaryNewsCard           imgSrc={"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Spider-Firework-Omiya-Japan.jpg/220px-Spider-Firework-Omiya-Japan.jpg"}           imgAlt={"Image for news"}           title={"This is an example of what it would look like when a story is posted"}         />
-                <br/>
-                <SecondaryNewsCard           imgSrc={"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Spider-Firework-Omiya-Japan.jpg/220px-Spider-Firework-Omiya-Japan.jpg"}           imgAlt={"Image for news"}           title={"This is an example of what it would look like when a story is posted"}         />
-                </div>
-            </div>
-
+            <MuiSuggestedStories/>
             <MuiCommentBox/>
                 {/* <div className="mt-4 bg-gray-50 rounded-lg p-4 suggested-stories comments">
                     <div className="flex flex-col items-center space-y-3">

@@ -15,8 +15,18 @@
     align-items: center;
 }
 
-.header-Image {
-    height: 10px;
-    width: 10px;
-    float: right;
+
+.newsletter-container {
+    width: 100%;
+    background-image: url('https://www.onlygfx.com/wp-content/uploads/2017/07/blue-watercolor-brush-stroke-15-1-1024x218.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: top;
+    background-color: #f9fafb;
+    position: relative;
+}
+
+.main-title {
+    color: #2C6460;
+    text-shadow: 2px 2px 4px rgba(249, 115, 22, 0.5);
 }

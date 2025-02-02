@@ -17,7 +17,7 @@ let initialLikes = 1;
 
     
     let user = null;
-
+return(
 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
       <IconButton
         onClick={handleClick}
@@ -45,4 +45,5 @@ let initialLikes = 1;
         {likes}
       </Typography>
     </Box>
+);
 }
