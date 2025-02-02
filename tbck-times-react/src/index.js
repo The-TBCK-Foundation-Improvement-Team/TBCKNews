@@ -10,6 +10,7 @@ import GenericNews from './pages/GenericNews.js';
 import Signup from './pages/Signup.js';
 import Login from './pages/Login.js';
 import Newsletter from './pages/NewsletterTemplate.js';
+import Admin from './pages/Admin.js';
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
   {
     path: '/Newsletter',
     element: <Newsletter />,
+  },
+  {
+    path: '/Admin',
+    element: <Admin />,
   },
 ]);
 

@@ -52,7 +52,7 @@ export const MuiNavBar = () => {
                         title={
                             <div style={{ padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
                                 <Button variant="text" color="White" size="small" startIcon={<AccountCircleIcon/>}component={Link} to={'/User'}>Profile</Button>
-                                <Button variant="text" color="White" size="small" startIcon={<AdminPanelSettingsIcon/>}>Admin Page</Button>
+                                <Button variant="text" color="White" size="small" startIcon={<AdminPanelSettingsIcon/>}component={Link} to={'/Admin'}>Admin Page</Button>
                                 <Button variant="text" color="White" size="small" startIcon={<LoginIcon/>} component={Link} to={'/Login'}>Login/Logout</Button>
                             </div>
                         }

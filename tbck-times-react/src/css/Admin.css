@@ -1,0 +1,36 @@
+.admin-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.admin-table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+.admin-table th, .admin-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.admin-table th {
+    background-color: #333;
+    color: white;
+}
+
+.verify-btn {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.verify-btn:hover {
+    background-color: darkgreen;
+}
+
+.error {
+    color: red;
+}
