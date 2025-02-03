@@ -1,10 +1,13 @@
 package com.tbck.user_service.user_service;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
@@ -47,6 +50,26 @@ public class UserRestController {
     }
 
     /**
+     * Retrieves a user all users that are unverified
+     */
+    @GetMapping("/unverified")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    public List<User> getUnverifiedUsers() {
+        ScanRequest scanRequest = ScanRequest.builder()
+            .tableName("TBCKUsers")
+            .filterExpression("verified = :verified")
+            .expressionAttributeValues(Map.of(":verified", AttributeValue.builder().bool(false).build()))
+            .build();
+
+        ScanResponse scanResponse = dynamoDbClient.scan(scanRequest);
+        return scanResponse.items().stream()
+            .map(User::fromMap)
+            .collect(Collectors.toList());
+    }
+
+
+    /**
      * Handles user signup. Ensures unique emails, password validation, and stores user securely.
      */
 
@@ -82,6 +105,9 @@ public ResponseEntity<Map<String, String>> createUser(@RequestBody User user, Ht
     // Ensure verification field is set
     if (user.getVerified() == null) {
         user.setVerified(false);
+    }
+    if(user.getRole() == null) {
+        user.setRole("GUEST");
     }
 
     // Save user to database
@@ -149,9 +175,11 @@ public ResponseEntity<Map<String, String>> createUser(@RequestBody User user, Ht
     /**
      * Verifies a user and assigns a role.
      */
-    @PatchMapping(path = "verify/{userId}/{role}")
+    @PatchMapping(path = "/verify/{userId}/{role}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(code = HttpStatus.OK)
     public User verifyUser(@PathVariable UUID userId, @PathVariable String role) {
+
         GetItemRequest getItemRequest = GetItemRequest.builder()
             .tableName("TBCKUsers")
             .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))

@@ -1,17 +1,14 @@
 package com.tbck.user_service.user_service.Authorization;
 
 import com.tbck.user_service.user_service.SecretsManagerUtil;
-
+import com.tbck.user_service.user_service.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.stereotype.Component;
-
-import com.tbck.user_service.user_service.User;
-
-import java.util.Date;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Date;
 import javax.crypto.spec.SecretKeySpec;
+import org.springframework.stereotype.Component;
 
 
 
@@ -35,11 +32,20 @@ public class JwtTokenUtil {
                 .claim("email", user.getEmail())
                 .claim("firstName", user.getFirstName())
                 .claim("lastName", user.getLastName())
-                .claim("role", user.getRole())
+                .claim("role", "ROLE_" + user.getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))  // Set expiration time for the token
                 .signWith(getSigningKey())  // Signing the token with a secret key
                 .compact();
+    }
+
+    // Extract all claims from JWT token
+    public io.jsonwebtoken.Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     
