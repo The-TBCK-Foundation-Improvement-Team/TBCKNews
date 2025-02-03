@@ -11,6 +11,7 @@ import Signup from './pages/Signup.js';
 import Login from './pages/Login.js';
 import Newsletter from './pages/NewsletterTemplate.js';
 import WarriorOfTheMonth from './pages/WarriorOfTheMonth.js';
+import Admin from './pages/Admin.js';
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
   {
     path: '/WarriorOfTheMonth',
     element: <WarriorOfTheMonth />,
+  },
+  {
+    path: '/Admin',
+    element: <Admin />,
   }
 ]);
 

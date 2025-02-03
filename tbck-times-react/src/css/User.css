@@ -1,44 +1,43 @@
-/* user.css */
 .user-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #f8f9fa;
-}
-
-.user-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 400px;
+  width: 50%;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background: #222;
+  color: white;
   text-align: center;
 }
 
-.user-content h2 {
-  margin-bottom: 1rem;
-  color: #333;
-}
-
-.user-content p {
-  font-size: 1rem;
-  color: #555;
-  margin: 8px 0;
-}
-
-.user-content button {
+input {
   width: 100%;
-  padding: 10px;
-  margin-top: 1rem;
-  background-color: #dc3545;
-  color: white;
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 5px;
+  border: none;
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+}
+
+button {
+  margin: 10px;
+  padding: 10px 20px;
   border: none;
   border-radius: 5px;
+  background: #5c67f2;
+  color: white;
   cursor: pointer;
 }
 
-.user-content button:hover {
-  background-color: #c82333;
+button:hover {
+  background: #4a54e1;
+}
+
+.logout-btn {
+  background: red;
+}
+
+.message {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #00ff00;
 }
