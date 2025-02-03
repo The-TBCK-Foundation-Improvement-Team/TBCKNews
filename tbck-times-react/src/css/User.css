@@ -14,8 +14,8 @@ input {
   margin: 5px 0;
   border-radius: 5px;
   border: none;
-  background: #333;
-  color: white;
+  background: #ffffff;
+  color: rgb(0, 0, 0);
 }
 
 button {
