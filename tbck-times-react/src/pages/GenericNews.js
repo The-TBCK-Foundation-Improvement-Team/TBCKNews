@@ -1,9 +1,9 @@
 import { MuiNavBar } from '../components/MuiNavBar.js';
 import { MuiFooter } from '../components/MuiFooter.js';
 import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
-import { MuiCommentBox } from '../components/MuiCommentBox.js'
-import { MuiLikeButton } from '../components/MuiLikeButton.js'
-import { MuiSuggestedStories } from '../components/MuiSuggestedStories.js';
+import { MuiCommentBox } from '../components/news-components/MuiCommentBox.js'
+import { MuiLikeButton } from '../components/news-components/MuiLikeButton.js'
+import { MuiSuggestedStories } from '../components/SuggestedStories.js';
 
 import "../css/GenericNews.css";
 

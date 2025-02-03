@@ -10,6 +10,7 @@ import GenericNews from './pages/GenericNews.js';
 import Signup from './pages/Signup.js';
 import Login from './pages/Login.js';
 import Newsletter from './pages/NewsletterTemplate.js';
+import WarriorOfTheMonth from './pages/WarriorOfTheMonth.js';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
     path: '/Newsletter',
     element: <Newsletter />,
   },
+  {
+    path: '/WarriorOfTheMonth',
+    element: <WarriorOfTheMonth />,
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

@@ -8,7 +8,7 @@ export const MuiCategoryBar = () => {
             <Stack direction="row" spacing={2} sx={{height: "100%", alignItems: "center", justifyContent: "center"}}>
                 <Button color="inherit" component={Link} to={''} >News</Button>
                 <Button color="inherit" component={Link} to={''}>Advocacy</Button>
-                <Button color="inherit" component={Link} to={''}>Warrior Of The Month</Button>
+                <Button color="inherit" component={Link} to={'/WarriorOfTheMonth'}>Warrior Of The Month</Button>
                 <Button color="inherit" component={Link} to={''}>Events</Button>
                 <Button color="inherit" component={Link} to={'/GenericNews'}>Test News</Button>
                 <Button color="inherit" component={Link} to={'/Newsletter'}>Newsletter</Button>

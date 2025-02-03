@@ -1,0 +1,119 @@
+.content-wrapper {
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+  
+  .header-section {
+    margin-bottom: 1.5rem;
+  }
+  
+  .header-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .main-warrior-title {
+    font-size: 2.25rem;
+    font-weight: 900;
+    color: #2C6460;
+    text-align: center;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    line-height: 1.2;
+  }
+  
+  .name-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #FA1882;
+    text-align: center;
+    margin-top: -0.25rem;
+  }
+  
+  .content-layout {
+    position: relative;
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  /* Profile Info Section */
+  .profile-info {
+    flex: 1;
+  }
+  
+  .info-card {
+    background-color: #59BBCA;
+    border: 2px solid black;
+    border-radius: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .about-title {
+    font-family: 'Gill Sans', sans-serif;
+    text-align: center;
+    color: #2C6460;
+    font-weight: bold;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(44, 100, 96, 0.2);
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+  }
+  
+  .about-text {
+    font-family: 'Gill Sans', sans-serif;
+    text-align: center;
+    max-width: 1200px;
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+  }
+  
+  /* Image Section */
+  .image-container {
+    width: 12rem;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .profile-image-wrapper {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    padding: 0.5rem;
+    background-color: #FA1882;
+  }
+  
+  .profile-image-inner {
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .profile-image {
+    width: 100%;
+    height: 12rem;
+    object-fit: cover;
+  }
+  
+  .secondary-image-wrapper {
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+  
+  .secondary-image {
+    width: 100%;
+    height: auto;
+  }
+  
+  /* Logo Section */
+  .logo-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+  }
+  
+  .logo {
+    width: 8rem;
+    height: auto;
+  }

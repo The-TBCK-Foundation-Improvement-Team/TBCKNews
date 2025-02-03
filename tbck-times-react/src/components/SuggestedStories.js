@@ -1,4 +1,4 @@
-import { SecondaryNewsCard } from '../components/news-cards/SecondaryNewsCard.js';
+import { SecondaryNewsCard } from './news-cards/SecondaryNewsCard.js';
 
 import "../css/Newsletter.css";
 

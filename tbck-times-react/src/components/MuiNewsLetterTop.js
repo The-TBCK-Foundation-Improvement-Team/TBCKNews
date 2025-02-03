@@ -60,7 +60,6 @@ export const MuiNewsLetterTop = () => {
             fontFamily: 'Gill Sans, sans-serif',
             textAlign: 'center',
             maxWidth: '1200px',
-            
             fontSize: '1.4rem',
             whiteSpace: 'nowrap'
         }}
