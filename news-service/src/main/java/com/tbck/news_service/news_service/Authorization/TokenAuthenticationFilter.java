@@ -5,8 +5,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import io.jsonwebtoken.Claims;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
@@ -43,9 +50,22 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String token = extractJwtFromRequest(request);
+        
         if (token != null && jwtTokenUtil.isTokenValid(token, jwtTokenUtil.extractEmail(token))) {
-            SecurityContextHolder.getContext().setAuthentication(new JwtAuthenticationToken(token));
+            Claims claims = jwtTokenUtil.extractAllClaims(token);
+            String email = claims.getSubject();
+            String role = claims.get("role", String.class); // Extract the role
+
+            // Convert role to Spring Security format
+            List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
+
+            // Create authentication token with user details and authorities
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(email, null, authorities);
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+
         filterChain.doFilter(request, response);
     }
 

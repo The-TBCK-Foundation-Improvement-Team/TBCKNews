@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -72,6 +73,7 @@ public class NewsRestController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(code = HttpStatus.CREATED)
     public News createNews(@RequestBody News news) {
 
@@ -91,6 +93,7 @@ public class NewsRestController {
     }
 
     @PatchMapping(path = "/{newsId}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(code = HttpStatus.OK)
     public News updateNews(@PathVariable(required = true) UUID newsId, @RequestBody News news) {
 
@@ -124,6 +127,7 @@ public class NewsRestController {
     }
     
     @DeleteMapping(path = "/{newsId}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteNews(@PathVariable(required = true) UUID newsId) {
 
@@ -140,6 +144,7 @@ public class NewsRestController {
     }
 
     @PatchMapping(path = "/comment/{newsId}")
+    @PreAuthorize("hasRole('ADMIN' or 'GUEST')")
     @ResponseStatus(code = HttpStatus.OK)
     public News addComment(@PathVariable(required = true) UUID newsId, @RequestBody Comment comment) {
 
