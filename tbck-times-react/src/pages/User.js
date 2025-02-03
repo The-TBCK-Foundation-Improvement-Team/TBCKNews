@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
+import { MuiNavBar } from '../components/MuiNavBar.js';
 import "../css/User.css";
 
 const User = () => {
@@ -69,6 +71,9 @@ const User = () => {
     };
 
     return (
+        <div>
+        <MuiNavBar/>
+        <MuiCategoryBar/>
         <div className="user-container">
             <h2>User Profile</h2>
             {user ? (
@@ -127,6 +132,7 @@ const User = () => {
             ) : (
                 <p>Loading...</p>
             )}
+        </div>
         </div>
     );
 };
