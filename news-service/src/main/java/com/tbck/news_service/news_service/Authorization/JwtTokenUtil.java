@@ -1,13 +1,15 @@
 package com.tbck.news_service.news_service.Authorization;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.stereotype.Component;
-
-import java.util.Date;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Date;
+
 import javax.crypto.spec.SecretKeySpec;
+
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 
 
@@ -26,12 +28,12 @@ public class JwtTokenUtil {
     // Extract email from JWT token
     public static String extractEmail(String token) {
         try{
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject(); 
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject(); 
         } catch (Exception e) {
             System.out.println("Error: " + e);
             System.out.println("error message: " + e.getMessage());
