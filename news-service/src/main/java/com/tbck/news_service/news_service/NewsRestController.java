@@ -59,6 +59,41 @@ public class NewsRestController {
         }
     }
 
+    //get all the news by the newest date
+    @GetMapping(path = "/newest")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Iterable<News> getNewestNews() {
+
+        ScanRequest scanRequest = ScanRequest.builder()
+            .tableName("TBCKStories")
+            .build();
+
+        ScanResponse response = dynamoDbClient.scan(scanRequest);
+
+        return response.items().stream()
+            .map(News::fromMap)
+            .sorted(Comparator.comparing(News::getDate).reversed()) // Sort by date, newest first
+            .toList();
+    }
+
+    //get all the news by the category and return in order of newest to oldest
+    @GetMapping(path = "/category/{category}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Iterable<News> getNewsByCategory(@PathVariable("category") String category) {
+
+        ScanRequest scanRequest = ScanRequest.builder()
+            .tableName("TBCKStories")
+            .build();
+
+        ScanResponse response = dynamoDbClient.scan(scanRequest);
+
+        return response.items().stream()
+            .map(News::fromMap)
+            .filter(news -> news.getCategory().equals(category))
+            .sorted(Comparator.comparing(News::getDate).reversed()) // Sort by date, newest first
+            .toList();
+    }
+
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
     public Iterable<News> getNews() {
