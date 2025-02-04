@@ -1,36 +1,47 @@
 .admin-container {
+    max-width: 600px;
+    margin: 50px auto;
     text-align: center;
+    background: #222;
     padding: 20px;
-}
-
-.admin-table {
-    width: 80%;
-    margin: 20px auto;
-    border-collapse: collapse;
-}
-
-.admin-table th, .admin-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-}
-
-.admin-table th {
-    background-color: #333;
+    border-radius: 10px;
     color: white;
 }
 
-.verify-btn {
-    background-color: green;
-    color: white;
+.user-card {
+    padding: 20px;
+    background: #333;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.button-group {
+    margin-top: 15px;
+}
+
+button {
+    padding: 10px 15px;
+    margin: 5px;
     border: none;
-    padding: 8px 12px;
+    border-radius: 5px;
     cursor: pointer;
 }
 
-.verify-btn:hover {
-    background-color: darkgreen;
+.approve {
+    background-color: green;
+    color: white;
 }
 
-.error {
-    color: red;
+.reject {
+    background-color: red;
+    color: white;
+}
+
+.navigation {
+    margin-top: 10px;
+}
+
+.navigation button {
+    background-color: #5c67f2;
+    color: white;
 }

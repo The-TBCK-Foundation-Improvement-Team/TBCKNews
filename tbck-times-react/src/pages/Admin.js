@@ -3,97 +3,100 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/Admin.css";
 
+const API_BASE_URL = "http://localhost:8080";
+
 const Admin = () => {
     const navigate = useNavigate();
     const [unverifiedUsers, setUnverifiedUsers] = useState([]);
-    const [currentUserIndex, setCurrentUserIndex] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [currentIndex, setCurrentIndex] = useState(0); // Track displayed user
 
-    // ✅ Fetch users from the backend
-    const fetchUsers = async () => {
+    useEffect(() => {
+        fetchUnverifiedUsers();
+    }, []);
+
+    const fetchUnverifiedUsers = async () => {
         try {
-            const jwt = sessionStorage.getItem("jwt");
-            console.log("JWT Token:", jwt); // Debugging
-
-            if (!jwt) {
-                console.error("No JWT token found");
-                alert("Access denied. Redirecting to login.");
-                navigate("/login");
-                return;
-            }
-
-            const response = await axios.get("http://localhost:8080/user", {
-                headers: { Authorization: `Bearer ${jwt}` },
-                withCredentials: true,
+            const token = sessionStorage.getItem("jwt"); // Get JWT token
+            const response = await axios.get(`${API_BASE_URL}/user/unverified`, {
+                headers: { Authorization: `Bearer ${token}` }
             });
 
-            console.log("Full API Response:", response.data); // Debugging
-
-            const users = response.data;
-            const filteredUsers = users.filter((user) => !user.verified);
-            setUnverifiedUsers(filteredUsers);
+            setUnverifiedUsers(response.data);
+            setLoading(false);
         } catch (error) {
-            console.error("Error fetching users:", error.response || error.message);
-            if (error.response?.status === 403) {
-                alert("Access denied: You are not authorized to view this page.");
-                navigate("/user"); // Redirect non-admin users
-            }
+            console.error("Error fetching unverified users:", error);
+            alert("Error fetching unverified users.");
+            setLoading(false);
         }
     };
 
-    useEffect(() => {
-        fetchUsers();
-    }, []);
-
-    // ✅ Handle user verification
-    const handleVerifyUser = async () => {
-        if (unverifiedUsers.length === 0) {
-            alert("No unverified users remaining.");
-            return;
-        }
-
-        const userToVerify = unverifiedUsers[currentUserIndex];
-
+    const handleVerifyUser = async (userId) => {
         try {
-            const jwt = sessionStorage.getItem("jwt");
-            const response = await axios.patch(
-                `http://localhost:8080/user/verify/${userToVerify.userId}/guest`,
-                {},
-                { headers: { Authorization: `Bearer ${jwt}` }, withCredentials: true }
-            );
+            const token = sessionStorage.getItem("jwt");
+            await axios.patch(`${API_BASE_URL}/user/verify/${userId}/GUEST`, {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
 
-            console.log("User verified:", response.data);
-            alert(`User ${userToVerify.email} verified successfully!`);
-
-            // ✅ Remove the verified user from the array and move to the next one
-            setUnverifiedUsers((prevUsers) => prevUsers.filter((user, index) => index !== currentUserIndex));
+            alert("User verified successfully!");
+            fetchUnverifiedUsers(); // Refresh user list
         } catch (error) {
-            console.error("Error verifying user:", error.response || error.message);
+            console.error("Error verifying user:", error);
             alert("Failed to verify user.");
         }
     };
 
-    // ✅ Move to next unverified user
-    const handleNextUser = () => {
-        if (unverifiedUsers.length === 0) {
-            alert("No more unverified users.");
-            return;
+    const handleRejectUser = (userId) => {
+        if (window.confirm("Are you sure you want to reject this user?")) {
+            deleteUser(userId);
         }
-        setCurrentUserIndex((prevIndex) => (prevIndex + 1) % unverifiedUsers.length);
+    };
+
+    const deleteUser = async (userId) => {
+        try {
+            const token = sessionStorage.getItem("jwt");
+            await axios.delete(`${API_BASE_URL}/user/${userId}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            alert("User rejected and deleted.");
+            fetchUnverifiedUsers(); // Refresh user list
+        } catch (error) {
+            console.error("Error deleting user:", error);
+            alert("Failed to delete user.");
+        }
+    };
+
+    const handleNextUser = () => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % unverifiedUsers.length);
+    };
+
+    const handlePreviousUser = () => {
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + unverifiedUsers.length) % unverifiedUsers.length);
     };
 
     return (
         <div className="admin-container">
-            <h2>Admin Panel</h2>
-            {unverifiedUsers.length > 0 ? (
-                <div className="user-card">
-                    <p><strong>First Name:</strong> {unverifiedUsers[currentUserIndex]?.firstName}</p>
-                    <p><strong>Last Name:</strong> {unverifiedUsers[currentUserIndex]?.lastName}</p>
-                    <p><strong>Email:</strong> {unverifiedUsers[currentUserIndex]?.email}</p>
-                    <button onClick={handleVerifyUser}>Verify User</button>
-                    <button onClick={handleNextUser}>Next User</button>
-                </div>
-            ) : (
+            <h2>Admin Panel - Approve Users</h2>
+            {loading ? (
+                <p>Loading unverified users...</p>
+            ) : unverifiedUsers.length === 0 ? (
                 <p>No unverified users found.</p>
+            ) : (
+                <div className="user-card">
+                    <h3>{unverifiedUsers[currentIndex].firstName} {unverifiedUsers[currentIndex].lastName}</h3>
+                    <p><strong>Email:</strong> {unverifiedUsers[currentIndex].email}</p>
+                    <div className="button-group">
+                        <button className="approve" onClick={() => handleVerifyUser(unverifiedUsers[currentIndex].userId)}>Approve</button>
+                        <button className="reject" onClick={() => handleRejectUser(unverifiedUsers[currentIndex].userId)}>Reject</button>
+                    </div>
+                    {unverifiedUsers.length > 1 && (
+                        <div className="navigation">
+                            <button onClick={handlePreviousUser}>Previous</button>
+                            <button onClick={handleNextUser}>Next</button>
+                        </div>
+                    )}
+                </div>
             )}
         </div>
     );
