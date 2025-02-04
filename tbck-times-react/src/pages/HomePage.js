@@ -46,7 +46,17 @@ export function HomePage() {
                 }
             </div>
             <div className="warrior-of-the-month-hp">
-
+                <h1 id="warrior-of-the-month-header">Warrior of the Month</h1>
+                {!news[3] ? <p></p> : 
+                    <MainNewsCard
+                        className='warrior-of-the-month-item'
+                        title={news[3].title}
+                        imgSrc={news[3].images[0].url}
+                        imgAlt={news[3].images[0].altText}
+                        author={news[3].author}
+                        date={news[3].date}
+                    />
+                }
             </div>
         </div>
     );

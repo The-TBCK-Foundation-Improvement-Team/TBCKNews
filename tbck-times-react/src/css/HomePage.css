@@ -1,8 +1,8 @@
 .home-page{
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    padding: 20px;
-    margin-bottom: 40px;
+    padding: 0;
 }
 
 .latest-news-grid {
@@ -10,6 +10,7 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     align-items: center;
+    justify-items: center;
 }
 
 .news-grid-item {
@@ -21,5 +22,17 @@
 }
 
 .latest-news {
-    
+    background-color: var(--tbck-green);
+    width: 100%;
+}
+
+#warrior-of-the-month-header {
+    text-align: center;
+}
+
+.warrior-of-the-month-hp {
+    background-color: var(--tbck-light-blue);
+    width: 100%;
+    justify-items: center;
+    padding-bottom: 60px;
 }
