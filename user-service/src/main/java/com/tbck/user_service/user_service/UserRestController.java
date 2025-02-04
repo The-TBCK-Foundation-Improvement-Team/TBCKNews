@@ -1,4 +1,5 @@
 package com.tbck.user_service.user_service;
+
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
@@ -9,9 +10,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import software.amazon.awssdk.services.dynamodb.model.*;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
+import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.PutItemResponse;
+import software.amazon.awssdk.services.dynamodb.model.QueryRequest;
+import software.amazon.awssdk.services.dynamodb.model.QueryResponse;
+import software.amazon.awssdk.services.dynamodb.model.ScanRequest;
+import software.amazon.awssdk.services.dynamodb.model.ScanResponse;
 
 /**
  * Handles user authentication and account management.
@@ -35,15 +54,10 @@ public class UserRestController {
     @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public User getUser(@PathVariable("userId") UUID userId) {
-        GetItemRequest getItemRequest = GetItemRequest.builder()
-            .tableName("TBCKUsers")
-            .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))
-            .build();
 
-        GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
-
-        if (getItemResponse.hasItem()) {
-            return User.fromMap(getItemResponse.item());
+        User user = getUserFromDB(userId);
+        if (user != null) {
+            return user;
         } else {
             throw new RuntimeException("User with ID " + userId + " not found.");
         }
@@ -57,88 +71,72 @@ public class UserRestController {
     @ResponseStatus(HttpStatus.OK)
     public List<User> getUnverifiedUsers() {
         ScanRequest scanRequest = ScanRequest.builder()
-            .tableName("TBCKUsers")
-            .filterExpression("verified = :verified")
-            .expressionAttributeValues(Map.of(":verified", AttributeValue.builder().bool(false).build()))
-            .build();
+                .tableName("TBCKUsers")
+                .filterExpression("verified = :verified")
+                .expressionAttributeValues(Map.of(":verified", AttributeValue.builder().bool(false).build()))
+                .build();
 
         ScanResponse scanResponse = dynamoDbClient.scan(scanRequest);
         return scanResponse.items().stream()
-            .map(User::fromMap)
-            .collect(Collectors.toList());
+                .map(User::fromMap)
+                .collect(Collectors.toList());
     }
-
 
     /**
-     * Handles user signup. Ensures unique emails, password validation, and stores user securely.
+     * Handles user signup. Ensures unique emails, password validation, and
+     * stores user securely.
      */
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Map<String, String>> createUser(@RequestBody User user, HttpServletResponse response) {
+        // Set CORS headers
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "*");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
 
-@PostMapping
-@ResponseStatus(HttpStatus.CREATED)
-public ResponseEntity<Map<String, String>> createUser(@RequestBody User user, HttpServletResponse response) {
-    // Set CORS headers
-    response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-    response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    response.setHeader("Access-Control-Allow-Headers", "*");
-    response.setHeader("Access-Control-Allow-Credentials", "true");
+        System.out.println("Received Signup Request: " + user);
 
-    System.out.println("Received Signup Request: " + user);
+        user.setUserId(UUID.randomUUID());
 
-    user.setUserId(UUID.randomUUID());
+        QueryRequest queryRequest = QueryRequest.builder()
+                .tableName("TBCKUsers")
+                .indexName("email-index")
+                .keyConditionExpression("email = :email")
+                .expressionAttributeValues(Map.of(":email", AttributeValue.builder().s(user.getEmail()).build()))
+                .build();
 
-    QueryRequest queryRequest = QueryRequest.builder()
-        .tableName("TBCKUsers")
-        .indexName("email-index")
-        .keyConditionExpression("email = :email")
-        .expressionAttributeValues(Map.of(":email", AttributeValue.builder().s(user.getEmail()).build()))
-        .build();
+        QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
+        if (queryResponse.count() != 0) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "User with this email already exists."));
+        }
 
-    QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
-    if (queryResponse.count() != 0) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "User with this email already exists."));
+        // Validate and hash password
+        validatePassword(user.getPassword());
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+
+        // Ensure verification field is set
+        if (user.getVerified() == null || user.getVerified() == false) {
+            user.setVerified(false);
+        }
+        if (user.getRole() == null || user.getRole().isEmpty()) {
+            user.setRole("GUEST");
+        }
+
+        saveUser(user);
+
+        return ResponseEntity.ok(Map.of("message", "User created successfully."));
     }
 
-    // Validate and hash password
-    validatePassword(user.getPassword());
-    user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-
-    // Ensure verification field is set
-    if (user.getVerified() == null) {
-        user.setVerified(false);
-    }
-    if(user.getRole() == null) {
-        user.setRole("GUEST");
-    }
-
-    // Save user to database
-    Map<String, AttributeValue> item = user.toMap();
-    PutItemRequest request = PutItemRequest.builder()
-        .tableName("TBCKUsers")
-        .item(item)
-        .build();
-
-    dynamoDbClient.putItem(request); // Save user
-
-    return ResponseEntity.ok(Map.of("message", "User created successfully."));
-}
     /**
      * Updates an existing user.
      */
     @PatchMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public User updateUser(@PathVariable UUID userId, @RequestBody User user) {
-        GetItemRequest getItemRequest = GetItemRequest.builder()
-            .tableName("TBCKUsers")
-            .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))
-            .build();
-
-        GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
-        if (!getItemResponse.hasItem()) {
-            throw new RuntimeException("User with ID " + userId + " not found.");
-        }
 
         // Map existing user data
-        Map<String, AttributeValue> existingUserMap = getItemResponse.item();
+        Map<String, AttributeValue> existingUserMap = getUserFromDB(userId).toMap();
         User existingUser = User.fromMap(existingUserMap);
 
         existingUser.setUserId(userId);
@@ -161,15 +159,7 @@ public ResponseEntity<Map<String, String>> createUser(@RequestBody User user, Ht
             existingUser.setVerified(user.getVerified());
         }
 
-        // Save updates to database
-        Map<String, AttributeValue> item = existingUser.toMap();
-        PutItemRequest request = PutItemRequest.builder()
-            .tableName("TBCKUsers")
-            .item(item)
-            .build();
-
-        dynamoDbClient.putItem(request);
-        return existingUser;
+        return saveUser(existingUser);
     }
 
     /**
@@ -180,32 +170,15 @@ public ResponseEntity<Map<String, String>> createUser(@RequestBody User user, Ht
     @ResponseStatus(code = HttpStatus.OK)
     public User verifyUser(@PathVariable UUID userId, @PathVariable String role) {
 
-        GetItemRequest getItemRequest = GetItemRequest.builder()
-            .tableName("TBCKUsers")
-            .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))
-            .build();
-
-        GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
-        if (!getItemResponse.hasItem()) {
-            throw new RuntimeException("User with ID " + userId + " not found.");
-        }
-
         // Map existing user data
-        Map<String, AttributeValue> existingUserMap = getItemResponse.item();
+        Map<String, AttributeValue> existingUserMap = getUserFromDB(userId).toMap();
         User existingUser = User.fromMap(existingUserMap);
 
         existingUser.setVerified(true);
         existingUser.setRole(role);
 
         // Save updates to database
-        Map<String, AttributeValue> item = existingUser.toMap();
-        PutItemRequest request = PutItemRequest.builder()
-            .tableName("TBCKUsers")
-            .item(item)
-            .build();
-
-        dynamoDbClient.putItem(request);
-        return existingUser;
+        return saveUser(existingUser);
     }
 
     /**
@@ -215,9 +188,9 @@ public ResponseEntity<Map<String, String>> createUser(@RequestBody User user, Ht
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable UUID userId) {
         DeleteItemRequest deleteItemRequest = DeleteItemRequest.builder()
-            .tableName("TBCKUsers")
-            .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))
-            .build();
+                .tableName("TBCKUsers")
+                .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))
+                .build();
 
         dynamoDbClient.deleteItem(deleteItemRequest);
     }
@@ -239,5 +212,36 @@ public ResponseEntity<Map<String, String>> createUser(@RequestBody User user, Ht
             throw new RuntimeException("Password must contain at least one special character.");
         }
     }
-}
 
+    private User getUserFromDB(UUID userId) {
+        GetItemRequest getItemRequest = GetItemRequest.builder()
+                .tableName("TBCKUsers")
+                .key(Map.of("userId", AttributeValue.builder().s(userId.toString()).build()))
+                .build();
+
+        GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
+
+        if (!getItemResponse.hasItem()) {
+            throw new RuntimeException("User with ID " + userId + " not found.");
+        }
+
+        return User.fromMap(getItemResponse.item());
+    }
+
+    private User saveUser(User user) {
+        Map<String, AttributeValue> item = user.toMap();
+
+        PutItemRequest request = PutItemRequest.builder()
+                .tableName("TBCKUsers")
+                .item(item)
+                .build();
+
+        PutItemResponse response = dynamoDbClient.putItem(request);
+
+        if (response.sdkHttpResponse().isSuccessful()) {
+            return user;
+        } else {
+            throw new RuntimeException("Failed to save user");
+        }
+    }
+}
