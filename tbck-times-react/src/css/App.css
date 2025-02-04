@@ -1,3 +1,13 @@
+:root {
+  --tbck-dark-blue: #00595a;
+  --tbck-light-blue: #4cbcca;
+  --tbck-pink: #ff2779;
+  --tbck-yellow: #ffa600;
+  --tbck-green: #6cae0a;
+  --tbck-black: #181d1b;
+  --tbck-white: #f3f3f3;
+}
+
 .App {
 
 }
