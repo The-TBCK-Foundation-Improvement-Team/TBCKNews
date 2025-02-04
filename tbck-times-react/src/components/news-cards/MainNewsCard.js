@@ -6,7 +6,7 @@ export function MainNewsCard({ className, imgSrc, imgAlt, title, author, date })
     return (
         <Box className={className + " main-news-box"}>
             <Link to="/GenericNews" style={{ textDecoration: 'none', display: 'block' }}>
-                <Card className="news-card">
+                <Card className="news-card" style={{ backgroundColor: 'inherit' }}>
                     <CardMedia
                         component="img"
                         image={imgSrc}
