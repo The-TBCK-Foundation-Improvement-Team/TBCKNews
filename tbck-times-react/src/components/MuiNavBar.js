@@ -1,11 +1,23 @@
+import React, { useState } from "react"
 import {AppBar, Toolbar, TextField, Button, IconButton, Icon, Tooltip} from "@mui/material"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SearchIcon from '@mui/icons-material/Search';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import LoginIcon from '@mui/icons-material/Login';
-import { Link } from "react-router-dom"
+import { Link,useNavigate } from "react-router-dom"
 
 export const MuiNavBar = () => {
+    const [searchQuery, setSearchQuery] = useState('')
+    const navigate = useNavigate()
+
+    const handleSearch = (event) => {
+        if (event.key === 'Enter' && searchQuery.trim() !== '') {
+            navigate(`/Search/${searchQuery}`)
+        }
+    }
+
+
+
     return (
         
         <AppBar position="static"  sx={{backgroundColor: "white"}}>
@@ -18,6 +30,9 @@ export const MuiNavBar = () => {
                         variant="standard"
                         size="small"
                         placeholder="Search..."
+                        value={searchQuery}
+                        onChange={(event) => setSearchQuery(event.target.value)}
+                        onKeyDown={handleSearch}
                         sx={{
                             width: '300px',
                             padding: 0, 
