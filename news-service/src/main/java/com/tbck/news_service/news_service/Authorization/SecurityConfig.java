@@ -30,6 +30,8 @@ public class SecurityConfig {
             .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET,"/news/get/{newsId}").permitAll()  // Allows access to these paths without authentication
                 .requestMatchers(HttpMethod.GET, "/news").permitAll()
+                .requestMatchers(HttpMethod.GET, "/news/newest").permitAll()
+                .requestMatchers(HttpMethod.GET, "/news/category/{category}").permitAll()
                 .requestMatchers(HttpMethod.POST, "/news/comment/{newsId}").hasAnyRole("GUEST", "ADMIN")
                 .requestMatchers(HttpMethod.POST, "/news").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/news/{newsId}").hasRole("ADMIN")
