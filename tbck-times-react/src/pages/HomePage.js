@@ -5,11 +5,16 @@ import '../css/HomePage.css';
 
 export function HomePage() {
     const [news, setNews] = useState([]);
-    const [warriorOfTheMonth, setWarriorOfTheMonth] = useState([]);
+    const [warriorOfTheMonth, setWarriorOfTheMonth] = useState(null);
 
     useEffect(() => {
-        axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/newest')
+        axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/newest')
             .then((response) => setNews(response.data));
+    }, []);
+
+    useEffect(() => {
+        axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/warrior')
+            .then((response) => setWarriorOfTheMonth(response.data));
     }, []);
 
     return (
@@ -21,7 +26,7 @@ export function HomePage() {
                         <MainNewsCard
                             className='news-grid-item'
                             title={news[0].title}
-                            imgSrc={news[0].images[0].url}
+                            imgSrc="https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"
                             imgAlt={news[0].images[0].altText}
                             author={news[0].author}
                             date={news[0].date}
@@ -29,7 +34,7 @@ export function HomePage() {
                         <MainNewsCard
                             className='news-grid-item'
                             title={news[1].title}
-                            imgSrc={news[1].images[0].url}
+                            imgSrc="https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"
                             imgAlt={news[1].images[0].altText}
                             author={news[1].author}
                             date={news[1].date}
@@ -37,7 +42,7 @@ export function HomePage() {
                         <MainNewsCard
                             className='news-grid-item'
                             title={news[2].title}
-                            imgSrc={news[2].images[0].url}
+                            imgSrc="https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"
                             imgAlt={news[2].images[0].altText}
                             author={news[2].author}
                             date={news[2].date}
@@ -47,14 +52,14 @@ export function HomePage() {
             </div>
             <div className="warrior-of-the-month-hp">
                 <h1 id="warrior-of-the-month-header">Warrior of the Month</h1>
-                {!news[3] ? <p></p> : 
+                {!warriorOfTheMonth ? <p></p> : 
                     <MainNewsCard
                         className='warrior-of-the-month-item'
-                        title={news[3].title}
-                        imgSrc={news[3].images[0].url}
-                        imgAlt={news[3].images[0].altText}
-                        author={news[3].author}
-                        date={news[3].date}
+                        title={warriorOfTheMonth[0].title}
+                        imgSrc="https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"
+                        imgAlt={warriorOfTheMonth[0].images[0].altText}
+                        author={warriorOfTheMonth[0].author}
+                        date={warriorOfTheMonth[0].date}
                     />
                 }
             </div>
