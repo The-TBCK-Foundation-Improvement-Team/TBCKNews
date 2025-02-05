@@ -8,7 +8,7 @@ export function HomePage() {
     const [warriorOfTheMonth, setWarriorOfTheMonth] = useState([]);
 
     useEffect(() => {
-        axios.get('http://tbck-newsapi-env.eba-ci6mgvkp.us-east-2.elasticbeanstalk.com/news')
+        axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/newest')
             .then((response) => setNews(response.data));
     }, []);
 
@@ -16,7 +16,7 @@ export function HomePage() {
         <div className='home-page'>
             <div className="latest-news">
                 <h1 id="latest-news-header">Latest News</h1>
-                {!news.length ? <p></p> : 
+                {news.length < 3 ? <p></p> : 
                     <div className="latest-news-grid">
                         <MainNewsCard
                             className='news-grid-item'
