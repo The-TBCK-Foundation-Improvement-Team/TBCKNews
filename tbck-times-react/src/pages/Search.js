@@ -1,75 +1,63 @@
+
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { MuiNavBar } from '../components/MuiNavBar.js';
 import { MuiFooter } from '../components/MuiFooter.js';
 import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
 
-// Example JSON list for testing purposes
-const exampleResults = [
-  {
-    id: 10,
-    title: "Apple",
-    description: "A sweet, crisp fruit.",
-    date: "2025-02-01",
-    author: "John Doe",
-    imageUrl: "https://via.placeholder.com/150", // Example image URL
-  },
-  {
-    id: 7,
-    title: "Apple",
-    description: "A sweet, crisp fruit.",
-    date: "2025-02-01",
-    author: "John Doe",
-    imageUrl: "https://via.placeholder.com/150", // Example image URL
-  },
-  {
-    id: 8,
-    title: "Apple",
-    description: "A sweet, crisp fruit.",
-    date: "2025-02-01",
-    author: "John Doe",
-    imageUrl: "https://via.placeholder.com/150", // Example image URL
-  },
-  {
-    id: 1,
-    title: "Apple",
-    description: "A sweet, crisp fruit.",
-    date: "2025-02-01",
-    author: "John Doe",
-    imageUrl: "https://via.placeholder.com/150", // Example image URL
-  },
-  {
-    id: 2,
-    title: "Banana",
-    description: "A soft, yellow fruit.",
-    date: "2025-02-02",
-    author: "Jane Smith",
-    imageUrl: "https://via.placeholder.com/150",
-  },
-  {
-    id: 3,
-    title: "Carrot",
-    description: "A crunchy orange vegetable.",
-    date: "2025-02-03",
-    author: "Samuel Lee",
-    imageUrl: "https://via.placeholder.com/150",
-  },
-  {
-    id: 4,
-    title: "Dragonfruit",
-    description: "A vibrant pink fruit with white flesh.",
-    date: "2025-02-04",
-    author: "Emily White",
-    imageUrl: "https://via.placeholder.com/150",
-  },
-];
+//method to get the news by the newest-latest date from the API
+const fetchNews = async (search) => {
+
+  const categories = ['News', 'Advocacy', 'Events', 'WarriorOfTheMonth']; // List of categories
+  let url = 'http://localhost:8081/news/newest';
+
+  console.log("Search: " + search);
+
+  try{
+
+    if (typeof search === 'string' && search.trim() !== '') {
+      // Ensure category is a valid string before calling .toLowerCase()
+      const matchingCategory = categories.find(category => 
+        typeof category === 'string' && category.toLowerCase() === search.toLowerCase() // Exact match check
+      );
+
+      if (matchingCategory) {
+        console.log("Found matching category:", matchingCategory); // Debugging the category match
+        url = `http://localhost:8081/news/category/${matchingCategory}`;
+      } else {
+        console.log("No matching category found.");
+      }
+    }
+
+    const response = await fetch(url);
+    console.log("used url: " + url);
+    if(!response.ok){
+      throw new Error('Network response was not ok');
+    }else{
+      return await response.json();
+    }
+  }catch(error){
+    console.log(error);
+    return [];
+  }
+  
+}
 
 const SearchPage = () => {
   const { searchQuery } = useParams(); // Get the searchQuery from the URL parameter
+  const [news, setNews] = useState([]);
 
-  // Filter results based on the searchQuery
-  const filteredResults = exampleResults.filter((item) =>
-    item.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Fetch news data from the API
+  useEffect(() => {
+    const fetchAndSetNews = async () => {
+      const news = await fetchNews(searchQuery);
+      setNews(news);
+    };
+
+    fetchAndSetNews();
+    console.log(news);
+    
+  }, [searchQuery]);
 
   return (
     <div style={{ backgroundColor: "#f4f4f4", minHeight: "100vh" }}>
@@ -81,7 +69,7 @@ const SearchPage = () => {
                   {searchQuery}
                 </h1>
                 <p style={{ fontSize: "18px", color: "#555" }}>
-                  {filteredResults.length} results found.
+                  {news.length} results found.
                 </p>
             </header>
 
@@ -94,11 +82,11 @@ const SearchPage = () => {
                   alignItems: "center",
                 }}
             >
-                {filteredResults.length > 0 ? (
-                    filteredResults.map((result) => (
+                {news.length > 0 ? (
+                    news.map((result) => (
                         <Link
-                            key={result.id}
-                            to={`/detail/${result.id}`} // Navigates to a detail page for the result
+                            key={result.newsId}
+                            to={`/detail/${result.newsId}`} // Navigates to a detail page for the result
                             style={{
                                 textDecoration: "none", // Remove underline from the link
                                 width: "100%", // Full width with some margin on small screens
@@ -114,7 +102,7 @@ const SearchPage = () => {
                             }}
                         >
                             <img
-                                src={result.imageUrl}
+                                src={result.images[0].url} // Use the first image in the array
                                 alt={result.title}
                                 style={{
                                     width: "150px", // Adjust image size
@@ -127,8 +115,8 @@ const SearchPage = () => {
                                 <h2 style={{ fontSize: "24px", fontWeight: "600", color: "#333" }}>
                                     {result.title}
                                 </h2>
-                                <p style={{ fontSize: "16px", color: "#777", marginBottom: "10px" }}>
-                                    {result.description}
+                                <p style={{ fontSize: "16px", color: "#777", marginBottom: "5px" }}>
+                                    {result.content.split('.')[0] + "."} {/* Display the first sentence */}
                                 </p>
                                 <p
                                     style={{
