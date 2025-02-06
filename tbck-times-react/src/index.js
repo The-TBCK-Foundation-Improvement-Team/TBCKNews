@@ -12,6 +12,7 @@ import Login from './pages/Login.js';
 import Newsletter from './pages/NewsletterTemplate.js';
 import WarriorOfTheMonth from './pages/WarriorOfTheMonth.js';
 import Admin from './pages/Admin.js';
+import ResearchSummary from './pages/ResearchSummary.js';
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
   {
     path: '/Admin',
     element: <Admin />,
+  },
+  {
+    path: '/ResearchSummary',
+    element: <ResearchSummary />,
   }
 ]);
 
