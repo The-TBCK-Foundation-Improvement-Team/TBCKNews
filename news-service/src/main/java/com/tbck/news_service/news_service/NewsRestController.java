@@ -1,12 +1,15 @@
 package com.tbck.news_service.news_service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -58,6 +61,41 @@ public class NewsRestController {
         }
     }
 
+    //get all the news by the newest date
+    @GetMapping(path = "/newest")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Iterable<News> getNewestNews() {
+
+        ScanRequest scanRequest = ScanRequest.builder()
+            .tableName("TBCKStories")
+            .build();
+
+        ScanResponse response = dynamoDbClient.scan(scanRequest);
+
+        return response.items().stream()
+            .map(News::fromMap)
+            .sorted(Comparator.comparing(News::getDate).reversed()) // Sort by date, newest first
+            .toList();
+    }
+
+    //get all the news by the category and return in order of newest to oldest
+    @GetMapping(path = "/category/{category}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Iterable<News> getNewsByCategory(@PathVariable("category") String category) {
+
+        ScanRequest scanRequest = ScanRequest.builder()
+            .tableName("TBCKStories")
+            .build();
+
+        ScanResponse response = dynamoDbClient.scan(scanRequest);
+
+        return response.items().stream()
+            .map(News::fromMap)
+            .filter(news -> news.getCategory().equals(category))
+            .sorted(Comparator.comparing(News::getDate).reversed()) // Sort by date, newest first
+            .toList();
+    }
+
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
     public Iterable<News> getNews() {
@@ -72,6 +110,7 @@ public class NewsRestController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(code = HttpStatus.CREATED)
     public News createNews(@RequestBody News news) {
 
@@ -91,6 +130,7 @@ public class NewsRestController {
     }
 
     @PatchMapping(path = "/{newsId}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(code = HttpStatus.OK)
     public News updateNews(@PathVariable(required = true) UUID newsId, @RequestBody News news) {
 
@@ -124,6 +164,7 @@ public class NewsRestController {
     }
     
     @DeleteMapping(path = "/{newsId}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteNews(@PathVariable(required = true) UUID newsId) {
 
@@ -140,6 +181,7 @@ public class NewsRestController {
     }
 
     @PatchMapping(path = "/comment/{newsId}")
+    @PreAuthorize("hasRole('ADMIN' or 'GUEST')")
     @ResponseStatus(code = HttpStatus.OK)
     public News addComment(@PathVariable(required = true) UUID newsId, @RequestBody Comment comment) {
 

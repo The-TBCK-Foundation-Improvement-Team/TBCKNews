@@ -1,13 +1,15 @@
 package com.tbck.news_service.news_service.Authorization;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.stereotype.Component;
-
-import java.util.Date;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Date;
 import javax.crypto.spec.SecretKeySpec;
+import org.springframework.stereotype.Component;
+
+import com.tbck.news_service.news_service.SecretsManagerUtil;
 
 
 
@@ -15,13 +17,21 @@ import javax.crypto.spec.SecretKeySpec;
 public class JwtTokenUtil {
     
 
-    private final static String secretKeyString = "5paCEZO84dhJsfJSbU9oq7bgqwqhZrLT0wcGgNe7Nyo";  // Example secret key
+    private static final String JWT_SECRET = SecretsManagerUtil.getSecret("JWT_SECRET");
     private final long expirationTime = 86400000L;  // 1 day expiration
 
     private static Key getSigningKey() {
-        return new SecretKeySpec(secretKeyString.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
+        return new SecretKeySpec(JWT_SECRET.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
     }
     
+    //extract all claims from the token
+    public Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
 
     // Extract email from JWT token
     public static String extractEmail(String token) {

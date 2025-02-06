@@ -2,6 +2,7 @@ package com.tbck.news_service.news_service.Authorization;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -27,7 +28,14 @@ public class SecurityConfig {
         .csrf().disable()  // Disable CSRF for APIs
         .cors().and()
             .authorizeHttpRequests()
-                .requestMatchers("/news", "/news/get/{newsId}").permitAll()  // Allows access to these paths without authentication
+                .requestMatchers(HttpMethod.GET,"/news/get/{newsId}").permitAll()  // Allows access to these paths without authentication
+                .requestMatchers(HttpMethod.GET, "/news").permitAll()
+                .requestMatchers(HttpMethod.GET, "/news/newest").permitAll()
+                .requestMatchers(HttpMethod.GET, "/news/category/{category}").permitAll()
+                .requestMatchers(HttpMethod.POST, "/news/comment/{newsId}").hasAnyRole("GUEST", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/news").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/news/{newsId}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/news/{newsId}").hasRole("ADMIN")
                 .anyRequest().authenticated()  // Requires authentication for other paths
                 .and()
                 .addFilterBefore(new TokenAuthenticationFilter(jwtTokenUtil), UsernamePasswordAuthenticationFilter.class);

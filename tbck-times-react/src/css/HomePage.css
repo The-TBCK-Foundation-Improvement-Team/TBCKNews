@@ -1,23 +1,38 @@
 .home-page{
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    padding: 20px;
-    margin-bottom: 40px;
+    padding: 0;
 }
 
-.news-grid {
+.latest-news-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     align-items: center;
-}
-
-.left-column, .center-column, .right-column {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    justify-items: center;
 }
 
 .news-grid-item {
     margin-bottom: 20px;
+}
+
+#latest-news-header {
+    text-align: center;
+}
+
+.latest-news {
+    background-color: var(--tbck-green);
+    width: 100%;
+}
+
+#warrior-of-the-month-header {
+    text-align: center;
+}
+
+.warrior-of-the-month-hp {
+    background-color: var(--tbck-light-blue);
+    width: 100%;
+    justify-items: center;
+    padding-bottom: 60px;
 }

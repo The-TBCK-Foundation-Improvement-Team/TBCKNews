@@ -23,7 +23,7 @@ const Signup = () => {
                     lastName: lastName.trim(),
                     email: email.trim(),
                     password: password.trim(),
-                    role: "guest",
+                    role: "GUEST",
                     verified: false
                 },
                 { withCredentials: true }

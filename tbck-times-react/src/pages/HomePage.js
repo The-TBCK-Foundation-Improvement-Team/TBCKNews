@@ -1,74 +1,68 @@
 import React, { useState, useEffect } from 'react';
 import { MainNewsCard } from '../components/news-cards/MainNewsCard';
-import { SecondaryNewsCard } from '../components/news-cards/SecondaryNewsCard';
-import { TitleNewsCard } from '../components/news-cards/TitleNewsCard';
 import axios from 'axios';
 import '../css/HomePage.css';
 
 export function HomePage() {
     const [news, setNews] = useState([]);
+    const [warriorOfTheMonth, setWarriorOfTheMonth] = useState(null);
 
     useEffect(() => {
-        axios.get('http://tbck-newsapi-env.eba-ci6mgvkp.us-east-2.elasticbeanstalk.com/news')
+        axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/newest')
             .then((response) => setNews(response.data));
+    }, []);
+
+    useEffect(() => {
+        axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/warrior')
+            .then((response) => setWarriorOfTheMonth(response.data));
     }, []);
 
     return (
         <div className='home-page'>
-            {!news.length ? <p></p> : 
-                <div className='news-grid'>
-                    <div className='left-column-cards'>
-                        <MainNewsCard 
+            <div className="latest-news">
+                <h1 id="latest-news-header">Latest News</h1>
+                {news.length < 3 ? <p></p> : 
+                    <div className="latest-news-grid">
+                        <MainNewsCard
                             className='news-grid-item'
-                            imgSrc={news[0].images[0].url} 
-                            imgAlt={news[0].title} 
-                            title={news[0].title} 
-                            author={news[0].author} 
-                            date={news[0].date} 
+                            title={news[0].title}
+                            imgSrc="https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"
+                            imgAlt={news[0].images[0].altText}
+                            author={news[0].author}
+                            date={news[0].date}
                         />
                         <MainNewsCard
                             className='news-grid-item'
-                            imgSrc={news[1].images[0].url}
-                            imgAlt={news[1].title}
                             title={news[1].title}
+                            imgSrc="https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"
+                            imgAlt={news[1].images[0].altText}
                             author={news[1].author}
                             date={news[1].date}
                         />
-                    </div>
-                    <div className='center-column-cards'>
                         <MainNewsCard
                             className='news-grid-item'
-                            imgSrc={news[2].images[0].url}
-                            imgAlt={news[2].title}
                             title={news[2].title}
+                            imgSrc="https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"
+                            imgAlt={news[2].images[0].altText}
                             author={news[2].author}
                             date={news[2].date}
                         />
-                        <TitleNewsCard className='news-grid-item' title={news[3].title} />
-                        <TitleNewsCard className='news-grid-item' title={news[4].title} />
                     </div>
-                    <div className='right-column-cards'>
-                        <SecondaryNewsCard
-                            className='news-grid-item'
-                            imgSrc={news[5].images[0].url}
-                            imgAlt={news[5].title}
-                            title={news[5].title}
-                        />
-                        <SecondaryNewsCard
-                            className='news-grid-item'
-                            imgSrc={news[6].images[0].url}
-                            imgAlt={news[6].title}
-                            title={news[6].title}
-                        />
-                        <SecondaryNewsCard
-                            className='news-grid-item'
-                            imgSrc={news[7].images[0].url}
-                            imgAlt={news[7].title}
-                            title={news[7].title}
-                        />
-                    </div>
-                </div>
-            }
+                }
+            </div>
+            <div className="warrior-of-the-month-hp">
+                <h1 id="warrior-of-the-month-header">Warrior of the Month</h1>
+                {!warriorOfTheMonth ? <p></p> : 
+                    <MainNewsCard
+                        className='warrior-of-the-month-item'
+                        title={warriorOfTheMonth[0].title}
+                        imgSrc="https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"
+                        imgAlt={warriorOfTheMonth[0].images[0].altText}
+                        author={warriorOfTheMonth[0].author}
+                        date={warriorOfTheMonth[0].date}
+                    />
+                }
+            </div>
         </div>
     );
 }
