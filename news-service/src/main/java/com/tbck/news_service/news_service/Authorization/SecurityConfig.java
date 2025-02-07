@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/news").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/news/{newsId}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/news/{newsId}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/image/**").hasRole("ADMIN")
                 .anyRequest().authenticated()  // Requires authentication for other paths
                 .and()
                 .addFilterBefore(new TokenAuthenticationFilter(jwtTokenUtil), UsernamePasswordAuthenticationFilter.class);
