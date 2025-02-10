@@ -1,55 +1,58 @@
-/* login.css */
-
 .login-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #e3f2fd;
-  }
-  
-  .login-content {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 350px;
-    text-align: center;
-  }
-  
-  .login-content h2 {
-    margin-bottom: 1rem;
-    color: #333;
-  }
-  
-  .login-content input {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .login-content button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 1rem;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .login-content button:hover {
-    background-color: #218838;
-  }
-  
-  .login-content a {
-    display: block;
-    margin-top: 10px;
-    color: #28a745;
-    text-decoration: none;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: var(--tbck-dark-blue);
+}
+
+.login-content {
+  background: var(--tbck-white);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px var(--tbck-light-blue);
+  width: 350px;
+  text-align: center;
+}
+
+.login-content h2 {
+  margin-bottom: 1rem;
+  color: var(--tbck-dark-blue);
+}
+
+.login-content input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid var(--tbck-light-blue);
+  border-radius: 5px;
+  background: var(--tbck-white);
+  color: var(--tbck-black);
+}
+
+.login-content button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 1rem;
+  background-color: var(--tbck-green);
+  color: var(--tbck-white);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-content button:hover {
+  background-color: var(--tbck-yellow);
+}
+
+.login-content a {
+  display: block;
+  margin-top: 10px;
+  color: var(--tbck-pink);
+  text-decoration: none;
+}
+
+.login-content a:hover {
+  color: var(--tbck-yellow);
+}

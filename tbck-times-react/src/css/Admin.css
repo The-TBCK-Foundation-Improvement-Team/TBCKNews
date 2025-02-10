@@ -1,22 +1,63 @@
-.admin-container {
-    max-width: 600px;
-    margin: 50px auto;
-    text-align: center;
-    background: #222;
-    padding: 20px;
-    border-radius: 10px;
-    color: white;
+:root {
+    --tbck-dark-blue: #00595a;
+    --tbck-light-blue: #4cbcca;
+    --tbck-pink: #ff2779;
+    --tbck-yellow: #ffa600;
+    --tbck-green: #6cae0a;
+    --tbck-black: #181d1b;
+    --tbck-white: #f3f3f3;
 }
 
-.user-card {
+.admin-container {
+    max-width: 800px;
+    margin: 50px auto;
+    text-align: center;
+    background: var(--tbck-black);
     padding: 20px;
-    background: #333;
+    border-radius: 10px;
+    color: var(--tbck-white);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Scrollable Container */
+.scrollable-container {
+    max-height: 300px;  /* Set max height for scrolling */
+    overflow-y: auto;
+    background: var(--tbck-dark-blue);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px var(--tbck-light-blue);
+    scrollbar-width: thin;
+    scrollbar-color: var(--tbck-light-blue) var(--tbck-black);
+}
+
+/* Custom scrollbar for WebKit browsers */
+.scrollable-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scrollable-container::-webkit-scrollbar-thumb {
+    background: var(--tbck-light-blue);
+    border-radius: 4px;
+}
+
+.scrollable-container::-webkit-scrollbar-track {
+    background: var(--tbck-black);
+}
+
+.user-card,
+.article-card {
+    padding: 15px;
+    background: var(--tbck-light-blue);
     border-radius: 8px;
-    margin-top: 10px;
+    margin: 10px 0;
+    color: var(--tbck-black);
 }
 
 .button-group {
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 button {
@@ -25,23 +66,17 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    color: var(--tbck-white);
 }
 
 .approve {
-    background-color: green;
-    color: white;
+    background-color: var(--tbck-green);
 }
 
 .reject {
-    background-color: red;
-    color: white;
+    background-color: var(--tbck-pink);
 }
 
-.navigation {
-    margin-top: 10px;
-}
-
-.navigation button {
-    background-color: #5c67f2;
-    color: white;
+button:hover {
+    opacity: 0.9;
 }

@@ -3,8 +3,8 @@
   margin: 20px auto;
   padding: 20px;
   border-radius: 10px;
-  background: #222;
-  color: white;
+  background: var(--tbck-black);
+  color: var(--tbck-white);
   text-align: center;
 }
 
@@ -14,8 +14,8 @@ input {
   margin: 5px 0;
   border-radius: 5px;
   border: none;
-  background: #ffffff;
-  color: rgb(0, 0, 0);
+  background: var(--tbck-white);
+  color: var(--tbck-black);
 }
 
 button {
@@ -23,21 +23,21 @@ button {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background: #5c67f2;
-  color: white;
+  background: var(--tbck-light-blue);
+  color: var(--tbck-white);
   cursor: pointer;
 }
 
 button:hover {
-  background: #4a54e1;
+  background: var(--tbck-dark-blue);
 }
 
 .logout-btn {
-  background: red;
+  background: var(--tbck-pink);
 }
 
 .message {
   margin-top: 10px;
   font-weight: bold;
-  color: #00ff00;
+  color: var(--tbck-green);
 }

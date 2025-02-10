@@ -1,55 +1,58 @@
-/* signup.css */
-
-
 .signup-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #f0f4f8;
+    background-color: var(--tbck-light-blue);
 }
 
 .signup-content {
-    background: white;
+    background: var(--tbck-white);
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px var(--tbck-dark-blue);
     width: 350px;
     text-align: center;
 }
 
 .signup-content h2 {
     margin-bottom: 1rem;
-    color: #333;
+    color: var(--tbck-dark-blue);
 }
 
 .signup-content input {
     width: 100%;
     padding: 10px;
     margin: 8px 0;
-    border: 1px solid #ccc;
+    border: 1px solid var(--tbck-dark-blue);
     border-radius: 5px;
+    background: var(--tbck-white);
+    color: var(--tbck-black);
 }
 
 .signup-content button {
     width: 100%;
     padding: 10px;
     margin-top: 1rem;
-    background-color: #007bff;
-    color: white;
+    background-color: var(--tbck-yellow);
+    color: var(--tbck-black);
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
 .signup-content button:hover {
-    background-color: #0056b3;
+    background-color: var(--tbck-pink);
 }
 
 .signup-content a {
     display: block;
     margin-top: 10px;
-    color: #007bff;
+    color: var(--tbck-dark-blue);
     text-decoration: none;
+}
+
+.signup-content a:hover {
+    color: var(--tbck-green);
 }
