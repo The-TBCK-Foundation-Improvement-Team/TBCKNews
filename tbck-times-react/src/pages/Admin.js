@@ -1,103 +1,111 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import "../css/Admin.css";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-const API_BASE_URL = "http://localhost:8080";
+import '../css/Admin.css';
+import { MuiNavBar } from '../components/MuiNavBar';
+import { MuiCategoryBar } from '../components/MuiCategoryBar';
+import { MuiFooter } from '../components/MuiFooter.js';
 
 const Admin = () => {
-    const navigate = useNavigate();
     const [unverifiedUsers, setUnverifiedUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [currentIndex, setCurrentIndex] = useState(0); // Track displayed user
+    const [articles, setArticles] = useState([
+        { id: 1, title: "The Rise of Tech in 2025", author: "Jane Doe", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
+        { id: 2, title: "Climate Change and Its Effects", author: "John Smith", content: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+        { id: 3, title: "AI in Modern Healthcare", author: "Emily Clark", content: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris." },
+        { id: 4, title: "The Future of Space Exploration", author: "Alan Turing", content: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore." }
+    ]);
+
+    const fetchUnverifiedUsers = async () => {
+        try {
+            const token = sessionStorage.getItem("jwt");
+            const response = await axios.get("http://localhost:8080/user/unverified", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setUnverifiedUsers(response.data);
+        } catch (error) {
+            console.error("Error fetching unverified users:", error);
+        }
+    };
 
     useEffect(() => {
         fetchUnverifiedUsers();
     }, []);
 
-    const fetchUnverifiedUsers = async () => {
-        try {
-            const token = sessionStorage.getItem("jwt"); // Get JWT token
-            const response = await axios.get(`${API_BASE_URL}/user/unverified`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-
-            setUnverifiedUsers(response.data);
-            setLoading(false);
-        } catch (error) {
-            console.error("Error fetching unverified users:", error);
-            alert("Error fetching unverified users.");
-            setLoading(false);
-        }
-    };
-
-    const handleVerifyUser = async (userId) => {
+    const verifyUser = async (userId) => {
         try {
             const token = sessionStorage.getItem("jwt");
-            await axios.patch(`${API_BASE_URL}/user/verify/${userId}/GUEST`, {}, {
-                headers: { Authorization: `Bearer ${token}` }
+            const role = "USER"; // Assign the 'USER' role upon verification
+
+            await axios.patch(`http://localhost:8080/user/verify/${userId}/${role}`, {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             });
 
+            setUnverifiedUsers(prevUsers => prevUsers.filter(user => user.userId !== userId));
             alert("User verified successfully!");
-            fetchUnverifiedUsers(); // Refresh user list
         } catch (error) {
             console.error("Error verifying user:", error);
             alert("Failed to verify user.");
         }
     };
 
-    const handleRejectUser = (userId) => {
-        if (window.confirm("Are you sure you want to reject this user?")) {
-            deleteUser(userId);
-        }
+    const approveArticle = (id) => {
+        setArticles(prevArticles => prevArticles.filter(article => article.id !== id));
+        alert(`Article ID ${id} approved.`);
     };
 
-    const deleteUser = async (userId) => {
-        try {
-            const token = sessionStorage.getItem("jwt");
-            await axios.delete(`${API_BASE_URL}/user/${userId}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-
-            alert("User rejected and deleted.");
-            fetchUnverifiedUsers(); // Refresh user list
-        } catch (error) {
-            console.error("Error deleting user:", error);
-            alert("Failed to delete user.");
-        }
-    };
-
-    const handleNextUser = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % unverifiedUsers.length);
-    };
-
-    const handlePreviousUser = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + unverifiedUsers.length) % unverifiedUsers.length);
+    const rejectArticle = (id) => {
+        setArticles(prevArticles => prevArticles.filter(article => article.id !== id));
+        alert(`Article ID ${id} rejected.`);
     };
 
     return (
+        <div>
+            <MuiNavBar />
+            <MuiCategoryBar />
         <div className="admin-container">
-            <h2>Admin Panel - Approve Users</h2>
-            {loading ? (
-                <p>Loading unverified users...</p>
-            ) : unverifiedUsers.length === 0 ? (
-                <p>No unverified users found.</p>
-            ) : (
-                <div className="user-card">
-                    <h3>{unverifiedUsers[currentIndex].firstName} {unverifiedUsers[currentIndex].lastName}</h3>
-                    <p><strong>Email:</strong> {unverifiedUsers[currentIndex].email}</p>
-                    <div className="button-group">
-                        <button className="approve" onClick={() => handleVerifyUser(unverifiedUsers[currentIndex].userId)}>Approve</button>
-                        <button className="reject" onClick={() => handleRejectUser(unverifiedUsers[currentIndex].userId)}>Reject</button>
-                    </div>
-                    {unverifiedUsers.length > 1 && (
-                        <div className="navigation">
-                            <button onClick={handlePreviousUser}>Previous</button>
-                            <button onClick={handleNextUser}>Next</button>
+            {/* User Verification Section */}
+            <div className="verification-container scrollable-container">
+                <h2>Unverified Users</h2>
+                {unverifiedUsers.length > 0 ? (
+                    unverifiedUsers.map(user => (
+                        <div key={user.userId} className="user-card">
+                            <p><strong>Name:</strong> {user.firstName} {user.lastName}</p>
+                            <p><strong>Email:</strong> {user.email}</p>
+                            <div className="button-group">
+                                <button className="approve" onClick={() => verifyUser(user.userId)}>Verify</button>
+                            </div>
                         </div>
-                    )}
-                </div>
-            )}
+                    ))
+                ) : (
+                    <p>No unverified users.</p>
+                )}
+            </div>
+
+            {/* Article Submission Verification Section */}
+            <div className="verification-container scrollable-container">
+                <h2>Article Submissions</h2>
+                {articles.length > 0 ? (
+                    articles.map(article => (
+                        <div key={article.id} className="article-card">
+                            <h3>{article.title}</h3>
+                            <p><strong>Author:</strong> {article.author}</p>
+                            <p>{article.content}</p>
+                            <div className="button-group">
+                                <button className="approve" onClick={() => approveArticle(article.id)}>Approve</button>
+                                <button className="reject" onClick={() => rejectArticle(article.id)}>Reject</button>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p>No pending articles.</p>
+                )}
+            </div>
+        </div>
+        <MuiFooter />
         </div>
     );
 };
