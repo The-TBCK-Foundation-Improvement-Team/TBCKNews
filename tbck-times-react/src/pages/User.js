@@ -4,6 +4,7 @@ import axios from "axios";
 import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
 import { MuiNavBar } from '../components/MuiNavBar.js';
 import "../css/User.css";
+import { MuiFooter } from "../components/MuiFooter.js";
 
 const User = () => {
     const navigate = useNavigate();
@@ -133,6 +134,7 @@ const User = () => {
                 <p>Loading...</p>
             )}
         </div>
+        <MuiFooter />
         </div>
     );
 };
