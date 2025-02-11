@@ -10,8 +10,11 @@ function ResearchSummary() {
         <div className='ResearchSummary'>
             <MuiNavBar/>
             <MuiCategoryBar/>
+
             <div className="container">
-                <div className="news-layout">
+                <div className='left-bar'>
+                </div>
+                <div className="news-format">
                     <ResearchSummaryTemplate  
                         title="The Future of Web Development: What's Next in 2025"
                         category="Web Development"

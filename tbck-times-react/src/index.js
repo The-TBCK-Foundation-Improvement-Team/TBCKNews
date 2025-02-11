@@ -14,6 +14,7 @@ import WarriorOfTheMonth from './pages/WarriorOfTheMonth.js';
 import Admin from './pages/Admin.js';
 import ResearchSummary from './pages/ResearchSummary.js';
 import Search from './pages/Search.js';
+import HomePage from './pages/HomePage.js';
 
 const router = createBrowserRouter([
   {

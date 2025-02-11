@@ -13,6 +13,7 @@
     text-align: left;
     padding-top: 5px;
     align-items: center;
+    height: 100vh;
 }
 
 
@@ -24,6 +25,7 @@
     background-position: top;
     background-color: #f9fafb;
     position: relative;
+    height: 100vh;
 }
 
 .main-title {

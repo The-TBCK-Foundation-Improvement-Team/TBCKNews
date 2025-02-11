@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+}
+
+.left-bar {
+    background-color: #11595A;
+    flex: 1;
+    position: relative;
+}
+
+.news-format {
+    flex: 4;
+    background-color: white;
+    border: 1px solid white;
+    font-family: Gill Sans, sans-serif;
+    font-size:large;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    vertical-align:auto;
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 20;
+}
