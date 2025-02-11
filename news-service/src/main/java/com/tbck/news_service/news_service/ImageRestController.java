@@ -87,14 +87,90 @@ public class ImageRestController {
 
     @DeleteMapping(path = "/delete")
     @PreAuthorize("hasRole('ADMIN')")
-    public void deleteImageFromS3() {
+    public void deleteImageFromS3(@RequestParam("key") String key) {
+        //the key is the url of the image not including the aws s3 bucket url
+        //https://tbck-news-images.s3.us-east-2.amazonaws.com/tbck-news-image/Neumont-Devs.png
+        //key is tbck-news-image/Neumont-Devs.png
+        try {
+            // Delete the image from S3
+            s3Service.deleteImage(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         
+    }
+
+    @DeleteMapping(path = "/delete/many")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteManyImagesFromS3(@RequestParam("keys") String[] keys) {
+        for (String key : keys) {
+            try {
+                // Delete the image from S3
+                s3Service.deleteImage(key);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @PatchMapping(path = "/update")
     @PreAuthorize("hasRole('ADMIN')")
-    public void updateImageInS3() {
+    public String updateImageInS3(@RequestParam("key") String key, @RequestParam("image") MultipartFile file) {
+        //remove the old image and add the new image
+        try {
+            // Delete the old image from S3
+            s3Service.deleteImage(key);
 
+            // Convert MultipartFile to File
+            File convertedFile = convertMultiPartFileToFile(file);
+
+            // Generate a unique filename or use the original filename
+            String fileName = file.getOriginalFilename();
+
+            // Upload the new image to S3
+            s3Service.uploadImage(convertedFile, fileName);
+
+            String imageUrl = s3Service.uploadImage(convertedFile, fileName);
+            
+            // Return the URL of the uploaded image
+            return imageUrl;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error updating image";
+        }
+    }
+
+    @PatchMapping(path = "/update/many")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<String> updateManyImagesInS3(@RequestParam("keys") String[] keys, @RequestParam("images") List<MultipartFile> files) {
+        List<String> imageUrls = new ArrayList<>();
+        
+        for (int i = 0; i < keys.length; i++) {
+            try {
+                // Delete the old image from S3
+                s3Service.deleteImage(keys[i]);
+
+                // Convert MultipartFile to File
+                File convertedFile = convertMultiPartFileToFile(files.get(i));
+
+                // Generate a unique filename or use the original filename
+                String fileName = files.get(i).getOriginalFilename();
+
+                // Upload the new image to S3
+                String imageUrl = s3Service.uploadImage(convertedFile, fileName);
+                
+                // Add the URL to the list of URLs
+                imageUrls.add(imageUrl);
+            } catch (Exception e) {
+                e.printStackTrace();
+                imageUrls.add("Error updating image: " + keys[i]);
+            }
+        }
+
+        // Return the list of image URLs
+        return imageUrls;
     }
 
     private File convertMultiPartFileToFile(MultipartFile file) throws IOException {
