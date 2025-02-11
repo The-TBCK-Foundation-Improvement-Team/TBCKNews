@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -21,6 +22,7 @@ public class ImageRestController {
 
     private final S3Service s3Service;
 
+    @Autowired
     public ImageRestController(S3Service s3Service) {
         this.s3Service = s3Service;
     }
@@ -28,6 +30,11 @@ public class ImageRestController {
     @PostMapping(path = "/add")
     @PreAuthorize("hasRole('ADMIN')")
     public String addImageToS3( @RequestParam("image") MultipartFile file) {
+        System.out.println("WE IN POST NEWS");
+
+        if(file.isEmpty()) {
+            return "Error: File is empty";
+        }
 
         try {
             // Convert MultipartFile to File
@@ -76,13 +83,12 @@ public class ImageRestController {
 
         // Return the list of image URLs
         return imageUrls;
-
     }
 
     @DeleteMapping(path = "/delete")
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteImageFromS3() {
-
+        
     }
 
     @PatchMapping(path = "/update")

@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/news").permitAll()
                 .requestMatchers(HttpMethod.GET, "/news/newest").permitAll()
                 .requestMatchers(HttpMethod.GET, "/news/category/{category}").permitAll()
-                .requestMatchers(HttpMethod.POST, "/news/comment/{newsId}").hasAnyRole("GUEST", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/news/comment/{newsId}").hasAnyRole("GUEST", "ADMIN")//this should be verified guests
                 .requestMatchers(HttpMethod.POST, "/news").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/news/{newsId}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/news/{newsId}").hasRole("ADMIN")
