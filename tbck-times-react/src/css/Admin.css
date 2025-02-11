@@ -1,82 +1,136 @@
-:root {
-    --tbck-dark-blue: #00595a;
-    --tbck-light-blue: #4cbcca;
-    --tbck-pink: #ff2779;
-    --tbck-yellow: #ffa600;
-    --tbck-green: #6cae0a;
-    --tbck-black: #181d1b;
-    --tbck-white: #f3f3f3;
-}
-
-.admin-container {
-    max-width: 800px;
-    margin: 50px auto;
-    text-align: center;
-    background: var(--tbck-black);
-    padding: 20px;
-    border-radius: 10px;
-    color: var(--tbck-white);
+/* General Page Layout */
+.admin-page {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-}
-
-/* Scrollable Container */
-.scrollable-container {
-    max-height: 300px;  /* Set max height for scrolling */
-    overflow-y: auto;
-    background: var(--tbck-dark-blue);
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px var(--tbck-light-blue);
-    scrollbar-width: thin;
-    scrollbar-color: var(--tbck-light-blue) var(--tbck-black);
-}
-
-/* Custom scrollbar for WebKit browsers */
-.scrollable-container::-webkit-scrollbar {
-    width: 8px;
-}
-
-.scrollable-container::-webkit-scrollbar-thumb {
-    background: var(--tbck-light-blue);
-    border-radius: 4px;
-}
-
-.scrollable-container::-webkit-scrollbar-track {
-    background: var(--tbck-black);
-}
-
-.user-card,
-.article-card {
-    padding: 15px;
-    background: var(--tbck-light-blue);
-    border-radius: 8px;
-    margin: 10px 0;
+    min-height: 100vh; /* Ensure the page takes full viewport height */
+    background-color: var(--tbck-white);
     color: var(--tbck-black);
+    font-family: Arial, sans-serif;
+    padding: 0;
+    margin: 0;
 }
 
-.button-group {
-    margin-top: 10px;
+/* Admin Container */
+.admin-container {
+    flex: 1; /* Allows the container to grow and push footer to the bottom */
+    padding: 20px;
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: var(--tbck-light-blue);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
 }
 
+/* Section Styling */
+.admin-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: var(--tbck-white);
+    border: 1px solid var(--tbck-dark-blue);
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Section Headings */
+.admin-section h3 {
+    color: var(--tbck-dark-blue);
+    margin-bottom: 10px;
+}
+
+/* User Card Styling */
+.user-card {
+    background-color: var(--tbck-light-blue);
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Inputs */
+input[type="text"],
+input[type="date"],
+input[type="file"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid var(--tbck-dark-blue);
+    border-radius: 5px;
+    background-color: var(--tbck-white);
+    color: var(--tbck-black);
+    box-sizing: border-box;
+}
+
+/* Textarea for content */
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Buttons */
 button {
+    background-color: var(--tbck-dark-blue);
+    color: var(--tbck-white);
+    border: none;
     padding: 10px 15px;
     margin: 5px;
-    border: none;
     border-radius: 5px;
     cursor: pointer;
-    color: var(--tbck-white);
+    transition: background-color 0.3s ease;
 }
 
+button:hover {
+    background-color: var(--tbck-pink);
+}
+
+/* Approve Button */
 .approve {
     background-color: var(--tbck-green);
 }
 
+.approve:hover {
+    background-color: #4e8c0a;
+}
+
+/* Reject Button */
 .reject {
     background-color: var(--tbck-pink);
 }
 
-button:hover {
-    opacity: 0.9;
+.reject:hover {
+    background-color: #d61a5e;
+}
+
+/* Image Details Section */
+.image-details {
+    background-color: var(--tbck-yellow);
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    color: var(--tbck-black);
+}
+
+/* Footer Styling */
+.MuiFooter {
+    background-color: var(--tbck-dark-blue);
+    color: var(--tbck-white);
+    text-align: center;
+    padding: 15px 0;
+    margin-top: auto; /* Push footer to the bottom */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .admin-container {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    button {
+        width: 100%;
+    }
 }
