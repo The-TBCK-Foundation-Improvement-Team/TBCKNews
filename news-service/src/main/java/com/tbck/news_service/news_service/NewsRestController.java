@@ -5,7 +5,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -114,19 +113,25 @@ public class NewsRestController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public News createNews(@RequestBody News news) {
 
-        news.setNewsId(UUID.randomUUID());
+        try{
+            news.setNewsId(UUID.randomUUID());
 
-        for (Image image : news.getImages()) {
-            image.setImageId(UUID.randomUUID());
-            image.setNewsId(news.getNewsId());
+            for (Image image : news.getImages()) {
+                image.setImageId(UUID.randomUUID());
+                image.setNewsId(news.getNewsId());
+            }
+
+            for (Comment comment : news.getComments()) {
+                comment.setCommentId(UUID.randomUUID());
+                comment.setNewsId(news.getNewsId());
+            }
+
+            return saveNews(news);
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
         }
-
-        for (Comment comment : news.getComments()) {
-            comment.setCommentId(UUID.randomUUID());
-            comment.setNewsId(news.getNewsId());
-        }
-
-        return saveNews(news);
     }
 
     @PatchMapping(path = "/{newsId}")
