@@ -30,6 +30,7 @@ export function HomePage() {
                             imgAlt={news[0].images[0].altText}
                             author={news[0].author}
                             date={news[0].date}
+                            isAdmin={true}
                         />
                         <MainNewsCard
                             className='news-grid-item'
@@ -38,6 +39,7 @@ export function HomePage() {
                             imgAlt={news[1].images[0].altText}
                             author={news[1].author}
                             date={news[1].date}
+                            isAdmin={false}
                         />
                         <MainNewsCard
                             className='news-grid-item'
@@ -46,6 +48,7 @@ export function HomePage() {
                             imgAlt={news[2].images[0].altText}
                             author={news[2].author}
                             date={news[2].date}
+                            isAdmin={true}
                         />
                     </div>
                 }
@@ -60,6 +63,7 @@ export function HomePage() {
                         imgAlt={warriorOfTheMonth[0].images[0].altText}
                         author={warriorOfTheMonth[0].author}
                         date={warriorOfTheMonth[0].date}
+                        isAdmin={false}
                     />
                 }
             </div>
