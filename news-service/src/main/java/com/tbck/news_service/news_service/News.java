@@ -18,6 +18,14 @@ public class News {
     private List<Image> images;
     private List<Comment> comments;
     private String template;
+    private String externalLink;
+
+    public String getExternalLink() {
+        return externalLink;
+    }
+    public void setExternalLink(String externalLink) {
+        this.externalLink = externalLink;
+    }
 
     public UUID getNewsId() {
         return newsId;
@@ -85,6 +93,7 @@ public class News {
         itemMap.put("date", AttributeValue.builder().s(date).build());
         itemMap.put("category", AttributeValue.builder().s(category).build());
         itemMap.put("template", AttributeValue.builder().s(template).build());
+        itemMap.put("externalLink", AttributeValue.builder().s(externalLink).build());
         itemMap.put("images", AttributeValue.builder().l(images.stream().map(img -> AttributeValue.builder().m(img.toMap()).build()).toList()).build());
         itemMap.put("comments", AttributeValue.builder().l(comments.stream().map(cmt -> AttributeValue.builder().m(cmt.toMap()).build()).toList()).build());
 
@@ -100,6 +109,7 @@ public class News {
         news.setDate(map.get("date").s());
         news.setCategory(map.get("category").s());
         news.setTemplate(map.get("template").s());
+        news.setExternalLink(map.get("externalLink").s());
         news.setImages(map.get("images").l().stream().map(img -> Image.fromMap(img.m())).toList());
         news.setComments(map.get("comments").l().stream().map(cmt -> Comment.fromMap(cmt.m())).toList());
         return news;
