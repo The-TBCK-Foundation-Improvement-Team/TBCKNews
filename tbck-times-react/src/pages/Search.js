@@ -8,7 +8,7 @@ import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
 //method to get the news by the newest-latest date from the API
 const fetchNews = async (search) => {
 
-  const categories = ['News', 'Advocacy', 'Events', 'WarriorOfTheMonth']; // List of categories
+  const categories = ['News', 'Advocacy', 'Events', 'WarriorOfTheMonth', "Sports"]; // List of categories
   let url = 'http://localhost:8081/news/newest';
 
   console.log("Search: " + search);
