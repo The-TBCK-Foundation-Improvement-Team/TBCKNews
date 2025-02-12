@@ -12,7 +12,7 @@ import { MuiLikeButton } from '../components/news-components/MuiLikeButton.js'
 import { MuiSuggestedStories } from '../components/SuggestedStories.js';
 
 function NewsPageLayout({category}) {
-  return (
+return (
     <div class name='NewsPageLayout'>
         <MuiNavBar/>
         <MuiCategoryBar/>
@@ -28,7 +28,7 @@ function NewsPageLayout({category}) {
         }
         </div>
         <div className='sidebar-layout'>
-          <MuiLikeButton/>
+        <MuiLikeButton/>
             <MuiSuggestedStories/>
             if(category !== 'research'){
                 <MuiCommentBox/>
@@ -36,5 +36,5 @@ function NewsPageLayout({category}) {
         </div>
         <MuiFooter/>
     </div>
-  );
+    );
 }

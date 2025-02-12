@@ -14,16 +14,13 @@ function WarriorOfTheMonth() {
     return (
         // <p>Warrior of the Month</p>
         <div className="GenericNews">
-            <MuiNavBar/>
-            <MuiCategoryBar/>
                 <div className="container">
                     
                     <div className="news-layout">
                         <WarriorTemplate/>
                     </div>
                     <div className='sidebar-layout'>
-                        <MuiSuggestedStories/>
-                        <MuiCommentBox/>
+                        
                     </div>
                         
                 </div>
