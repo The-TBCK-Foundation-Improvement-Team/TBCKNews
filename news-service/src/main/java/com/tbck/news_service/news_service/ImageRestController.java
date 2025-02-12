@@ -45,6 +45,9 @@ public class ImageRestController {
             
             // Upload the file to S3
             String imageUrl = s3Service.uploadImage(convertedFile, fileName);
+
+            //delete the created file in application
+            convertedFile.delete();
             
             // Return the URL of the uploaded image
             return imageUrl;
@@ -75,6 +78,8 @@ public class ImageRestController {
                 
                 // Add the URL to the list of URLs
                 imageUrls.add(imageUrl);
+
+                convertedFile.delete();
             } catch (IOException e) {
                 e.printStackTrace();
                 imageUrls.add("Error uploading file: " + file.getOriginalFilename());
