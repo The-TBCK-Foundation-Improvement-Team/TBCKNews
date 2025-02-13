@@ -42,6 +42,18 @@ public class S3Service {
 
     }
 
+    public void deleteImage(String key) {
+        s3.deleteObject(builder -> builder.bucket(BUCKET_NAME).key(key));
+    }
+
+    public void deleteImages(String[] keys) {
+        for (String key : keys) {
+            deleteImage(key);
+        }
+    }
+
+    
+
     
 
 
