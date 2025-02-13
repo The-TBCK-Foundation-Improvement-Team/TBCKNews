@@ -102,7 +102,7 @@ const SearchPage = () => {
                             }}
                         >
                             <img
-                                src={result.images[0].url} // Use the first image in the array
+                                src={result.images[0]} // Use the first image in the array
                                 alt={result.title}
                                 style={{
                                     width: "150px", // Adjust image size
