@@ -1,12 +1,22 @@
 import React from 'react';
-import { Card, CardMedia, CardContent, Typography, Box } from '@mui/material';
+import { Card, CardMedia, CardContent, Typography, Box, IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
+import EditIcon from '@mui/icons-material/Edit';
 
-export function MainNewsCard({ className, imgSrc, imgAlt, title, author, date }) {
+export function MainNewsCard({ className, imgSrc, imgAlt, title, author, date, isAdmin }) {
     return (
         <Box className={className + " main-news-box"}>
             <Link to="/GenericNews" style={{ textDecoration: 'none', display: 'block' }}>
-                <Card className="news-card" style={{ backgroundColor: 'inherit' }}>
+                <Card className="news-card" style={{ backgroundColor: 'inherit', position: 'relative' }}>
+                    {isAdmin && (
+                        <IconButton
+                            style={{ position: 'absolute', top: 8, right: 8 }}
+                            aria-label="edit"
+                            onClick={() => alert('edit clicked')}
+                        >
+                            <EditIcon />
+                        </IconButton>
+                    )}
                     <CardMedia
                         component="img"
                         image={imgSrc}
