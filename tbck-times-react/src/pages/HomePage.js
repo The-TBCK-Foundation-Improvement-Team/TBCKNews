@@ -5,7 +5,7 @@ import '../css/HomePage.css';
 
 export function HomePage() {
     const [news, setNews] = useState([]);
-    const [warriorOfTheMonth, setWarriorOfTheMonth] = useState(null);
+    const [warriorOfTheMonth, setWarriorOfTheMonth] = useState([]);
 
     useEffect(() => {
         axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/newest')
@@ -13,7 +13,7 @@ export function HomePage() {
     }, []);
 
     useEffect(() => {
-        axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/warrior')
+        axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/WarriorOfTheMonth')
             .then((response) => setWarriorOfTheMonth(response.data));
     }, []);
 
@@ -55,7 +55,7 @@ export function HomePage() {
             </div>
             <div className="warrior-of-the-month-hp">
                 <h1 id="warrior-of-the-month-header">Warrior of the Month</h1>
-                {!warriorOfTheMonth ? <p></p> : 
+                {warriorOfTheMonth.length !== 1 ? <p></p> : 
                     <MainNewsCard
                         className='warrior-of-the-month-item'
                         title={warriorOfTheMonth[0].title}
