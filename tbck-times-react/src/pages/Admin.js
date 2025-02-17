@@ -36,7 +36,7 @@ const Admin = () => {
     const verifyUser = async (userId) => {
         try {
             const token = sessionStorage.getItem("jwt");
-            await axios.patch(`http://localhost:8080/user/verify/${userId}/USER`, {}, {
+            await axios.patch(`http://localhost:8080/user/verify/${userId}/GUEST`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setUnverifiedUsers(prev => prev.filter(user => user.userId !== userId));
