@@ -1,111 +1,136 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
 import '../css/Admin.css';
 import { MuiNavBar } from '../components/MuiNavBar';
 import { MuiCategoryBar } from '../components/MuiCategoryBar';
-import { MuiFooter } from '../components/MuiFooter.js';
+import { MuiFooter } from '../components/MuiFooter';
 
 const Admin = () => {
     const [unverifiedUsers, setUnverifiedUsers] = useState([]);
-    const [articles, setArticles] = useState([
-        { id: 1, title: "The Rise of Tech in 2025", author: "Jane Doe", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
-        { id: 2, title: "Climate Change and Its Effects", author: "John Smith", content: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
-        { id: 3, title: "AI in Modern Healthcare", author: "Emily Clark", content: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris." },
-        { id: 4, title: "The Future of Space Exploration", author: "Alan Turing", content: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore." }
-    ]);
-
-    const fetchUnverifiedUsers = async () => {
-        try {
-            const token = sessionStorage.getItem("jwt");
-            const response = await axios.get("http://localhost:8080/user/unverified", {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            setUnverifiedUsers(response.data);
-        } catch (error) {
-            console.error("Error fetching unverified users:", error);
-        }
-    };
+    const [images, setImages] = useState([]);
+    const [article, setArticle] = useState({
+        title: '',
+        content: '',
+        author: '',
+        date: '',
+        category: '',
+        images: [],
+        template: 'Generic'
+    });
 
     useEffect(() => {
+        const fetchUnverifiedUsers = async () => {
+            try {
+                const token = sessionStorage.getItem("jwt");
+                const response = await axios.get("http://localhost:8080/user/unverified", {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setUnverifiedUsers(response.data);
+            } catch (error) {
+                console.error("Error fetching unverified users:", error);
+            }
+        };
         fetchUnverifiedUsers();
     }, []);
 
     const verifyUser = async (userId) => {
         try {
             const token = sessionStorage.getItem("jwt");
-            const role = "USER"; // Assign the 'USER' role upon verification
-
-            await axios.patch(`http://localhost:8080/user/verify/${userId}/${role}`, {}, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+            await axios.patch(`http://localhost:8080/user/verify/${userId}/USER`, {}, {
+                headers: { Authorization: `Bearer ${token}` }
             });
-
-            setUnverifiedUsers(prevUsers => prevUsers.filter(user => user.userId !== userId));
+            setUnverifiedUsers(prev => prev.filter(user => user.userId !== userId));
             alert("User verified successfully!");
         } catch (error) {
             console.error("Error verifying user:", error);
-            alert("Failed to verify user.");
         }
     };
 
-    const approveArticle = (id) => {
-        setArticles(prevArticles => prevArticles.filter(article => article.id !== id));
-        alert(`Article ID ${id} approved.`);
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setArticle({ ...article, [name]: value });
     };
 
-    const rejectArticle = (id) => {
-        setArticles(prevArticles => prevArticles.filter(article => article.id !== id));
-        alert(`Article ID ${id} rejected.`);
+    const handleImageChange = (e) => {
+        const files = Array.from(e.target.files);
+        const newImages = files.map(file => ({ file, caption: '', altText: '' }));
+        setImages([...images, ...newImages]);
+    };
+
+    const handleImageMetaChange = (index, field, value) => {
+        const updatedImages = images.map((img, i) => i === index ? { ...img, [field]: value } : img);
+        setImages(updatedImages);
+    };
+
+    const handleRemoveImage = (index) => {
+        const updatedImages = images.filter((_, i) => i !== index);
+        setImages(updatedImages);
+    };
+
+    const handleSubmit = async () => {
+        const token = sessionStorage.getItem("jwt");
+        try {
+            const formData = new FormData();
+            images.forEach((img, index) => formData.append(`images`, img.file));
+            const uploadResponse = await axios.post('http://localhost:8081/image/add/many', formData, {
+                headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
+            });
+
+            const uploadedImages = uploadResponse.data.map((url, index) => ({
+                url,
+                altText: images[index].altText,
+                caption: images[index].caption
+            }));
+
+            const newArticle = { ...article, images: uploadedImages };
+            await axios.post('http://localhost:8081/news', newArticle, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            alert('Article created successfully!');
+            setArticle({ title: '', content: '', author: '', date: '', category: '', images: [], template: 'Generic' });
+            setImages([]);
+        } catch (error) {
+            console.error('Error creating article:', error);
+            alert('Failed to create article.');
+        }
     };
 
     return (
         <div>
             <MuiNavBar />
             <MuiCategoryBar />
-        <div className="admin-container">
-            {/* User Verification Section */}
-            <div className="verification-container scrollable-container">
-                <h2>Unverified Users</h2>
-                {unverifiedUsers.length > 0 ? (
-                    unverifiedUsers.map(user => (
+            <div className="admin-container">
+                <div className="verification-container">
+                    <h2>Unverified Users</h2>
+                    {unverifiedUsers.map(user => (
                         <div key={user.userId} className="user-card">
                             <p><strong>Name:</strong> {user.firstName} {user.lastName}</p>
                             <p><strong>Email:</strong> {user.email}</p>
-                            <div className="button-group">
-                                <button className="approve" onClick={() => verifyUser(user.userId)}>Verify</button>
-                            </div>
+                            <button onClick={() => verifyUser(user.userId)}>Verify</button>
                         </div>
-                    ))
-                ) : (
-                    <p>No unverified users.</p>
-                )}
-            </div>
-
-            {/* Article Submission Verification Section */}
-            <div className="verification-container scrollable-container">
-                <h2>Article Submissions</h2>
-                {articles.length > 0 ? (
-                    articles.map(article => (
-                        <div key={article.id} className="article-card">
-                            <h3>{article.title}</h3>
-                            <p><strong>Author:</strong> {article.author}</p>
-                            <p>{article.content}</p>
-                            <div className="button-group">
-                                <button className="approve" onClick={() => approveArticle(article.id)}>Approve</button>
-                                <button className="reject" onClick={() => rejectArticle(article.id)}>Reject</button>
-                            </div>
+                    ))}
+                </div>
+                <div className="article-container">
+                    <h2>Create Article</h2>
+                    <input name="title" value={article.title} onChange={handleInputChange} placeholder="Title" />
+                    <textarea name="content" value={article.content} onChange={handleInputChange} placeholder="Content" />
+                    <input name="author" value={article.author} onChange={handleInputChange} placeholder="Author" />
+                    <input type="date" name="date" value={article.date} onChange={handleInputChange} />
+                    <input name="category" value={article.category} onChange={handleInputChange} placeholder="Category" />
+                    <input type="file" multiple onChange={handleImageChange} />
+                    {images.map((img, index) => (
+                        <div key={index} className="image-inputs">
+                            <p>{img.file.name}</p>
+                            <input placeholder="Alt Text" value={img.altText} onChange={(e) => handleImageMetaChange(index, 'altText', e.target.value)} />
+                            <input placeholder="Caption" value={img.caption} onChange={(e) => handleImageMetaChange(index, 'caption', e.target.value)} />
+                            <button onClick={() => handleRemoveImage(index)}>Remove</button>
                         </div>
-                    ))
-                ) : (
-                    <p>No pending articles.</p>
-                )}
+                    ))}
+                    <button onClick={handleSubmit}>Create Article</button>
+                </div>
             </div>
-        </div>
-        <MuiFooter />
+            <MuiFooter />
         </div>
     );
 };

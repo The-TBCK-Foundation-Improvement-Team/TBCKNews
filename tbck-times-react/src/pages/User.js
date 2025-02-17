@@ -10,17 +10,16 @@ const User = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [editedUser, setEditedUser] = useState({}); 
-    const [message, setMessage] = useState(""); 
+    const [editedUser, setEditedUser] = useState({});
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         const storedUser = sessionStorage.getItem("user");
-
         if (storedUser && storedUser !== "undefined") {
             try {
                 const parsedUser = JSON.parse(storedUser);
                 setUser(parsedUser);
-                setEditedUser(parsedUser); // ✅ Initialize edit fields
+                setEditedUser(parsedUser);
             } catch (error) {
                 console.error("Error parsing stored user data:", error);
                 sessionStorage.removeItem("user");
@@ -32,9 +31,7 @@ const User = () => {
         }
     }, [navigate]);
 
-    const handleEdit = () => {
-        setIsEditing(true);
-    };
+    const handleEdit = () => setIsEditing(true);
 
     const handleChange = (e) => {
         setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
@@ -43,9 +40,8 @@ const User = () => {
     const handleSave = async () => {
         try {
             const jwtToken = sessionStorage.getItem("jwt");
-
             const response = await axios.patch(
-                `http://localhost:8080/user/${user.userId}`, // ✅ Backend API to update user
+                `http://localhost:8080/user/${user.userId}`,
                 editedUser,
                 {
                     headers: {
@@ -55,9 +51,8 @@ const User = () => {
                     withCredentials: true,
                 }
             );
-
-            setUser(response.data); // ✅ Update UI with new data
-            sessionStorage.setItem("user", JSON.stringify(response.data)); // ✅ Save updated user data
+            setUser(response.data);
+            sessionStorage.setItem("user", JSON.stringify(response.data));
             setIsEditing(false);
             setMessage("Profile updated successfully!");
         } catch (error) {
@@ -71,70 +66,42 @@ const User = () => {
         navigate("/login");
     };
 
+    const handleAdminRedirect = () => {
+        navigate("/admin");
+    };
+
     return (
         <div>
-        <MuiNavBar/>
-        <MuiCategoryBar/>
-        <div className="user-container">
-            <h2>User Profile</h2>
-            {user ? (
-                <div>
-                    <p><strong>First Name:</strong> 
-                        {isEditing ? (
-                            <input 
-                                type="text" 
-                                name="firstName" 
-                                value={editedUser.firstName} 
-                                onChange={handleChange} 
-                            />
-                        ) : user.firstName}
-                    </p>
-                    <p><strong>Last Name:</strong> 
-                        {isEditing ? (
-                            <input 
-                                type="text" 
-                                name="lastName" 
-                                value={editedUser.lastName} 
-                                onChange={handleChange} 
-                            />
-                        ) : user.lastName}
-                    </p>
-                    <p><strong>Email:</strong> 
-                        {isEditing ? (
-                            <input 
-                                type="email" 
-                                name="email" 
-                                value={editedUser.email} 
-                                onChange={handleChange} 
-                            />
-                        ) : user.email}
-                    </p>
-                    <p><strong>Password:</strong> 
-                        {isEditing ? (
-                            <input 
-                                type="password" 
-                                name="password" 
-                                value={editedUser.password} 
-                                onChange={handleChange} 
-                            />
-                        ) : "********"}
-                    </p>
+            <MuiNavBar />
+            <MuiCategoryBar />
+            <div className="user-container">
+                <h2>User Profile</h2>
+                {user ? (
+                    <div>
+                        <p><strong>First Name:</strong> {isEditing ? <input type="text" name="firstName" value={editedUser.firstName} onChange={handleChange} /> : user.firstName}</p>
+                        <p><strong>Last Name:</strong> {isEditing ? <input type="text" name="lastName" value={editedUser.lastName} onChange={handleChange} /> : user.lastName}</p>
+                        <p><strong>Email:</strong> {isEditing ? <input type="email" name="email" value={editedUser.email} onChange={handleChange} /> : user.email}</p>
+                        <p><strong>Password:</strong> {isEditing ? <input type="password" name="password" value={editedUser.password} onChange={handleChange} /> : "********"}</p>
 
-                    {message && <p className="message">{message}</p>}
+                        {message && <p className="message">{message}</p>}
 
-                    {isEditing ? (
-                        <button onClick={handleSave}>Save Changes</button>
-                    ) : (
-                        <button onClick={handleEdit}>Edit Profile</button>
-                    )}
-                    
-                    <button onClick={handleLogout} className="logout-btn">Logout</button>
-                </div>
-            ) : (
-                <p>Loading...</p>
-            )}
-        </div>
-        <MuiFooter />
+                        {isEditing ? (
+                            <button onClick={handleSave}>Save Changes</button>
+                        ) : (
+                            <button onClick={handleEdit}>Edit Profile</button>
+                        )}
+
+                        {user.role === "ADMIN" && (
+                            <button onClick={handleAdminRedirect} className="admin-btn">Go to Admin Page</button>
+                        )}
+
+                        <button onClick={handleLogout} className="logout-btn">Logout</button>
+                    </div>
+                ) : (
+                    <p>Loading...</p>
+                )}
+            </div>
+            <MuiFooter />
         </div>
     );
 };
