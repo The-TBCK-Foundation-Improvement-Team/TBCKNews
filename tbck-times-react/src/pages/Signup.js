@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { MuiNavBar } from '../components/MuiNavBar';
 import { MuiFooter } from '../components/MuiFooter';
 import '../css/Signup.css';
+import { MuiCategoryBar } from '../components/MuiCategoryBar';
 
 const Signup = () => {
     const [firstName, setFirstName] = useState("");
@@ -40,6 +41,7 @@ const Signup = () => {
     return (
         <div>
             <MuiNavBar />
+            <MuiCategoryBar />
         <div className="signup-container">
             
             <div className="signup-content">

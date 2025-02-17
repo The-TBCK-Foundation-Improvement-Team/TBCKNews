@@ -6,26 +6,35 @@
   background: var(--tbck-black);
   color: var(--tbck-white);
   text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 input {
   width: 100%;
-  padding: 8px;
-  margin: 5px 0;
+  padding: 10px;
+  margin: 10px 0;
   border-radius: 5px;
-  border: none;
+  border: 1px solid var(--tbck-light-blue);
   background: var(--tbck-white);
   color: var(--tbck-black);
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+  border-color: var(--tbck-light-blue);
+  box-shadow: 0 0 5px var(--tbck-light-blue);
 }
 
 button {
   margin: 10px;
-  padding: 10px 20px;
+  padding: 12px 25px;
   border: none;
   border-radius: 5px;
   background: var(--tbck-light-blue);
   color: var(--tbck-white);
+  font-weight: bold;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
 button:hover {
@@ -34,6 +43,19 @@ button:hover {
 
 .logout-btn {
   background: var(--tbck-pink);
+}
+
+.logout-btn:hover {
+  background: #e6005c;
+}
+
+.admin-btn {
+  background: var(--tbck-green);
+  margin-top: 15px;
+}
+
+.admin-btn:hover {
+  background: #5a9608;
 }
 
 .message {
