@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/SlideShowCard.css';
+import '../../css/SlideShowCard.css';
 
 export function SlideShowCard(props) {
     return (
