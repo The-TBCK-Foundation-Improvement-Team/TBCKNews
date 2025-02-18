@@ -111,6 +111,7 @@ const SearchPage = () => {
                                 marginBottom: "20px", // Add space between each card
                             }}
                         >
+                          {result.images?.length > 0 && (
                             <img
                                 src={result.images[0].url} // Use the first image in the array
                                 alt={result.title}
@@ -121,6 +122,7 @@ const SearchPage = () => {
                                     borderRadius: "8px",
                                 }}
                             />
+                              )}
                             <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                                 <h2 style={{ fontSize: "24px", fontWeight: "600", color: "#333" }}>
                                     {result.title}
