@@ -1,113 +1,154 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-
-import '../css/Admin.css';
-import { MuiNavBar } from '../components/MuiNavBar';
-import { MuiCategoryBar } from '../components/MuiCategoryBar';
-import { MuiFooter } from '../components/MuiFooter.js';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "../css/Admin.css";
+import { MuiNavBar } from "../components/MuiNavBar";
+import { MuiCategoryBar } from "../components/MuiCategoryBar";
+import { MuiFooter } from "../components/MuiFooter";
 
 const Admin = () => {
-    const [unverifiedUsers, setUnverifiedUsers] = useState([]);
-    const [articles, setArticles] = useState([
-        { id: 1, title: "The Rise of Tech in 2025", author: "Jane Doe", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
-        { id: 2, title: "Climate Change and Its Effects", author: "John Smith", content: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
-        { id: 3, title: "AI in Modern Healthcare", author: "Emily Clark", content: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris." },
-        { id: 4, title: "The Future of Space Exploration", author: "Alan Turing", content: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore." }
-    ]);
+  const [unverifiedUsers, setUnverifiedUsers] = useState([]);
+  const [images, setImages] = useState([]);
+  const [newArticle, setNewArticle] = useState({
+    title: "",
+    content: "",
+    author: "",
+    date: "",
+    category: "",
+    images: [],
+    comments: [],
+    template: "",
+    externalLink: "",
+  });
 
-    const fetchUnverifiedUsers = async () => {
-        try {
-            const token = sessionStorage.getItem("jwt");
-            const response = await axios.get("http://localhost:8080/user/unverified", {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            setUnverifiedUsers(response.data);
-        } catch (error) {
-            console.error("Error fetching unverified users:", error);
-        }
+  const fetchUnverifiedUsers = async () => {
+    try {
+      const token = sessionStorage.getItem("jwt");
+      const response = await axios.get("http://localhost:8080/user/unverified", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUnverifiedUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching unverified users:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUnverifiedUsers();
+  }, []);
+
+  const verifyUser = async (userId) => {
+    try {
+      const token = sessionStorage.getItem("jwt");
+      await axios.patch(`http://localhost:8080/user/verify/${userId}/USER`, {}, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUnverifiedUsers(prev => prev.filter(user => user.userId !== userId));
+      alert("User verified successfully!");
+    } catch (error) {
+      console.error("Error verifying user:", error);
+      alert("Failed to verify user.");
+    }
+  };
+
+  const handleImageUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    const formData = new FormData();
+    files.forEach((file) => formData.append("images", file));
+
+    try {
+      const token = sessionStorage.getItem("jwt");
+      const response = await axios.post("http://localhost:8081/image/add/many", formData, {
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
+      });
+      const uploadedImages = response.data.map((url, index) => ({
+        url,
+        altText: "",
+        caption: "",
+        imageId: "",
+        newsId: "",
+      }));
+      setImages(uploadedImages);
+    } catch (error) {
+      console.error("Error uploading images:", error);
+      alert("Failed to upload images.");
+    }
+  };
+
+  const handleImageChange = (index, field, value) => {
+    const updatedImages = [...images];
+    updatedImages[index][field] = value;
+    setImages(updatedImages);
+  };
+
+  const handleArticleSubmit = async (e) => {
+    e.preventDefault();
+    const token = sessionStorage.getItem("jwt");
+    const articleData = {
+      ...newArticle,
+      images: images,
+      comments: [],
     };
 
-    useEffect(() => {
-        fetchUnverifiedUsers();
-    }, []);
+    try {
+      await axios.post("http://localhost:8081/news", articleData, {
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      });
+      alert("Article created successfully!");
+      setNewArticle({ title: "", content: "", author: "", date: "", category: "", images: [], comments: [], template: "", externalLink: "" });
+      setImages([]);
+    } catch (error) {
+      console.error("Error creating article:", error);
+      alert("Failed to create article.");
+    }
+  };
 
-    const verifyUser = async (userId) => {
-        try {
-            const token = sessionStorage.getItem("jwt");
-            const role = "USER"; // Assign the 'USER' role upon verification
-
-            await axios.patch(`http://localhost:8080/user/verify/${userId}/${role}`, {}, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-
-            setUnverifiedUsers(prevUsers => prevUsers.filter(user => user.userId !== userId));
-            alert("User verified successfully!");
-        } catch (error) {
-            console.error("Error verifying user:", error);
-            alert("Failed to verify user.");
-        }
-    };
-
-    const approveArticle = (id) => {
-        setArticles(prevArticles => prevArticles.filter(article => article.id !== id));
-        alert(`Article ID ${id} approved.`);
-    };
-
-    const rejectArticle = (id) => {
-        setArticles(prevArticles => prevArticles.filter(article => article.id !== id));
-        alert(`Article ID ${id} rejected.`);
-    };
-
-    return (
-        <div>
-            <MuiNavBar />
-            <MuiCategoryBar />
-        <div className="admin-container">
-            {/* User Verification Section */}
-            <div className="verification-container scrollable-container">
-                <h2>Unverified Users</h2>
-                {unverifiedUsers.length > 0 ? (
-                    unverifiedUsers.map(user => (
-                        <div key={user.userId} className="user-card">
-                            <p><strong>Name:</strong> {user.firstName} {user.lastName}</p>
-                            <p><strong>Email:</strong> {user.email}</p>
-                            <div className="button-group">
-                                <button className="approve" onClick={() => verifyUser(user.userId)}>Verify</button>
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <p>No unverified users.</p>
-                )}
-            </div>
-
-            {/* Article Submission Verification Section */}
-            <div className="verification-container scrollable-container">
-                <h2>Article Submissions</h2>
-                {articles.length > 0 ? (
-                    articles.map(article => (
-                        <div key={article.id} className="article-card">
-                            <h3>{article.title}</h3>
-                            <p><strong>Author:</strong> {article.author}</p>
-                            <p>{article.content}</p>
-                            <div className="button-group">
-                                <button className="approve" onClick={() => approveArticle(article.id)}>Approve</button>
-                                <button className="reject" onClick={() => rejectArticle(article.id)}>Reject</button>
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <p>No pending articles.</p>
-                )}
-            </div>
+  return (
+    <div>
+      <MuiNavBar />
+      <MuiCategoryBar />
+      <div className="admin-container">
+        {/* Unverified Users */}
+        <div className="verification-container">
+          <h2>Unverified Users</h2>
+          {unverifiedUsers.length > 0 ? (
+            unverifiedUsers.map((user) => (
+              <div key={user.userId} className="user-card">
+                <p><strong>Name:</strong> {user.firstName} {user.lastName}</p>
+                <p><strong>Email:</strong> {user.email}</p>
+                <button className="approve" onClick={() => verifyUser(user.userId)}>Verify</button>
+              </div>
+            ))
+          ) : <p>No unverified users.</p>}
         </div>
-        <MuiFooter />
+
+        {/* Article Creation Form */}
+        <div className="article-container">
+          <h2>Create Article</h2>
+          <form onSubmit={handleArticleSubmit}>
+            <input type="text" placeholder="Title" value={newArticle.title} onChange={(e) => setNewArticle({ ...newArticle, title: e.target.value })} required />
+            <textarea placeholder="Content" value={newArticle.content} onChange={(e) => setNewArticle({ ...newArticle, content: e.target.value })} required />
+            <input type="text" placeholder="Author" value={newArticle.author} onChange={(e) => setNewArticle({ ...newArticle, author: e.target.value })} required />
+            <input type="date" value={newArticle.date} onChange={(e) => setNewArticle({ ...newArticle, date: e.target.value })} required />
+            <input type="text" placeholder="Category" value={newArticle.category} onChange={(e) => setNewArticle({ ...newArticle, category: e.target.value })} required />
+            <input type="text" placeholder="Template" value={newArticle.template} onChange={(e) => setNewArticle({ ...newArticle, template: e.target.value })} required />
+            <input type="text" placeholder="External Link (Optional)" value={newArticle.externalLink} onChange={(e) => setNewArticle({ ...newArticle, externalLink: e.target.value })} />
+
+            <input type="file" multiple onChange={handleImageUpload} />
+
+            {images.map((img, index) => (
+              <div key={index} className="image-inputs">
+                <input type="text" placeholder="Alt Text" value={img.altText} onChange={(e) => handleImageChange(index, "altText", e.target.value)} required />
+                <input type="text" placeholder="Caption" value={img.caption} onChange={(e) => handleImageChange(index, "caption", e.target.value)} required />
+              </div>
+            ))}
+
+            <button type="submit" className="submit-article">Submit Article</button>
+          </form>
         </div>
-    );
+      </div>
+      <MuiFooter />
+    </div>
+  );
 };
 
 export default Admin;

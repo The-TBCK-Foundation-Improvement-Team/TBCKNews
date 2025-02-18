@@ -4,6 +4,7 @@ import axios from 'axios';
 import { MuiNavBar } from '../components/MuiNavBar';
 import { MuiFooter } from '../components/MuiFooter';
 import '../css/Login.css';
+import { MuiCategoryBar } from '../components/MuiCategoryBar';
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -35,7 +36,7 @@ const Login = () => {
     return (
         <div>
         <MuiNavBar />
-        
+        <MuiCategoryBar />
         <div className="login-container">
             
             <div className="login-content">

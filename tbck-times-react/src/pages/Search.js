@@ -5,10 +5,13 @@ import { MuiNavBar } from '../components/MuiNavBar.js';
 import { MuiFooter } from '../components/MuiFooter.js';
 import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
 
+const categories = ['News', 'Advocacy', 'Events', 'WarriorOfTheMonth', "Sports", "Research"]; // List of categories
 //method to get the news by the newest-latest date from the API
 const fetchNews = async (search) => {
 
-  const categories = ['News', 'Advocacy', 'Events', 'WarriorOfTheMonth', "Sports", "Research"]; // List of categories
+
+  //const categories = ['News', 'Advocacy', 'Events', 'WarriorOfTheMonth', "Sports", "Research"]; // List of categories
+
   let url = 'http://localhost:8081/news/newest';
 
   console.log("Search: " + search);
@@ -49,13 +52,22 @@ const SearchPage = () => {
 
   // Fetch news data from the API
   useEffect(() => {
+    console.log("Current searchQuery:", searchQuery); // Debugging
     const fetchAndSetNews = async () => {
-      const news = await fetchNews(searchQuery);
+      let news = await fetchNews(searchQuery);
+
+      if (searchQuery && !categories.includes(searchQuery)) { 
+        // If the search query is not a category, filter the news by title
+        const lowerCaseSearch = searchQuery.toLowerCase();
+        news = news.filter((item) => item.title.toLowerCase().includes(lowerCaseSearch));
+      }
+      console.log("Fetched news:", news); // Debugging API response
       setNews(news);
     };
 
-    fetchAndSetNews();
-    console.log(news);
+    if (searchQuery !== undefined) { 
+        fetchAndSetNews();
+      }
     
   }, [searchQuery]);
 

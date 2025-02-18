@@ -109,7 +109,7 @@ public class News {
         news.setDate(map.get("date").s());
         news.setCategory(map.get("category").s());
         news.setTemplate(map.get("template").s());
-        news.setExternalLink(map.get("externalLink").s());
+        news.setExternalLink(map.get("externalLink") != null ? map.get("externalLink").s() : "No External Link");
         news.setImages(map.get("images").l().stream().map(img -> Image.fromMap(img.m())).toList());
         news.setComments(map.get("comments").l().stream().map(cmt -> Comment.fromMap(cmt.m())).toList());
         return news;
