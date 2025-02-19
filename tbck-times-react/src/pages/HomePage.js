@@ -25,6 +25,7 @@ export function HomePage() {
                     <SlideShow news={news} />
                 }
             </div>
+            <div className="home-page-vertical-white-space"></div>
             <div className="warrior-of-the-month-hp">
                 <h1 id="warrior-of-the-month-header">Warrior of the Month</h1>
                 {warriorOfTheMonth.length !== 1 ? <p></p> : 
