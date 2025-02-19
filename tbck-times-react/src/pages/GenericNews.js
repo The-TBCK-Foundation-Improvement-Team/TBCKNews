@@ -11,8 +11,6 @@ function GenericNews() {
 
     return (
         <div className="GenericNews">
-            <MuiNavBar/>
-            <MuiCategoryBar/>
                 <div className="container">
                     
                     <div className="news-layout">
@@ -60,7 +58,6 @@ function GenericNews() {
                 </div>  */}
             </div>
         </div>
-            <MuiFooter/>
         </div>
       );
 }

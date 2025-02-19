@@ -9,9 +9,6 @@ const categories = ['News', 'Advocacy', 'Events', 'WarriorOfTheMonth', "Sports",
 //method to get the news by the newest-latest date from the API
 const fetchNews = async (search) => {
 
-
-  //const categories = ['News', 'Advocacy', 'Events', 'WarriorOfTheMonth', "Sports", "Research"]; // List of categories
-
   let url = 'http://localhost:8081/news/newest';
 
   console.log("Search: " + search);
@@ -98,7 +95,7 @@ const SearchPage = () => {
                     news.map((result) => (
                         <Link
                             key={result.newsId}
-                            to={`/detail/${result.newsId}`} // Navigates to a detail page for the result
+                            to={`/details/${result.newsId}`} // Navigates to a detail page for the result
                             style={{
                                 textDecoration: "none", // Remove underline from the link
                                 width: "100%", // Full width with some margin on small screens

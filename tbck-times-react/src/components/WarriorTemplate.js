@@ -1,16 +1,16 @@
 import React from 'react';
 import '../css/WarriorOfTheMonth.css';
 
-export function WarriorTemplate({name, about, profileImage}) {
+export function WarriorTemplate({title, name, about, profileImage}) {
     return (
     <div>
         <div className="content-wrapper">
         <div className="header-section">
             <div className="header-content">
             <h1 className="main-warrior-title">
-                TBCK WARRIOR OF THE MONTH
+                {title}
             </h1>
-            <div className="name-title">{name.toUpperCase()}</div>
+            <div className="name-title"></div>
             </div>
         </div>
         

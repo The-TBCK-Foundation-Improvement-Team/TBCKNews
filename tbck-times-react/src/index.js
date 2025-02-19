@@ -15,6 +15,7 @@ import Admin from './pages/Admin.js';
 import ResearchSummary from './pages/ResearchSummary.js';
 import Search from './pages/Search.js';
 import HomePage from './pages/HomePage.js';
+import NewsDetails from './pages/NewsDetails.js';
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
   {
     path: '/Search/:searchQuery',
     element: <Search />,
+  },
+  {
+    path: 'details/:newsId',
+    element: <NewsDetails />,
   }
 ]);
 
