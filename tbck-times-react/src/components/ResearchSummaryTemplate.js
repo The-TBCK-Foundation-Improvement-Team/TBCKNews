@@ -1,9 +1,14 @@
 import React from 'react';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import { Paper, Typography, Link, Box } from '@mui/material';
+import { MuiSuggestedStories } from '../components/SuggestedStories.js';
 
 export function ResearchSummaryTemplate({title, category, summary, link}) {
     return(
+        <div className="container">
+                <div className='left-bar'>
+                </div>
+                <div className="news-format">
         <Paper
             elevation={3}
             sx={{
@@ -71,6 +76,11 @@ export function ResearchSummaryTemplate({title, category, summary, link}) {
             <ArrowOutwardIcon className="arrow" fontSize="small" />
             </Box>
         </Paper>
+        </div>
+        <div className='sidebar-layout'>
+        <MuiSuggestedStories/>
+        </div>
+        </div>
         );
     }
 

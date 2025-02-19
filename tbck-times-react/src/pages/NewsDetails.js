@@ -12,6 +12,7 @@ import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
 import { MuiCommentBox } from '../components/news-components/MuiCommentBox.js'
 import { MuiLikeButton } from '../components/news-components/MuiLikeButton.js'
 import { MuiSuggestedStories } from '../components/SuggestedStories.js';
+import { ResearchSummaryTemplate } from "../components/ResearchSummaryTemplate.js";
 
 
 const fetchStory = async (newsId) => {
@@ -52,10 +53,27 @@ return (
         <MuiNavBar/>
         <MuiCategoryBar/>
         <div>
-        {story.category === "News" && <GenericNews/>}
-        {story.category === "WarriorOfTheMonth" && <WarriorOfTheMonthTemplate/>}
-        {story.category === "Newsletter" && <NewsLetter/>}
-        {story.category === "Research" && <ResearchSummary/>}
+        {story.category === "News" && <GenericNews
+            title={story.title}
+            author={story.author}
+            date={story.date}
+            image={story.images[0].url}
+            content={story.content}
+        />}
+        {story.category === "WarriorOfTheMonth" && <WarriorOfTheMonthTemplate
+            title={story.title}
+            about={story.content}
+            profileImage={story.images[0].url}
+        />}
+        {story.category === "Newsletter" && <NewsLetter
+        
+        />}
+        {story.category === "Research" && <ResearchSummaryTemplate
+            title={story.title}
+            category={story.category}
+            summary={story.content}
+            link={story.externalLink}
+        />}
         {/* {story.category === 'research'}(
             <ResearchSummary/>
         ){story.category === 'genericNews'}(

@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/WarriorOfTheMonth.css';
 
-export function WarriorTemplate({title, name, about, profileImage}) {
+export function WarriorTemplate({title, about, profileImage}) {
     return (
     <div>
         <div className="content-wrapper">
@@ -17,7 +17,7 @@ export function WarriorTemplate({title, name, about, profileImage}) {
         <div className="content-layout">
             <div className="profile-info">
             <div className="info-card">
-                <h2 className="about-title">About {name}</h2>
+                <h2 className="about-title">About {title}</h2>
                 <p className="about-text">
                 {about}
                 </p>
