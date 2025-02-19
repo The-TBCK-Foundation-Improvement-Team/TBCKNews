@@ -120,7 +120,7 @@ const Admin = () => {
   };
 
   return (
-    <div>
+    <div className="admin-background">
       <MuiNavBar />
       <MuiCategoryBar />
       <div className="admin-container">
@@ -130,8 +130,8 @@ const Admin = () => {
           {unverifiedUsers.length > 0 ? (
             unverifiedUsers.map((user) => (
               <div key={user.userId} className="user-card">
-                <p><strong>Name:</strong> {user.firstName} {user.lastName}</p>
-                <p><strong>Email:</strong> {user.email}</p>
+                <p className="admintext"><strong>Name:</strong> {user.firstName} {user.lastName}</p>
+                <p className="admintext"><strong>Email:</strong> {user.email}</p>
                 <button className="approve" onClick={() => verifyUser(user.userId)}>Verify</button>
               </div>
             ))
@@ -148,7 +148,7 @@ const Admin = () => {
             <input type="date" value={newArticle.date} className="admintext" onChange={(e) => setNewArticle({ ...newArticle, date: e.target.value })} required />
 
             {/* Category Dropdown */}
-            <select className="admintext" placeholder="Category" value={newArticle.category} onChange={(e) => setNewArticle({ ...newArticle, category: e.target.value })} required>
+            <select className="admin-dropdown" placeholder="Category" value={newArticle.category} onChange={(e) => setNewArticle({ ...newArticle, category: e.target.value })} required>
               <option value="Category">Category</option>
               <option value="News">News</option>
               <option value="Advocacy">Advocacy</option>
@@ -159,7 +159,7 @@ const Admin = () => {
             </select>
 
             {/* Template Dropdown */}
-            <select className="admintext" placeholder="Template" value={newArticle.template} onChange={(e) => setNewArticle({ ...newArticle, template: e.target.value })} required>
+            <select className="admin-dropdown" placeholder="Template" value={newArticle.template} onChange={(e) => setNewArticle({ ...newArticle, template: e.target.value })} required>
               <option value="Template">Template</option>
               <option value="News">News</option>
               <option value="Research">Research</option>
