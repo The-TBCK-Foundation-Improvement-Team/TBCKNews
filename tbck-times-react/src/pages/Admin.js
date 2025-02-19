@@ -60,6 +60,7 @@ const Admin = () => {
       const response = await axios.post("http://localhost:8081/image/add/many", formData, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
       });
+
       const uploadedImages = response.data.map((url, index) => ({
         url,
         altText: "",
@@ -67,7 +68,8 @@ const Admin = () => {
         imageId: "",
         newsId: "",
       }));
-      setImages(uploadedImages);
+
+      setImages(prevImages => [...prevImages, ...uploadedImages]);
     } catch (error) {
       console.error("Error uploading images:", error);
       alert("Failed to upload images.");
@@ -77,6 +79,11 @@ const Admin = () => {
   const handleImageChange = (index, field, value) => {
     const updatedImages = [...images];
     updatedImages[index][field] = value;
+    setImages(updatedImages);
+  };
+
+  const removeImage = (index) => {
+    const updatedImages = images.filter((_, i) => i !== index);
     setImages(updatedImages);
   };
 
@@ -139,6 +146,7 @@ const Admin = () => {
               <div key={index} className="image-inputs">
                 <input type="text" placeholder="Alt Text" className="admintext" value={img.altText} onChange={(e) => handleImageChange(index, "altText", e.target.value)} required />
                 <input type="text" placeholder="Caption" className="admintext" value={img.caption} onChange={(e) => handleImageChange(index, "caption", e.target.value)} required />
+                <button type="button" className="remove" onClick={() => removeImage(index)}>Remove</button>
               </div>
             ))}
 

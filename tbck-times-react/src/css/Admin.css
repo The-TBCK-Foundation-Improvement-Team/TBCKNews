@@ -56,6 +56,15 @@
     background-color: #5c9a0a;
 }
 
+.remove {
+    width: 96%;
+    background-color: #ff2779;
+}
+
+.remove:hover {
+    background-color: #941d49;
+}
+
 .image-inputs {
     background-color: var(--tbck-light-blue);
     padding: 10px;
