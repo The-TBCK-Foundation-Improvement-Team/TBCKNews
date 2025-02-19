@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MainNewsCard } from '../components/news-cards/MainNewsCard';
+import { SlideShow } from '../components/home-page-slide-show/SlideShow';
 import axios from 'axios';
 import '../css/HomePage.css';
 
@@ -20,37 +21,8 @@ export function HomePage() {
     return (
         <div className='home-page'>
             <div className="latest-news">
-                <h1 id="latest-news-header">Latest News</h1>
                 {news.length < 3 ? <p></p> : 
-                    <div className="latest-news-grid">
-                        <MainNewsCard
-                            className='news-grid-item'
-                            title={news[0].title}
-                            imgSrc="https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"
-                            imgAlt={news[0].images[0].altText}
-                            author={news[0].author}
-                            date={news[0].date}
-                            isAdmin={true}
-                        />
-                        <MainNewsCard
-                            className='news-grid-item'
-                            title={news[1].title}
-                            imgSrc="https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"
-                            imgAlt={news[1].images[0].altText}
-                            author={news[1].author}
-                            date={news[1].date}
-                            isAdmin={false}
-                        />
-                        <MainNewsCard
-                            className='news-grid-item'
-                            title={news[2].title}
-                            imgSrc="https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"
-                            imgAlt={news[2].images[0].altText}
-                            author={news[2].author}
-                            date={news[2].date}
-                            isAdmin={true}
-                        />
-                    </div>
+                    <SlideShow news={news} />
                 }
             </div>
             <div className="warrior-of-the-month-hp">

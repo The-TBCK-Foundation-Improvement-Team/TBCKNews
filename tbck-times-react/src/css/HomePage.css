@@ -22,8 +22,9 @@
 }
 
 .latest-news {
-    background-color: var(--tbck-green);
-    width: 100%;
+    background-color: var(--tbck-yellow);
+    height: 60vh;
+    position: relative;
 }
 
 #warrior-of-the-month-header {
