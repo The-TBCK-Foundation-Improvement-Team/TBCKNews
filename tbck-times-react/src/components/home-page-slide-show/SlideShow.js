@@ -43,22 +43,6 @@ export function SlideShow(props) {
                         className={`slide-show-card ${index === currentIndex ? 'focused' : ''}`}
                     />
                 ))}
-                <SlideShowCard
-                    key={-1}
-                    title={props.news[props.news.length - 1].title}
-                    imgSrc={"https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"}
-                    imgAlt={"text"}
-                    author={props.news[props.news.length - 1].author}
-                    className="slide-show-card"
-                />
-                <SlideShowCard
-                    key={props.news.length}
-                    title={props.news[0].title}
-                    imgSrc={"https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"}
-                    imgAlt={"text"}
-                    author={props.news[0].author}
-                    className="slide-show-card"
-                />
             </div>
         </div>
     );
