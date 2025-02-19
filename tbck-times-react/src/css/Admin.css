@@ -14,46 +14,67 @@
     padding: 20px;
     max-width: 1200px;
     margin: 50px auto;
+    
 }
 
 .verification-container, .article-container {
     flex: 1;
-    background-color: var(--tbck-dark-blue);
+    background-color: var(--tbck-white);
     padding: 20px;
     border-radius: 8px;
     color: var(--tbck-white);
 }
 
-h2 {
-    border-bottom: 2px solid var(--tbck-yellow);
+.adminh2 {
+    border-bottom: 2px solid var(--tbck-dark-blue);
     padding-bottom: 10px;
     margin-bottom: 20px;
-    color: var(--tbck-yellow);
+    color: var(--tbck-dark-blue);
 }
 
-/* input, textarea, button {
+.admintext {
     display: block;
     width: 96%;
     margin-bottom: 15px;
     padding: 10px;
     border: none;
     border-radius: 4px;
-} */
+} 
 
-input, textarea {
+.admintext {
     background-color: var(--tbck-white);
     color: var(--tbck-black);
 }
 
-button {
-    background-color: var(--tbck-green);
-    color: var(--tbck-white);
+.admin-dropdown {
+    background-color: var(--tbck-white) ;
+    display: block;
+    width: 98%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+}
+
+.submit-article, .approve {
+    background-color: var(--tbck-light-blue);
+    color: var(--tbck-black);
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #5c9a0a;
+.submit-article:hover, .approve:hover {
+    background-color: var(--tbck-dark-blue);
+    color: var(--tbck-white)
+}
+
+.remove {
+    width: 96%;
+    background-color: #ff2779;
+}
+
+.remove:hover {
+    background-color: #941d49;
 }
 
 .image-inputs {
@@ -71,3 +92,12 @@ button:hover {
 .image-inputs input {
     margin-bottom: 5px;
 }
+
+.submit-article, .approve {
+    width: 96%;
+}
+
+.admin-background {
+    background-color: #4cbcca;
+}
+

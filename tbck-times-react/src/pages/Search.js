@@ -4,6 +4,7 @@ import { useParams, Link } from "react-router-dom";
 import { MuiNavBar } from '../components/MuiNavBar.js';
 import { MuiFooter } from '../components/MuiFooter.js';
 import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
+import "../css/App.css";
 
 const categories = ['News', 'Advocacy', 'Events', 'WarriorOfTheMonth', "Sports", "Research"]; // List of categories
 //method to get the news by the newest-latest date from the API
@@ -74,7 +75,7 @@ const SearchPage = () => {
         <MuiCategoryBar/>
         <div style={{ padding: "20px", maxWidth: "1200px", margin: "0 auto" }}>
             <header style={{ marginBottom: "30px", textAlign: "left" }}>
-                <h1 style={{ fontSize: "36px", fontWeight: "bold", color: "#222" }}>
+                <h1 style={{ fontSize: "36px", fontWeight: "bold", color: "#222", color: "#00595a" }}>
                   {searchQuery}
                 </h1>
                 <p style={{ fontSize: "18px", color: "#555" }}>
@@ -123,7 +124,7 @@ const SearchPage = () => {
                             />
                               )}
                             <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
-                                <h2 style={{ fontSize: "24px", fontWeight: "600", color: "#333" }}>
+                                <h2 className="adminh2" style={{ fontSize: "24px", fontWeight: "600", color: "#00595a" }}>
                                     {result.title}
                                 </h2>
                                 <p style={{ fontSize: "16px", color: "#777", marginBottom: "5px" }}>

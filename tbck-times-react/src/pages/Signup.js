@@ -34,7 +34,7 @@ const Signup = () => {
             navigate("/login");
 
         } catch (error) {
-            alert("Signup failed: " + (error.response?.data?.error || "Unknown error"));
+            alert("Signup failed: " + (error.response?.data?.error || "Password Must Contain 1 Special Character"));
         }
     };
 

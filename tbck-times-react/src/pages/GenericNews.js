@@ -15,16 +15,21 @@ function GenericNews({title, about, author, date, image, content}) {
                     
                     <div className="news-layout">
 
-                    <h1 className='title'>
+                    <h1 className='main-title'>
                         {title}
                     </h1>
                     
                         <h5>
                             By: {author} | {date}
                         </h5>
-                        <img className='image-layout' src={image}/>
-                        <MuiLikeButton/>
-                        <p >
+                        <div className='image-layout'>
+                            <img src={image.url}/>
+                            <p>
+                            {image.caption}
+                            </p>
+                            <MuiLikeButton/>
+                        </div>
+                        <p className='news-page-content'>
                             {content}
                         </p>
             </div>

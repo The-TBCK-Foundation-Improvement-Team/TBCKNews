@@ -57,13 +57,20 @@ return (
             title={story.title}
             author={story.author}
             date={story.date}
-            image={story.images[0].url}
+            image={story.images[0]}
+            content={story.content}
+        />}
+        {story.category === "Sports" && <GenericNews
+            title={story.title}
+            author={story.author}
+            date={story.date}
+            image={story.images[0]}
             content={story.content}
         />}
         {story.category === "WarriorOfTheMonth" && <WarriorOfTheMonthTemplate
             title={story.title}
             about={story.content}
-            profileImage={story.images[0].url}
+            profileImage={story.images[0]}
         />}
         {story.category === "Newsletter" && <NewsLetter
         

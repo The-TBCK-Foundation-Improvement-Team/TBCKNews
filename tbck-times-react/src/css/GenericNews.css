@@ -1,12 +1,28 @@
 .title {
-    background-color: #EEA800;
     text-shadow: 0px 0px 1px black;
-    color: white;
+    color: tbck-blue;
     padding: 5px;
+}
+
+.main-title {
+    font-size: 2.25rem;
+    font-weight: 900;
+    color: #2C6460;
+    text-align: left;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
 }
 
 .image-layout {
     float: left;
+    padding-right: 15px;
+    justify-content: left;
+}
+
+.news-page-content {
+    font-family: 'Gill Sans', sans-serif;
+    font-size: 1.2rem;
+    
 }
 
 .news-layout {
@@ -31,8 +47,8 @@
     flex: 2;
     padding-top: 5px;
     align-items: center;
-    position: relative;
-    height: 100vh;
+
+    
 }
 
 
