@@ -128,7 +128,7 @@ const SearchPage = () => {
                                     {result.title}
                                 </h2>
                                 <p style={{ fontSize: "16px", color: "#777", marginBottom: "5px" }}>
-                                    {result.content.split('.')[0] + "."} {/* Display the first sentence */}
+                                    {result.contentOne.split('.')[0] + "."} {/* Display the first sentence */}
                                 </p>
                                 <p
                                     style={{
