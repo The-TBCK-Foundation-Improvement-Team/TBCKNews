@@ -124,7 +124,7 @@ const SearchPage = () => {
                             />
                               )}
                             <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
-                                <h2 style={{ fontSize: "24px", fontWeight: "600", color: "#00595a" }}>
+                                <h2 className="adminh2" style={{ fontSize: "24px", fontWeight: "600", color: "#00595a" }}>
                                     {result.title}
                                 </h2>
                                 <p style={{ fontSize: "16px", color: "#777", marginBottom: "5px" }}>
