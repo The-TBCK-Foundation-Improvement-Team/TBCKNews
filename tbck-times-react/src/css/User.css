@@ -9,8 +9,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-input {
-  width: 100%;
+.userInput {
+  width: 96%;
   padding: 10px;
   margin: 10px 0;
   border-radius: 5px;
@@ -20,12 +20,12 @@ input {
   transition: border 0.3s, box-shadow 0.3s;
 }
 
-input:focus {
+.userInput:focus {
   border-color: var(--tbck-light-blue);
   box-shadow: 0 0 5px var(--tbck-light-blue);
 }
 
-button {
+.admin-btn, .logout-btn, .edit-btn, .save-btn, .approve, .submit-article, .remove {
   margin: 10px;
   padding: 12px 25px;
   border: none;
@@ -37,7 +37,7 @@ button {
   transition: background 0.3s;
 }
 
-button:hover {
+.edit-btn:hover, .save-btn:hover {
   background: var(--tbck-dark-blue);
 }
 

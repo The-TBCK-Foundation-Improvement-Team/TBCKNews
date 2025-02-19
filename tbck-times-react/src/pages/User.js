@@ -78,17 +78,17 @@ const User = () => {
                 <h2>User Profile</h2>
                 {user ? (
                     <div>
-                        <p><strong>First Name:</strong> {isEditing ? <input type="text" name="firstName" value={editedUser.firstName} onChange={handleChange} /> : user.firstName}</p>
-                        <p><strong>Last Name:</strong> {isEditing ? <input type="text" name="lastName" value={editedUser.lastName} onChange={handleChange} /> : user.lastName}</p>
-                        <p><strong>Email:</strong> {isEditing ? <input type="email" name="email" value={editedUser.email} onChange={handleChange} /> : user.email}</p>
-                        <p><strong>Password:</strong> {isEditing ? <input type="password" name="password" value={editedUser.password} onChange={handleChange} /> : "********"}</p>
+                        <p><strong>First Name:</strong> {isEditing ? <input type="text" className="userInput" name="firstName" value={editedUser.firstName} onChange={handleChange} /> : user.firstName}</p>
+                        <p><strong>Last Name:</strong> {isEditing ? <input type="text" className="userInput" name="lastName" value={editedUser.lastName} onChange={handleChange} /> : user.lastName}</p>
+                        <p><strong>Email:</strong> {isEditing ? <input type="email" className="userInput" name="email" value={editedUser.email} onChange={handleChange} /> : user.email}</p>
+                        <p><strong>Password:</strong> {isEditing ? <input type="password" className="userInput" name="password" value={editedUser.password} onChange={handleChange} /> : "********"}</p>
 
                         {message && <p className="message">{message}</p>}
 
                         {isEditing ? (
-                            <button onClick={handleSave}>Save Changes</button>
+                            <button className="save-btn" onClick={handleSave}>Save Changes</button>
                         ) : (
-                            <button onClick={handleEdit}>Edit Profile</button>
+                            <button className="edit-btn" onClick={handleEdit}>Edit Profile</button>
                         )}
 
                         {user.role === "ADMIN" && (
