@@ -22,8 +22,9 @@
 }
 
 .latest-news {
-    background-color: var(--tbck-green);
-    width: 100%;
+    background-color: var(--tbck-yellow);
+    height: 100%;
+    position: relative;
 }
 
 #warrior-of-the-month-header {
@@ -31,7 +32,7 @@
 }
 
 .warrior-of-the-month-hp {
-    background-color: var(--tbck-light-blue);
+    background-color: var(--tbck-green);
     width: 100%;
     justify-items: center;
     padding-bottom: 60px;
