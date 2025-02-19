@@ -31,14 +31,14 @@ h2 {
     color: var(--tbck-yellow);
 }
 
-input, textarea, button {
+/* input, textarea, button {
     display: block;
     width: 96%;
     margin-bottom: 15px;
     padding: 10px;
     border: none;
     border-radius: 4px;
-}
+} */
 
 input, textarea {
     background-color: var(--tbck-white);
