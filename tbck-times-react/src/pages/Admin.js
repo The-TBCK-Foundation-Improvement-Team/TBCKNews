@@ -140,7 +140,7 @@ const Admin = () => {
 
         {/* Article Creation Form */}
         <div className="article-container">
-          <h2>Create Article</h2>
+          <h2 className="adminh2">Create Article</h2>
           <form onSubmit={handleArticleSubmit}>
             <input type="text" className="admintext" placeholder="Title" value={newArticle.title} onChange={(e) => setNewArticle({ ...newArticle, title: e.target.value })} required />
             <textarea placeholder="Content" className="admintext" value={newArticle.content} onChange={(e) => setNewArticle({ ...newArticle, content: e.target.value })} required />

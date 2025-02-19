@@ -7,7 +7,7 @@ export function WarriorTemplate({title, about, profileImage}) {
         <div className="content-wrapper">
         <div className="header-section">
             <div className="header-content">
-            <h1 className="main-warrior-title">
+            <h1 className="main-title">
                 {title}
             </h1>
             <div className="name-title"></div>
@@ -29,7 +29,7 @@ export function WarriorTemplate({title, about, profileImage}) {
             <div className="profile-image-wrapper">
                 <div className="profile-image-inner">
                 <img 
-                    src={profileImage}
+                    src={profileImage.url}
                     alt="Profile"
                     className="profile-image"
                 />

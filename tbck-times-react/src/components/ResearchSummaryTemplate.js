@@ -22,6 +22,7 @@ export function ResearchSummaryTemplate({title, category, summary, link}) {
             variant="h4"
             component="h1"
             gutterBottom
+            className="main-title"
             sx={{ 
                 fontWeight: 'bold',
                 mb: 1
@@ -55,9 +56,10 @@ export function ResearchSummaryTemplate({title, category, summary, link}) {
             
             <Box
             component={Link}
+            target="_blank"
             href={link}
             sx={{
-                display: 'inline-flex',
+                
                 alignItems: 'center',
                 gap: 1,
                 color: '#FA1882 !important',
@@ -78,7 +80,7 @@ export function ResearchSummaryTemplate({title, category, summary, link}) {
         </Paper>
         </div>
         <div className='sidebar-layout'>
-        <MuiSuggestedStories/>
+            <MuiSuggestedStories/>
         </div>
         </div>
         );
