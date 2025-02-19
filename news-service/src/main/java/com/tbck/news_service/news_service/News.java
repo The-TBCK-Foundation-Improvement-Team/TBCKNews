@@ -125,9 +125,9 @@ public class News {
         News news = new News();
         news.setNewsId(UUID.fromString(map.get("newsId").s()));
         news.setTitle(map.get("title").s());
-        news.setContentOne(map.get("contentOne").s() != null ? map.get("contentOne").s() : "No Content One");
-        news.setContentTwo(map.get("contentTwo").s() != null ? map.get("contentTwo").s() : "No Content Two");
-        news.setContentThree(map.get("contentThree").s() != null ? map.get("contentThree").s() : "No Content Two");
+        news.setContentOne(map.get("contentOne") != null ? map.get("contentOne").s() : "No Content One");
+        news.setContentTwo(map.get("contentTwo") != null ? map.get("contentTwo").s() : "No Content Two");
+        news.setContentThree(map.get("contentThree") != null ? map.get("contentThree").s() : "No Content Two");
         news.setAuthor(map.get("author").s());
         news.setDate(map.get("date").s());
         news.setCategory(map.get("category").s());
