@@ -29,13 +29,18 @@
 
 #warrior-of-the-month-header {
     text-align: center;
+    background-color: var(--tbck-light-blue);
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 2.5rem;
 }
 
 .warrior-of-the-month-hp {
-    background-color: var(--tbck-green);
     width: 100%;
     justify-items: center;
     padding-bottom: 60px;
+    margin-top: 0;
 }
 
 .home-page-vertical-white-space {

@@ -28,17 +28,15 @@ export function HomePage() {
             <div className="home-page-vertical-white-space"></div>
             <div className="warrior-of-the-month-hp">
                 <h1 id="warrior-of-the-month-header">Warrior of the Month</h1>
-                {warriorOfTheMonth.length !== 1 ? <p></p> : 
-                    <MainNewsCard
-                        className='warrior-of-the-month-item'
-                        title={warriorOfTheMonth[0].title}
-                        imgSrc="https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"
-                        imgAlt={warriorOfTheMonth[0].images[0].altText}
-                        author={warriorOfTheMonth[0].author}
-                        date={warriorOfTheMonth[0].date}
-                        isAdmin={false}
-                    />
-                }
+                <div className="home-page-wotm-body">
+                    {warriorOfTheMonth.length !== 1 ? <p></p> : 
+                        <div>
+                            <img src="https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg" alt={warriorOfTheMonth[0].images[0].altText} />
+                            <h2>{warriorOfTheMonth[0].title}</h2>
+                            <p>{warriorOfTheMonth[0].content}</p>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     );
