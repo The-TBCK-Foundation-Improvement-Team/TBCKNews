@@ -109,7 +109,7 @@ const Admin = () => {
       <div className="admin-container">
         {/* Unverified Users */}
         <div className="verification-container">
-          <h2>Unverified Users</h2>
+          <h2 className="adminh2">Unverified Users</h2>
           {unverifiedUsers.length > 0 ? (
             unverifiedUsers.map((user) => (
               <div key={user.userId} className="user-card">
@@ -125,20 +125,20 @@ const Admin = () => {
         <div className="article-container">
           <h2>Create Article</h2>
           <form onSubmit={handleArticleSubmit}>
-            <input type="text" placeholder="Title" value={newArticle.title} onChange={(e) => setNewArticle({ ...newArticle, title: e.target.value })} required />
-            <textarea placeholder="Content" value={newArticle.content} onChange={(e) => setNewArticle({ ...newArticle, content: e.target.value })} required />
-            <input type="text" placeholder="Author" value={newArticle.author} onChange={(e) => setNewArticle({ ...newArticle, author: e.target.value })} required />
-            <input type="date" value={newArticle.date} onChange={(e) => setNewArticle({ ...newArticle, date: e.target.value })} required />
-            <input type="text" placeholder="Category" value={newArticle.category} onChange={(e) => setNewArticle({ ...newArticle, category: e.target.value })} required />
-            <input type="text" placeholder="Template" value={newArticle.template} onChange={(e) => setNewArticle({ ...newArticle, template: e.target.value })} required />
-            <input type="text" placeholder="External Link (Optional)" value={newArticle.externalLink} onChange={(e) => setNewArticle({ ...newArticle, externalLink: e.target.value })} />
+            <input type="text" className="admintext" placeholder="Title" value={newArticle.title} onChange={(e) => setNewArticle({ ...newArticle, title: e.target.value })} required />
+            <textarea placeholder="Content" className="admintext" value={newArticle.content} onChange={(e) => setNewArticle({ ...newArticle, content: e.target.value })} required />
+            <input type="text" placeholder="Author" className="admintext" value={newArticle.author} onChange={(e) => setNewArticle({ ...newArticle, author: e.target.value })} required />
+            <input type="date" value={newArticle.date} className="admintext" onChange={(e) => setNewArticle({ ...newArticle, date: e.target.value })} required />
+            <input type="text" placeholder="Category" className="admintext" value={newArticle.category} onChange={(e) => setNewArticle({ ...newArticle, category: e.target.value })} required />
+            <input type="text" placeholder="Template" className="admintext" value={newArticle.template} onChange={(e) => setNewArticle({ ...newArticle, template: e.target.value })} required />
+            <input type="text" placeholder="External Link (Optional)" className="admintext" value={newArticle.externalLink} onChange={(e) => setNewArticle({ ...newArticle, externalLink: e.target.value })} />
 
-            <input type="file" multiple onChange={handleImageUpload} />
+            <input type="file" className="admintext" multiple onChange={handleImageUpload} />
 
             {images.map((img, index) => (
               <div key={index} className="image-inputs">
-                <input type="text" placeholder="Alt Text" value={img.altText} onChange={(e) => handleImageChange(index, "altText", e.target.value)} required />
-                <input type="text" placeholder="Caption" value={img.caption} onChange={(e) => handleImageChange(index, "caption", e.target.value)} required />
+                <input type="text" placeholder="Alt Text" className="admintext" value={img.altText} onChange={(e) => handleImageChange(index, "altText", e.target.value)} required />
+                <input type="text" placeholder="Caption" className="admintext" value={img.caption} onChange={(e) => handleImageChange(index, "caption", e.target.value)} required />
               </div>
             ))}
 
