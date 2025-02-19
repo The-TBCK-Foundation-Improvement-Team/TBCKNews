@@ -10,13 +10,15 @@ const Admin = () => {
   const [images, setImages] = useState([]);
   const [newArticle, setNewArticle] = useState({
     title: "",
-    content: "",
+    contentOne: "",
+    contentTwo: "",
+    contentThree: "", 
     author: "",
     date: "",
-    category: "News",
+    category: "Category",
     images: [],
     comments: [],
-    template: "Generic",
+    template: "Template",
     externalLink: "",
   });
 
@@ -103,7 +105,9 @@ const Admin = () => {
       alert("Article created successfully!");
       setNewArticle({
         title: "",
-        content: "",
+        contentOne: "",
+        contentTwo: "",
+        contentThree: "",
         author: "",
         date: "",
         category: "News",
@@ -143,7 +147,9 @@ const Admin = () => {
           <h2 className="adminh2">Create Article</h2>
           <form onSubmit={handleArticleSubmit}>
             <input type="text" className="admintext" placeholder="Title" value={newArticle.title} onChange={(e) => setNewArticle({ ...newArticle, title: e.target.value })} required />
-            <textarea placeholder="Content" className="admintext" value={newArticle.content} onChange={(e) => setNewArticle({ ...newArticle, content: e.target.value })} required />
+            <textarea placeholder="Content One" className="admintext" value={newArticle.content} onChange={(e) => setNewArticle({ ...newArticle, contentOne: e.target.value })} required />
+            <textarea placeholder="Content Two" className="admintext" value={newArticle.content} onChange={(e) => setNewArticle({ ...newArticle, contentTwo: e.target.value })} required />
+            <textarea placeholder="Content Three" className="admintext" value={newArticle.content} onChange={(e) => setNewArticle({ ...newArticle, contentThree: e.target.value })} required />
             <input type="text" placeholder="Author" className="admintext" value={newArticle.author} onChange={(e) => setNewArticle({ ...newArticle, author: e.target.value })} required />
             <input type="date" value={newArticle.date} className="admintext" onChange={(e) => setNewArticle({ ...newArticle, date: e.target.value })} required />
 
