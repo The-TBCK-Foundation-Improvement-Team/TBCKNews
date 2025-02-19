@@ -23,7 +23,7 @@
 
 .latest-news {
     background-color: var(--tbck-yellow);
-    height: 60vh;
+    height: 100%;
     position: relative;
 }
 
