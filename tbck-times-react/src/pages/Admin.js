@@ -13,10 +13,10 @@ const Admin = () => {
     content: "",
     author: "",
     date: "",
-    category: "",
+    category: "News",
     images: [],
     comments: [],
-    template: "",
+    template: "Generic",
     externalLink: "",
   });
 
@@ -39,7 +39,7 @@ const Admin = () => {
   const verifyUser = async (userId) => {
     try {
       const token = sessionStorage.getItem("jwt");
-      await axios.patch(`http://localhost:8080/user/verify/${userId}/USER`, {}, {
+      await axios.patch(`http://localhost:8080/user/verify/${userId}/GUEST`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUnverifiedUsers(prev => prev.filter(user => user.userId !== userId));
@@ -101,7 +101,17 @@ const Admin = () => {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
       });
       alert("Article created successfully!");
-      setNewArticle({ title: "", content: "", author: "", date: "", category: "", images: [], comments: [], template: "", externalLink: "" });
+      setNewArticle({
+        title: "",
+        content: "",
+        author: "",
+        date: "",
+        category: "News",
+        images: [],
+        comments: [],
+        template: "Generic",
+        externalLink: "",
+      });
       setImages([]);
     } catch (error) {
       console.error("Error creating article:", error);
@@ -130,14 +140,33 @@ const Admin = () => {
 
         {/* Article Creation Form */}
         <div className="article-container">
-          <h2 className="adminh2">Create Article</h2>
+          <h2>Create Article</h2>
           <form onSubmit={handleArticleSubmit}>
             <input type="text" className="admintext" placeholder="Title" value={newArticle.title} onChange={(e) => setNewArticle({ ...newArticle, title: e.target.value })} required />
             <textarea placeholder="Content" className="admintext" value={newArticle.content} onChange={(e) => setNewArticle({ ...newArticle, content: e.target.value })} required />
             <input type="text" placeholder="Author" className="admintext" value={newArticle.author} onChange={(e) => setNewArticle({ ...newArticle, author: e.target.value })} required />
             <input type="date" value={newArticle.date} className="admintext" onChange={(e) => setNewArticle({ ...newArticle, date: e.target.value })} required />
-            <input type="text" placeholder="Category" className="admintext" value={newArticle.category} onChange={(e) => setNewArticle({ ...newArticle, category: e.target.value })} required />
-            <input type="text" placeholder="Template" className="admintext" value={newArticle.template} onChange={(e) => setNewArticle({ ...newArticle, template: e.target.value })} required />
+
+            {/* Category Dropdown */}
+            <select className="admintext" placeholder="Category" value={newArticle.category} onChange={(e) => setNewArticle({ ...newArticle, category: e.target.value })} required>
+              <option value="Category">Category</option>
+              <option value="News">News</option>
+              <option value="Advocacy">Advocacy</option>
+              <option value="Events">Events</option>
+              <option value="WarriorOfTheMonth">Warrior Of The Month</option>
+              <option value="Sports">Sports</option>
+              <option value="Research">Research</option>
+            </select>
+
+            {/* Template Dropdown */}
+            <select className="admintext" placeholder="Template" value={newArticle.template} onChange={(e) => setNewArticle({ ...newArticle, template: e.target.value })} required>
+              <option value="Template">Template</option>
+              <option value="News">News</option>
+              <option value="Research">Research</option>
+              <option value="Newsletter">Newsletter</option>
+              <option value="Generic">Generic</option>
+            </select>
+
             <input type="text" placeholder="External Link (Optional)" className="admintext" value={newArticle.externalLink} onChange={(e) => setNewArticle({ ...newArticle, externalLink: e.target.value })} />
 
             <input type="file" className="admintext" multiple onChange={handleImageUpload} />
