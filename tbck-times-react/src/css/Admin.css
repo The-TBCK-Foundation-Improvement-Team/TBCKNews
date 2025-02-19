@@ -24,36 +24,45 @@
     color: var(--tbck-white);
 }
 
-h2 {
+.adminh2 {
     border-bottom: 2px solid var(--tbck-yellow);
     padding-bottom: 10px;
     margin-bottom: 20px;
     color: var(--tbck-yellow);
 }
 
-/* input, textarea, button {
+.admintext {
     display: block;
     width: 96%;
     margin-bottom: 15px;
     padding: 10px;
     border: none;
     border-radius: 4px;
-} */
+} 
 
-input, textarea {
+.admintext {
     background-color: var(--tbck-white);
     color: var(--tbck-black);
 }
 
-button {
+.submit-article, .approve {
     background-color: var(--tbck-green);
     color: var(--tbck-white);
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+.submit-article:hover, .approve:hover {
     background-color: #5c9a0a;
+}
+
+.remove {
+    width: 96%;
+    background-color: #ff2779;
+}
+
+.remove:hover {
+    background-color: #941d49;
 }
 
 .image-inputs {
@@ -70,4 +79,8 @@ button:hover {
 
 .image-inputs input {
     margin-bottom: 5px;
+}
+
+.submit-article, .approve {
+    width: 96%;
 }

@@ -1,0 +1,33 @@
+.slide-show {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    max-height: 60vh;
+}
+
+.slide-show-scroll-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.7);
+    color: var(--tbck-dark-blue);
+    white-space: nowrap;
+}
+
+.slide-show-cards {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    transform: translateX(0);
+}
+
+.slide-show-card.focused {
+    transform: scale(1.1);
+}
+
+.slide-show-scroll-button {
+    background: none;
+    border: none;
+    color: var(--tbck-dark-blue);
+    font-size: 2rem;
+    cursor: pointer;
+}
