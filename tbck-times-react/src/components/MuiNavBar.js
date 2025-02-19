@@ -30,7 +30,7 @@ export const MuiNavBar = () => {
     return (
         <AppBar position="static" sx={{ backgroundColor: "white" }}>
             <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', width: '95%' }}>
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <container style={{ display: "flex", alignItems: "center" }}>
                     <Button component={Link} to={'/'}>
                         <img src="/images/TBCK_Logo.png" alt="TBCK Logo" style={{ height: "75px", width: "75px", paddingRight: 60 }} />
                     </Button>
@@ -52,7 +52,7 @@ export const MuiNavBar = () => {
                             input: { startAdornment: (<SearchIcon sx={{ color: 'rgba(0, 0, 0, 0.7)', marginRight: '8px' }} />) },
                         }}
                     />
-                </div>
+                </container>
 
                 <IconButton sx={{ color: 'rgba(220, 44, 118)' }}>
                     <Tooltip
