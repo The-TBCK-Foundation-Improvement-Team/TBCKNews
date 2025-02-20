@@ -96,7 +96,8 @@ const SearchPage = () => {
                     news.map((result) => (
                         <Link
                             key={result.newsId}
-                            to={`/details/${result.newsId}`} // Navigates to a detail page for the result
+                            to={`/details/${result.title}/${result.date}`} // Navigates to a detail page for the result
+                            state={{ newsId: result.newsId }} // Passes the newsId to the detail page
                             style={{
                                 textDecoration: "none", // Remove underline from the link
                                 width: "100%", // Full width with some margin on small screens

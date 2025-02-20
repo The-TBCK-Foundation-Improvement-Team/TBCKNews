@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 
 import ResearchSummary from './ResearchSummary.js';
 import GenericNews from './GenericNews.js';
@@ -33,7 +33,8 @@ const fetchStory = async (newsId) => {
 }
 
 export default function NewsDetails() {
-    const { newsId } = useParams();
+    const location = useLocation();
+    const {newsId} = location.state;
     const [story, setStory] = useState([]);
 
     useEffect(() => {
