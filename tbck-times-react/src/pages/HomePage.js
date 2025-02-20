@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../css/HomePage.css';
+import '../css/home-page-components/HomePage.css';
 import { NewsStoryCover } from '../components/home-page-components/NewsStoryCover';
 
 export function HomePage() {
