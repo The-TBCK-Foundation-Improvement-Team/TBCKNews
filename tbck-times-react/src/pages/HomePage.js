@@ -3,6 +3,7 @@ import axios from 'axios';
 import '../css/home-page-components/HomePage.css';
 import { NewsStoryCover } from '../components/home-page-components/NewsStoryCover';
 import { BasicNewsStoryLink } from '../components/home-page-components/BasicNewsStoryLink';
+import { SubStory } from '../components/home-page-components/SubStory';
 
 export function HomePage() {
     const [news, setNews] = useState([]);
@@ -22,10 +23,24 @@ export function HomePage() {
         <div className='home-page'>
             <div className="latest-news">
                 <h1 id="latest-news-header">Latest News</h1>
-                <div className="home-page-middle-news-column">
-                    <NewsStoryCover />
-                    <BasicNewsStoryLink />
-                    <BasicNewsStoryLink />
+                <div className="home-page-latest-news-stories">
+                    <div className="home-page-left-news-column">
+                        <NewsStoryCover />
+                        <BasicNewsStoryLink />
+                        <BasicNewsStoryLink />
+                    </div>
+                    <div className="home-page-vertical-spacer"></div>
+                    <div className="home-page-middle-news-column">
+                        <NewsStoryCover />
+                        <BasicNewsStoryLink />
+                        <BasicNewsStoryLink />
+                    </div>
+                    <div className="home-page-vertical-spacer"></div>
+                    <div className="home-page-right-news-column">
+                        <SubStory />
+                        <SubStory />
+                        <SubStory />
+                    </div>
                 </div>
                 {news.length < 3 ? <p className="home-page-placeholder"></p> : 
                     <div></div>
