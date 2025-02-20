@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { MainNewsCard } from '../components/news-cards/MainNewsCard';
-import { SlideShow } from '../components/home-page-slide-show/SlideShow';
 import axios from 'axios';
 import '../css/HomePage.css';
 
@@ -22,7 +20,7 @@ export function HomePage() {
         <div className='home-page'>
             <div className="latest-news">
                 {news.length < 3 ? <p></p> : 
-                    <SlideShow news={news} />
+                    <div></div>
                 }
             </div>
             <div className="home-page-vertical-white-space"></div>
