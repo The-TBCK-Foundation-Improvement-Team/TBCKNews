@@ -70,8 +70,10 @@ return (
         />}
         {story.category === "WarriorOfTheMonth" && <WarriorOfTheMonthTemplate
             title={story.title}
-            about={story.content}
-            profileImage={story.images[0]}
+            contentOne={story.contentOne}
+            contentTwo={story.contentTwo}
+            contentThree={story.contentThree}
+            images={story.images}
         />}
         {story.category === "Newsletter" && <NewsLetter
         

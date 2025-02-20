@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/WarriorOfTheMonth.css';
 
-export function WarriorTemplate({title, about, profileImage}) {
+export function WarriorTemplate({title, contentOne, contentTwo, contentThree, images}) {
     return (
     <div>
         <div className="content-wrapper">
@@ -19,7 +19,7 @@ export function WarriorTemplate({title, about, profileImage}) {
             <div className="info-card">
                 <h2 className="about-title">About {title}</h2>
                 <p className="about-text">
-                {about}
+                {contentOne}
                 </p>
             </div>
             </div>
@@ -29,7 +29,7 @@ export function WarriorTemplate({title, about, profileImage}) {
             <div className="profile-image-wrapper">
                 <div className="profile-image-inner">
                 <img 
-                    src={profileImage.url}
+                    src={images[0].url}
                     alt="Profile"
                     className="profile-image"
                 />
