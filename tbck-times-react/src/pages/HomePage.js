@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../css/HomePage.css';
+import { NewsStoryCover } from '../components/home-page-components/NewsStoryCover';
 
 export function HomePage() {
     const [news, setNews] = useState([]);
     const [warriorOfTheMonth, setWarriorOfTheMonth] = useState([]);
 
-    useEffect(() => {
-        axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/newest')
-            .then((response) => setNews(response.data));
-    }, []);
+    // useEffect(() => {
+    //     axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/newest')
+    //         .then((response) => setNews(response.data));
+    // }, []);
 
-    useEffect(() => {
-        axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/WarriorOfTheMonth')
-            .then((response) => setWarriorOfTheMonth(response.data));
-    }, []);
+    // useEffect(() => {
+    //     axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/WarriorOfTheMonth')
+    //         .then((response) => setWarriorOfTheMonth(response.data));
+    // }, []);
 
     return (
         <div className='home-page'>
             <div className="latest-news">
-                {news.length < 3 ? <p></p> : 
+                <h1 id="latest-news-header">Latest News</h1>
+                <NewsStoryCover />
+                {news.length < 3 ? <p className="home-page-placeholder"></p> : 
                     <div></div>
                 }
             </div>

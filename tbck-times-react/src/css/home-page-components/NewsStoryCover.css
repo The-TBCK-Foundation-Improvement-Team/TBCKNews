@@ -1,0 +1,22 @@
+.news-story-cover {
+    max-width: 20vw;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.news-story-cover-author-date {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.news-story-cover-image {
+    width: 100%;
+    height: auto;
+}
+
+.news-story-cover-title,
+.news-story-cover-blurb {
+    text-align: center;
+    margin-bottom: 0;
+}
