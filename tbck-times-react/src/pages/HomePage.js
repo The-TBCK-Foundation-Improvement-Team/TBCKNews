@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../css/home-page-components/HomePage.css';
 import { NewsStoryCover } from '../components/home-page-components/NewsStoryCover';
+import { BasicNewsStoryLink } from '../components/home-page-components/BasicNewsStoryLink';
 
 export function HomePage() {
     const [news, setNews] = useState([]);
@@ -21,7 +22,11 @@ export function HomePage() {
         <div className='home-page'>
             <div className="latest-news">
                 <h1 id="latest-news-header">Latest News</h1>
-                <NewsStoryCover />
+                <div className="home-page-middle-news-column">
+                    <NewsStoryCover />
+                    <BasicNewsStoryLink />
+                    <BasicNewsStoryLink />
+                </div>
                 {news.length < 3 ? <p className="home-page-placeholder"></p> : 
                     <div></div>
                 }
