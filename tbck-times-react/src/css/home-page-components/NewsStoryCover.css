@@ -1,7 +1,14 @@
 .news-story-cover {
+    color: black;
+    text-decoration: none;
     max-width: 20vw;
     padding-right: 20px;
     padding-left: 20px;
+    border-bottom: 1px solid black;
+}
+
+.news-story-cover a:visited {
+    color: black;
 }
 
 .news-story-cover-author-date {
