@@ -81,24 +81,20 @@ export function HomePage() {
 
                     <div className="home-page-vertical-spacer" />
 
-                    <div className="home-page-middle-news-column">
-                        <div className="home-page-horizontal-spacer" />
-                        <div className="home-page-horizontal-spacer" />
-                        <NewsStoryCover />
-                        <BasicNewsStoryLink />
-                        <BasicNewsStoryLink />
-                        <BasicNewsStoryLink />
-                        <BasicNewsStoryLink />
+                    <div className='home-page-middle-row'>
+                        <div className="home-page-middle-news-column">
+                            <NewsStoryCover />
+                            <BasicNewsStoryLink />
+                            <BasicNewsStoryLink />
+                            <BasicNewsStoryLink />
+                        </div>
                     </div>
-
+                    
                     <div className="home-page-vertical-spacer" />
 
                     <div className="home-page-right-row">
                         <div className="home-page-vertical-spacer" />
                         <div className="home-page-right-news-column">
-                            <div className="home-page-horizontal-spacer" />
-                            <div className="home-page-horizontal-spacer" />
-                            <div className="home-page-horizontal-spacer" />
                             <SubStory />
                             <NewsStoryCover />
                             <SubStory />

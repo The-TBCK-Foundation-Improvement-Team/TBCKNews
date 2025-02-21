@@ -63,15 +63,18 @@
 }
 
 .home-page-left-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
     border-right: 1px solid #ddd;
 }
 
 .home-page-right-row {
+    border-left: 1px solid #ddd;
+}
+
+.home-page-left-row,
+.home-page-middle-row,
+.home-page-right-row {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    border-left: 1px solid #ddd;
+    align-items: center;
 }
