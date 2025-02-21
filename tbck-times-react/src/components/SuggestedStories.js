@@ -1,6 +1,6 @@
-import { SecondaryNewsCard } from './news-cards/SecondaryNewsCard.js';
+import SuggestedStoriesboxs from './news-components/SuggestedStoriesBoxs.js';
 
-import "../css/Newsletter.css";
+import "../css/SideBar.css";
 
 export const MuiSuggestedStories = () => {
     return (
@@ -9,20 +9,28 @@ export const MuiSuggestedStories = () => {
                 Suggested Stories:
             </h2>
             <div >
-                <SecondaryNewsCard
-                    className="additional-pad" 
-                    imgSrc={"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Spider-Firework-Omiya-Japan.jpg/220px-Spider-Firework-Omiya-Japan.jpg"} 
-                    imgAlt={"Image for news"} title={"This is an example of what it would look like when a story is posted"} 
-                 />
-                <br />
-                <SecondaryNewsCard 
+                <SuggestedStoriesboxs
                     imgSrc={"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Spider-Firework-Omiya-Japan.jpg/220px-Spider-Firework-Omiya-Japan.jpg"} 
                     imgAlt={"Image for news"} 
-                    title={"This is an example of what it would look like when a story is posted"} />
+                    title={"This is an example of what it would look like when a story is posted"} 
+                    newsId={1}
+                    date={"2024-02-20"}
+                 />
                 <br />
-                <SecondaryNewsCard 
+                <SuggestedStoriesboxs 
                     imgSrc={"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Spider-Firework-Omiya-Japan.jpg/220px-Spider-Firework-Omiya-Japan.jpg"} 
-                    imgAlt={"Image for news"} title={"This is an example of what it would look like when a story is posted"} 
+                    imgAlt={"Image for news"} 
+                    title={"This is an example of what it would look like when a story is posted"}
+                    newsId={2}
+                    date={"2024-02-20"}
+                />
+                <br />
+                <SuggestedStoriesboxs
+                    imgSrc={"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Spider-Firework-Omiya-Japan.jpg/220px-Spider-Firework-Omiya-Japan.jpg"} 
+                    imgAlt={"Image for news"} 
+                    title={"This is an example of what it would look like when a story is posted"} 
+                    newsId={3}
+                    date={"2024-02-20"}
                 />
             </div>
         </div>

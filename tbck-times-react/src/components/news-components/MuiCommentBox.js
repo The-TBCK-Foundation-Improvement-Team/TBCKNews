@@ -49,7 +49,7 @@ export function MuiCommentBox() {
   };
 
   return (
-    <Box className="comment-section" sx={{ maxWidth: 600, mx: 'auto', p: 3 }}>
+    <Box sx = {{ width: '100%', paddingTop: '20px'}}>
       <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
         <Typography variant="h6" gutterBottom>
           Comments
@@ -75,7 +75,7 @@ export function MuiCommentBox() {
           </Button>
         </form>
       </Paper>
-
+      <Box sx={{ maxHeight: 300, overflow: 'auto', paddingBottom: 8 }}>
       <List>
         {comments.map((comment, index) => (
           <React.Fragment key={comment.id}>
@@ -119,6 +119,7 @@ export function MuiCommentBox() {
           </React.Fragment>
         ))}
       </List>
+      </Box>
     </Box>
   );
 }
