@@ -1,0 +1,29 @@
+.sub-story {
+    color: black;
+    text-decoration: none;
+    max-height: 15vh;
+    max-width: 20vw;
+    padding-right: 20px;
+    padding-left: 20px;
+    border-bottom: 1px solid #ddd;
+    overflow: hidden;
+}
+
+.sub-story a:visited {
+    color: black;
+}
+
+.sub-story-image {
+    max-width: 40%;
+    height: auto;
+    object-fit: contain;
+}
+
+.sub-story-title {
+    text-align: center;
+}
+
+.sub-story-content {
+    display: flex;
+    flex-direction: row;
+}
