@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../css/home-page-components/HomePage.css';
+
 import { NewsStoryCover } from '../components/home-page-components/NewsStoryCover';
 import { BasicNewsStoryLink } from '../components/home-page-components/BasicNewsStoryLink';
 import { SubStory } from '../components/home-page-components/SubStory';
+import { MuiNavBar } from '../components/MuiNavBar';
+import { MuiCategoryBar } from '../components/MuiCategoryBar';
 
 export function HomePage() {
     const [news, setNews] = useState([]);
@@ -21,33 +24,99 @@ export function HomePage() {
 
     return (
         <div className='home-page'>
+            <MuiNavBar />
+            <MuiCategoryBar />
+            
             <div className="latest-news">
-                <h1 id="latest-news-header">Latest News</h1>
-                <div className="home-page-latest-news-stories">
-                    <div className="home-page-left-news-column">
-                        <NewsStoryCover />
-                        <BasicNewsStoryLink />
-                        <BasicNewsStoryLink />
+
+                <div className="home-page-horizontal-spacer" />
+
+                <div className="home-page-news-stories-section-one">
+
+                    <div className='home-page-left-row'>
+                        <div className="home-page-left-news-column">
+                            <NewsStoryCover />
+                            <BasicNewsStoryLink />
+                            <BasicNewsStoryLink />
+                        </div>
+                        <div className="home-page-vertical-spacer" />
                     </div>
-                    <div className="home-page-vertical-spacer"></div>
+
+                    <div className="home-page-vertical-spacer" />
+
                     <div className="home-page-middle-news-column">
                         <NewsStoryCover />
                         <BasicNewsStoryLink />
                         <BasicNewsStoryLink />
                     </div>
-                    <div className="home-page-vertical-spacer"></div>
-                    <div className="home-page-right-news-column">
-                        <SubStory />
-                        <SubStory />
-                        <SubStory />
+
+                    <div className="home-page-vertical-spacer" />
+
+                    <div className="home-page-right-row">
+                        <div className="home-page-vertical-spacer" />
+                        <div className="home-page-right-news-column">
+                            <SubStory />
+                            <SubStory />
+                            <SubStory />
+                            <SubStory />
+                            <SubStory />
+                        </div>
                     </div>
+
                 </div>
+
+                <div className="home-page-horizontal-spacer" /><div className="home-page-horizontal-spacer" /><div className="home-page-horizontal-spacer" />
+
+                <div className="home-page-news-stories-section-two">
+
+                    <div className='home-page-left-row'>
+                        <div className="home-page-left-news-column">
+                            <NewsStoryCover />
+                            <SubStory />
+                            <NewsStoryCover />
+                        </div>
+                        <div className="home-page-vertical-spacer" />
+                    </div>
+
+                    <div className="home-page-vertical-spacer" />
+
+                    <div className="home-page-middle-news-column">
+                        <div className="home-page-horizontal-spacer" />
+                        <div className="home-page-horizontal-spacer" />
+                        <NewsStoryCover />
+                        <BasicNewsStoryLink />
+                        <BasicNewsStoryLink />
+                        <BasicNewsStoryLink />
+                        <BasicNewsStoryLink />
+                    </div>
+
+                    <div className="home-page-vertical-spacer" />
+
+                    <div className="home-page-right-row">
+                        <div className="home-page-vertical-spacer" />
+                        <div className="home-page-right-news-column">
+                            <div className="home-page-horizontal-spacer" />
+                            <div className="home-page-horizontal-spacer" />
+                            <div className="home-page-horizontal-spacer" />
+                            <SubStory />
+                            <NewsStoryCover />
+                            <SubStory />
+                            <SubStory />
+                        </div>
+                    </div>
+
+                </div>
+
                 {news.length < 3 ? <p className="home-page-placeholder"></p> : 
                     <div></div>
                 }
+
             </div>
-            <div className="home-page-vertical-white-space"></div>
-            <div className="warrior-of-the-month-hp">
+
+            <div className="home-page-horizontal-spacer" />
+
+
+            {/* <div className="warrior-of-the-month-hp">
                 <h1 id="warrior-of-the-month-header">Warrior of the Month</h1>
                 <div className="home-page-wotm-body">
                     {warriorOfTheMonth.length !== 1 ? <p></p> : 
@@ -58,7 +127,7 @@ export function HomePage() {
                         </div>
                     }
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }
