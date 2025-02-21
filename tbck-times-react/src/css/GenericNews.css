@@ -37,36 +37,6 @@
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 20;
-    height: 100vh;
-}
-
-.sidebar-layout {
-    background-color: #11595A;
-    color: white;
-    text-align: left;
-    flex: 2;
-    padding-top: 5px;
-    align-items: center;
-    
-
-    
-}
-
-
-
-.suggested-stories {
-    color: white;
-    text-align: left;
-    padding-top: 5px;
-    padding-bottom: 20px;
-    align-items: center;
-    padding-left: 25px;
-}
-
-.story-reccomend {
-    padding: 5px;
-    align-items: center;
-    padding-inline: 5px;
 }
 
 .container {

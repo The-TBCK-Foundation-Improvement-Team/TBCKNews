@@ -50,6 +50,7 @@ function WarriorOfTheMonth({title, contentOne, contentTwo, contentThree, images}
             </div>
         <div className='sidebar-layout'>
             <MuiSuggestedStories />
+            <MuiCommentBox/>
         </div>
         <MuiFooter />
     </div>
