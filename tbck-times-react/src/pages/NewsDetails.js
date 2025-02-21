@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 
 import ResearchSummary from './ResearchSummary.js';
 import GenericNews from './GenericNews.js';
 import NewsLetter from './NewsletterTemplate.js';
-import WarriorOfTheMonthTemplate from '../components/WarriorTemplate.js';
-
+import WarriorOfTheMonthTemplate from '../pages/WarriorOfTheMonth.js';
 import { MuiNavBar } from '../components/MuiNavBar.js';
 import { MuiFooter } from '../components/MuiFooter.js';
 import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
@@ -33,7 +32,8 @@ const fetchStory = async (newsId) => {
 }
 
 export default function NewsDetails() {
-    const { newsId } = useParams();
+    const location = useLocation();
+    const {newsId} = location.state;
     const [story, setStory] = useState([]);
 
     useEffect(() => {
@@ -69,8 +69,10 @@ return (
         />}
         {story.category === "WarriorOfTheMonth" && <WarriorOfTheMonthTemplate
             title={story.title}
-            about={story.content}
-            profileImage={story.images[0]}
+            contentOne={story.contentOne}
+            contentTwo={story.contentTwo}
+            contentThree={story.contentThree}
+            images={story.images}
         />}
         {story.category === "Newsletter" && <NewsLetter
         

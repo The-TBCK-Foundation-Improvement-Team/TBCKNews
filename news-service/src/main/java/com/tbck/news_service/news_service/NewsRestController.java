@@ -146,8 +146,14 @@ public class NewsRestController {
         if (news.getTitle() != null) {
             existingNews.setTitle(news.getTitle());
         }
-        if (news.getContent() != null) {
-            existingNews.setContent(news.getContent());
+        if (news.getContentOne() != null) {
+            existingNews.setContentOne(news.getContentOne());
+        }
+        if (news.getContentTwo() != null) {
+            existingNews.setContentTwo(news.getContentTwo());
+        }
+        if (news.getContentThree() != null) {
+            existingNews.setContentThree(news.getContentThree());
         }
         if (news.getAuthor() != null) {
             existingNews.setAuthor(news.getAuthor());
@@ -163,6 +169,9 @@ public class NewsRestController {
         }
         if (news.getTemplate() != null) {
             existingNews.setTemplate(news.getTemplate());
+        }
+        if (news.getExternalLink() != null) {
+            existingNews.setExternalLink(news.getExternalLink());
         }
         
         return saveNews(existingNews);

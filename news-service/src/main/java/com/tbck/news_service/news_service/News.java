@@ -4,14 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 public class News {
 
     private UUID newsId;
     private String title;
-    private String content;
+    private String contentOne;
+    private String contentTwo;
+    private String contentThree;
     private String author;
     private String date;
     private String category;
@@ -19,6 +20,30 @@ public class News {
     private List<Comment> comments;
     private String template;
     private String externalLink;
+
+    public String getContentOne() {
+        return contentOne;
+    }
+
+    public void setContentOne(String contentOne) {
+        this.contentOne = contentOne;
+    }
+
+    public String getContentTwo() {
+        return contentTwo;
+    }
+
+    public void setContentTwo(String contentTwo) {
+        this.contentTwo = contentTwo;
+    }
+
+    public String getContentThree() {
+        return contentThree;
+    }
+
+    public void setContentThree(String contentThree) {
+        this.contentThree = contentThree;
+    }
 
     public String getExternalLink() {
         return externalLink;
@@ -38,12 +63,6 @@ public class News {
     }
     public void setTitle(String title) {
         this.title = title;
-    }
-    public String getContent() {
-        return content;
-    }
-    public void setContent(String content) {
-        this.content = content;
     }
     public String getAuthor() {
         return author;
@@ -88,7 +107,9 @@ public class News {
 
         itemMap.put("newsId", AttributeValue.builder().s(newsId.toString()).build());
         itemMap.put("title", AttributeValue.builder().s(title).build());
-        itemMap.put("content", AttributeValue.builder().s(content).build());
+        itemMap.put("contentOne", AttributeValue.builder().s(contentOne).build());
+        itemMap.put("contentTwo", AttributeValue.builder().s(contentTwo).build());
+        itemMap.put("contentThree", AttributeValue.builder().s(contentThree).build());
         itemMap.put("author", AttributeValue.builder().s(author).build());
         itemMap.put("date", AttributeValue.builder().s(date).build());
         itemMap.put("category", AttributeValue.builder().s(category).build());
@@ -104,7 +125,9 @@ public class News {
         News news = new News();
         news.setNewsId(UUID.fromString(map.get("newsId").s()));
         news.setTitle(map.get("title").s());
-        news.setContent(map.get("content").s());
+        news.setContentOne(map.get("contentOne") != null ? map.get("contentOne").s() : "No Content One");
+        news.setContentTwo(map.get("contentTwo") != null ? map.get("contentTwo").s() : "No Content Two");
+        news.setContentThree(map.get("contentThree") != null ? map.get("contentThree").s() : "No Content Two");
         news.setAuthor(map.get("author").s());
         news.setDate(map.get("date").s());
         news.setCategory(map.get("category").s());
