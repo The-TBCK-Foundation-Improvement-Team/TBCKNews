@@ -1,0 +1,16 @@
+.home-page-footer {
+    background-color: var(--tbck-black);
+    color: var(--tbck-white);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.home-page-footer-note {
+    margin-right: 10vw;
+    margin-left: 10vw;
+}

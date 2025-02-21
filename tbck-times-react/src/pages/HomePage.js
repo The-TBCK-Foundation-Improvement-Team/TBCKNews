@@ -7,6 +7,7 @@ import { BasicNewsStoryLink } from '../components/home-page-components/BasicNews
 import { SubStory } from '../components/home-page-components/SubStory';
 import { MuiNavBar } from '../components/MuiNavBar';
 import { MuiCategoryBar } from '../components/MuiCategoryBar';
+import { HomePageFooter } from '../components/home-page-components/HomePageFooter';
 
 export function HomePage() {
     const [news, setNews] = useState([]);
@@ -115,7 +116,7 @@ export function HomePage() {
 
             <div className="home-page-horizontal-spacer" />
 
-
+            <HomePageFooter />
             {/* <div className="warrior-of-the-month-hp">
                 <h1 id="warrior-of-the-month-header">Warrior of the Month</h1>
                 <div className="home-page-wotm-body">
