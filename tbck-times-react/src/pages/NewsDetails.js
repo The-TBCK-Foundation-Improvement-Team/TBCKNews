@@ -58,15 +58,19 @@ return (
             title={story.title}
             author={story.author}
             date={story.date}
-            image={story.images[0]}
-            content={story.content}
+            images={story.images}
+            contentOne={story.contentOne}
+            contentTwo={story.contentTwo}
+            contentThree={story.contentThree}
         />}
         {story.category === "Sports" && <GenericNews
             title={story.title}
             author={story.author}
             date={story.date}
-            image={story.images[0]}
-            content={story.content}
+            images={story.images}
+            contentOne={story.contentOne}
+            contentTwo={story.contentTwo}
+            contentThree={story.contentThree}
         />}
         {story.category === "WarriorOfTheMonth" && <WarriorOfTheMonthTemplate
             title={story.title}
@@ -81,7 +85,9 @@ return (
         {story.category === "Research" && <ResearchSummaryTemplate
             title={story.title}
             category={story.category}
-            summary={story.content}
+            contentOne={story.contentOne}
+            contentTwo={story.contentTwo}
+            contentThree={story.contentThree}
             link={story.externalLink}
         />}
         {/* {story.category === 'research'}(

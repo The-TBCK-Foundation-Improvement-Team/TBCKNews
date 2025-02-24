@@ -7,7 +7,7 @@ import { MuiSuggestedStories } from '../components/SuggestedStories.js';
 
 import "../css/GenericNews.css";
 
-function GenericNews({title, about, author, date, image, content}) {
+function GenericNews({title, about, author, date, images, contentOne, contentTwo, contentThree}) {
 
     return (
         <div className="GenericNews">
@@ -15,24 +15,65 @@ function GenericNews({title, about, author, date, image, content}) {
                     
                     <div className="news-layout">
 
-                    <h1 className='main-title'>
-                        {title}
-                    </h1>
-                    
-                        <h5>
-                            By: {author} | {date}
-                        </h5>
-                        <div className='image-layout'>
-                            <img src={image.url}/>
-                            <p>
-                            {image.caption}
-                            </p>
-                            <MuiLikeButton/>
+                        <h1 className='main-title'>
+                            {title}
+                        </h1>
+                            {about}
+                            <h5>
+                                By: {author} | {date} | {images.length}
+                            </h5>
+                            <div>
+                                <div className='image-layout'>
+                                    <><img src={images[0].url} />
+                                    <p className='image-caption'>
+                                    {images[0].caption}
+                                    </p></>
+                                </div>
+                            
+                                <p className='news-page-content'>
+                                    
+                                        <strong>
+                                        {contentOne}
+                                        </strong>
+                                    
+                                </p>
+                            </div>
+                        
+                            {contentTwo !== "No Content Two" &&
+                            <>
+                            <div className='secondary-image-layout'>
+                            {images.length > 0 &&
+                                <><img src={images[0].url} />
+                                <p className='image-caption'>
+                                        {images[0].caption}
+                                </p></>
+                            }
+                            </div>
+                            <p className='news-page-content'>
+                                {contentTwo}
+                            </p></>
+                            }
+                        
+                            {contentThree !== "No Content Two" &&
+
+                            
+                            <div>
+                                <div className='image-layout'>
+                                {images.length > 2 &&
+                                    <><img src={images[0].url}/>
+                                    <p className='image-caption'>
+                                        {images[0].caption}
+                                    </p></>
+                                }
+                                </div>
+                            
+                                <p className='news-page-content'>
+                                    {contentThree}
+                                </p>
+                            </div>
+                            } 
+                        
                         </div>
-                        <p className='news-page-content'>
-                            {content}
-                        </p>
-            </div>
             <div className='sidebar-layout'>
             <MuiSuggestedStories/>
             <MuiCommentBox/>
@@ -48,9 +89,9 @@ function GenericNews({title, about, author, date, image, content}) {
                     </div>
                 </div>  */}
             </div>
-        </div>
-        </div>
-      );
+    </div>
+    </div>
+    );
 }
 
 export default GenericNews;
