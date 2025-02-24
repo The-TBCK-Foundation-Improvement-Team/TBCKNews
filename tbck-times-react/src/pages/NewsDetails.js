@@ -73,6 +73,8 @@ return (
             contentTwo={story.contentTwo}
             contentThree={story.contentThree}
             images={story.images}
+            existingComments={story.comments}
+            newsId={newsId}
         />}
         {story.category === "Newsletter" && <NewsLetter
         
