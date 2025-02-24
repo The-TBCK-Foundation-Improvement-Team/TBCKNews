@@ -10,11 +10,12 @@
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 20;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .warrior-layout {
     display: flex;
+    
 }
 
 .content-layout{
