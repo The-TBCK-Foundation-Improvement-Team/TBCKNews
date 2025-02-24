@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+// import axios from 'axios';
 import '../css/home-page-components/HomePage.css';
 
 import { NewsStoryCover } from '../components/home-page-components/NewsStoryCover';
@@ -10,8 +10,8 @@ import { MuiCategoryBar } from '../components/MuiCategoryBar';
 import { HomePageFooter } from '../components/home-page-components/HomePageFooter';
 
 export function HomePage() {
-    const [news, setNews] = useState([]);
-    const [warriorOfTheMonth, setWarriorOfTheMonth] = useState([]);
+    // const [news, setNews] = useState([]);
+    // const [warriorOfTheMonth, setWarriorOfTheMonth] = useState([]);
 
     // useEffect(() => {
     //     axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/newest')
@@ -89,7 +89,7 @@ export function HomePage() {
                             <BasicNewsStoryLink />
                         </div>
                     </div>
-                    
+
                     <div className="home-page-vertical-spacer" />
 
                     <div className="home-page-right-row">
@@ -104,9 +104,9 @@ export function HomePage() {
 
                 </div>
 
-                {news.length < 3 ? <p className="home-page-placeholder"></p> : 
+                {/* {news.length < 3 ? <p className="home-page-placeholder"></p> : 
                     <div></div>
-                }
+                } */}
 
             </div>
 
