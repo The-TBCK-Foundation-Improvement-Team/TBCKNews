@@ -73,7 +73,7 @@ const SearchPage = () => {
     <div style={{ backgroundColor: "#f4f4f4", minHeight: "100vh" }}>
         <MuiNavBar/>
         <MuiCategoryBar/>
-        <div style={{ padding: "20px", maxWidth: "1200px", margin: "0 auto" }}>
+        <div style={{ padding: "20px", maxWidth: "1200px", margin: "0 auto", minHeight: "100vh" }}>
             <header style={{ marginBottom: "30px", textAlign: "left" }}>
                 <h1 style={{ fontSize: "36px", fontWeight: "bold", color: "#222", color: "#00595a" }}>
                   {searchQuery}
@@ -96,7 +96,7 @@ const SearchPage = () => {
                     news.map((result) => (
                         <Link
                             key={result.newsId}
-                            to={`/details/${result.title}/${result.date}`} // Navigates to a detail page for the result
+                            to={`/details/${result.title.replace(/\s+/g, "-")}/${result.date.replace(/\s+/g, "-")}`} // Navigates to a detail page for the result
                             state={{ newsId: result.newsId }} // Passes the newsId to the detail page
                             style={{
                                 textDecoration: "none", // Remove underline from the link

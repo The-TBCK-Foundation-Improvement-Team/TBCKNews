@@ -4,8 +4,7 @@ import { useParams, Link, useLocation } from "react-router-dom";
 import ResearchSummary from './ResearchSummary.js';
 import GenericNews from './GenericNews.js';
 import NewsLetter from './NewsletterTemplate.js';
-import WarriorOfTheMonthTemplate from '../components/WarriorTemplate.js';
-
+import WarriorOfTheMonthTemplate from '../pages/WarriorOfTheMonth.js';
 import { MuiNavBar } from '../components/MuiNavBar.js';
 import { MuiFooter } from '../components/MuiFooter.js';
 import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
