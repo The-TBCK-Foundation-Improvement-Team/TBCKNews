@@ -3,11 +3,10 @@ import React from 'react';
 import '../css/home-page-components/HomePage.css';
 
 import { NewsStoryCover } from '../components/home-page-components/NewsStoryCover';
-import { BasicNewsStoryLink } from '../components/home-page-components/BasicNewsStoryLink';
-import { SubStory } from '../components/home-page-components/SubStory';
 import { MuiNavBar } from '../components/MuiNavBar';
 import { MuiCategoryBar } from '../components/MuiCategoryBar';
 import { HomePageFooter } from '../components/home-page-components/HomePageFooter';
+import { WotMSection } from '../components/home-page-components/WotMSection';
 
 export function HomePage() {
     // const [news, setNews] = useState([]);
@@ -39,6 +38,9 @@ export function HomePage() {
                     <NewsStoryCover />
                 </div>
             </div>
+            <div className="home-page-horizontal-spacer" />
+            <WotMSection />
+            <HomePageFooter />
         </div>
     );
 }
