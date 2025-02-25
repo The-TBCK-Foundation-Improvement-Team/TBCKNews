@@ -1,0 +1,17 @@
+.home-page-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-page-section h1 {
+    text-align: center;
+}
+
+#hp-middle-section {
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    padding-left: 5vw;
+    padding-right: 5vw;
+}
