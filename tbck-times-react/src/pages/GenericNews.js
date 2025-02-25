@@ -4,10 +4,15 @@ import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
 import { MuiCommentBox } from '../components/news-components/MuiCommentBox.js'
 import { MuiLikeButton } from '../components/news-components/MuiLikeButton.js'
 import { MuiSuggestedStories } from '../components/SuggestedStories.js';
+import NewsImageSlideshow from '../components/news-components/NewsImageSlideshow.js';
 
 import "../css/GenericNews.css";
 
 function GenericNews({title, about, author, date, images, contentOne, contentTwo, contentThree}) {
+
+    if (images.length > 2) {
+        var newImages = images.slice(2);
+    }
 
     return (
         <div className="GenericNews">
@@ -38,14 +43,15 @@ function GenericNews({title, about, author, date, images, contentOne, contentTwo
                                     
                                 </p>
                             </div>
-                        
+                            
+                            <br/>
                             {contentTwo !== "No Content Two" &&
                             <>
-                            <div className='secondary-image-layout'>
-                            {images.length > 0 &&
-                                <><img src={images[0].url} />
+                            <div className='second-image-layout'>
+                            {images.length > 1 &&
+                                <><img src={images[1].url} />
                                 <p className='image-caption'>
-                                        {images[0].caption}
+                                        {images[1].caption}
                                 </p></>
                             }
                             </div>
@@ -53,23 +59,30 @@ function GenericNews({title, about, author, date, images, contentOne, contentTwo
                                 {contentTwo}
                             </p></>
                             }
-                        
+                            
+                            <br/>
                             {contentThree !== "No Content Two" &&
 
                             
                             <div>
-                                <div className='image-layout'>
-                                {images.length > 2 &&
-                                    <><img src={images[0].url}/>
-                                    <p className='image-caption'>
-                                        {images[0].caption}
-                                    </p></>
-                                }
-                                </div>
-                            
+                                <br/>
+                                
+                                <div >
                                 <p className='news-page-content'>
                                     {contentThree}
                                 </p>
+                                {images.length > 2 &&
+                                    <>
+                                    
+                                    <p className="main-title">
+                                        <strong>Additional Images:</strong>
+                                    </p>
+                                    <NewsImageSlideshow images={newImages} />
+                                    </>
+                                }
+                                </div>
+                            
+                    
                             </div>
                             } 
                         
@@ -77,19 +90,8 @@ function GenericNews({title, about, author, date, images, contentOne, contentTwo
             <div className='sidebar-layout'>
             <MuiSuggestedStories/>
             <MuiCommentBox/>
-                {/* <div className="mt-4 bg-gray-50 rounded-lg p-4 suggested-stories comments">
-                    <div className="flex flex-col items-center space-y-3">
-                        <h2 className="text-gray-600">Sign in to leave a comment</h2>
-                        <button
-                        onClick={function(){ user = "me"}}
-                        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                        >
-                        Sign In
-                        </button>
-                    </div>
-                </div>  */}
             </div>
-    </div>
+        </div>
     </div>
     );
 }
