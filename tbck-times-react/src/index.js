@@ -7,7 +7,7 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import App from './App.js';
 import User from './pages/User.js'; //freaks out for some reason - it works???
 import GenericNews from './pages/GenericNews.js';
-import Signup from './pages/Signup.js';
+import Signup from './pages/Signup.js'; //???
 import Login from './pages/Login.js';
 import Newsletter from './pages/NewsletterTemplate.js';
 import WarriorOfTheMonth from './pages/WarriorOfTheMonth.js';
@@ -60,6 +60,9 @@ const router = createBrowserRouter([
   },
   {
     path: 'details/:title/:date',
+    element: <NewsDetails />,
+  },
+  { path: '/HomePage',
     element: <NewsDetails />,
   }
 ]);
