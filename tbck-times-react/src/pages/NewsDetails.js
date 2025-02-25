@@ -39,7 +39,7 @@ export default function NewsDetails() {
     useEffect(() => {
         const fetchAndGetStory = async () => {
             let story = await fetchStory(newsId);
-            console.log(story);
+            //.log("story" + JSON.stringify(story.comments));
             setStory(story);
         };
 

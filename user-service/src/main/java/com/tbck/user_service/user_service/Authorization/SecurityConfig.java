@@ -29,6 +29,7 @@ public class SecurityConfig {
             .csrf().disable()  // ✅ Disable CSRF for API security
             .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/user").permitAll() // ✅ Allow user signup
+                .requestMatchers(HttpMethod.GET, "/user/name/{userId}").permitAll() // ✅ Allow user registration
                 .requestMatchers(HttpMethod.POST, "/authenticate/login").permitAll() // ✅ Allow user login
                 .requestMatchers(HttpMethod.GET, "/user/{userId}").authenticated() // ✅ Protect user data
                 .requestMatchers(HttpMethod.GET, "/user/unverified").hasRole("ADMIN") // ✅ Allow admin to view unverified users

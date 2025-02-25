@@ -26,8 +26,6 @@ function fetchUserData() {
 
     const storedUserJWT = sessionStorage.getItem("jwt");
 
-    console.log("Stored JWT:", storedUserJWT);
-
     if (storedUserJWT) {
       const user = JSON.parse(atob(storedUserJWT.split('.')[1]));
 
@@ -44,11 +42,12 @@ function fetchUserData() {
 
 async function fetchCommentAuthor(userId) {
   try {
-    const response = await fetch(`http://localhost:8080/user/${userId}`);
+    const response = await fetch(`http://localhost:8080/user/name/${userId}`);
+    console.log("response" + response);
     if (!response.ok) throw new Error("Failed to fetch user data");
     
-    const userData = await response.json();
-    return `${userData.firstName} ${userData.lastName}`;
+    const userData = await response.text();
+    return userData;
   } catch (error) {
     console.error("Error fetching user data:", error);
     return "Unknown User";
@@ -80,14 +79,10 @@ async function patchComment(userId, newsId, content, date){
       return await response.json();
     }
 
-
-
   }catch(error){
     console.error("Error patching comment:", error);
     return null;
   }
-
-
 }
 
 
@@ -97,25 +92,31 @@ export function MuiCommentBox({existingComments, newsId}) {
   const [newComment, setNewComment] = useState('');
 
   useEffect(() => {
+    //console.log("Existing comments:", existingComments);
     if (!existingComments || existingComments.length === 0) return;
 
     const fetchCommentAuthors = async () => {
       const updatedComments = await Promise.all(
-        existingComments.map(async (comment) => ({
-          ...comment,
-          author: await fetchCommentAuthor(comment.userId),
-        }))
+        existingComments.map(async (comment) => {
+          const author = await fetchCommentAuthor(comment.userId);
+          return { ...comment, author }
+        })
       );
       setComments(updatedComments);
     };
 
     fetchCommentAuthors();
+    //console.log("fetch comment authors in use effect" + fetchCommentAuthors());
   }, [existingComments]);
+
+  // useEffect(() => {
+  //   console.log("Comments updated:", comments);
+  // }, [comments]);
 
 
 
   const handleSubmit = async (e) => {
-    console.log(user);
+    console.log("user" + user);
 
     e.preventDefault();
     if (!newComment.trim()) return;
@@ -183,7 +184,8 @@ export function MuiCommentBox({existingComments, newsId}) {
       <Box sx={{ maxHeight: 300, overflow: 'auto', paddingBottom: 8 }}>
       <List>
         {comments.map((comment, index) => (
-          <React.Fragment key={comment.id}>
+          console.log("comment in list" + JSON.stringify(comment)),
+          <React.Fragment key={index}>
             {index > 0 && <Divider variant="inset" component="li" />}
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
