@@ -7,6 +7,7 @@ import { MuiNavBar } from '../components/MuiNavBar';
 import { MuiCategoryBar } from '../components/MuiCategoryBar';
 import { HomePageFooter } from '../components/home-page-components/HomePageFooter';
 import { WotMSection } from '../components/home-page-components/WotMSection';
+import { HomePageSection } from '../components/home-page-components/HomePageSection';
 
 export function HomePage() {
     // const [news, setNews] = useState([]);
@@ -40,6 +41,12 @@ export function HomePage() {
             </div>
             <div className="home-page-horizontal-spacer" />
             <WotMSection />
+            <div className="home-page-horizontal-spacer" />
+            <div className="home-page-sections">
+                <HomePageSection title="Section Title" />
+                <HomePageSection title="Section Title" id="hp-middle-section" />
+                <HomePageSection title="Section Title" />
+            </div>
             <div className="home-page-horizontal-spacer" />
             <HomePageFooter />
         </div>

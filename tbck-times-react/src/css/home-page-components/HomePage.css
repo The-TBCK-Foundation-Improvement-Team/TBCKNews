@@ -30,3 +30,11 @@
 .home-page-horizontal-spacer {
     height: 6vh;
 }
+
+.home-page-sections {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    
+}
