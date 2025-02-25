@@ -1,10 +1,10 @@
 package com.tbck.user_service.user_service;
 
-import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.servlet.http.HttpServletResponse;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
@@ -58,6 +60,17 @@ public class UserRestController {
         User user = getUserFromDB(userId);
         if (user != null) {
             return user;
+        } else {
+            throw new RuntimeException("User with ID " + userId + " not found.");
+        }
+    }
+
+    @GetMapping("/name/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public String getUserName(@PathVariable("userId") UUID userId) {
+        User user = getUserFromDB(userId);
+        if (user != null) {
+            return user.getFirstName() + " " + user.getLastName();
         } else {
             throw new RuntimeException("User with ID " + userId + " not found.");
         }
