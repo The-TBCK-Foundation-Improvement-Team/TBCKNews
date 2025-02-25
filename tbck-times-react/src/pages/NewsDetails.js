@@ -12,6 +12,7 @@ import { MuiCommentBox } from '../components/news-components/MuiCommentBox.js'
 import { MuiLikeButton } from '../components/news-components/MuiLikeButton.js'
 import { MuiSuggestedStories } from '../components/SuggestedStories.js';
 import { ResearchSummaryTemplate } from "../components/ResearchSummaryTemplate.js";
+import { HomePageFooter } from '../components/home-page-components/HomePageFooter.js'
 
 
 const fetchStory = async (newsId) => {
@@ -49,6 +50,7 @@ export default function NewsDetails() {
     }, [newsId]);
 
 return (
+    <div className="NewsDetails-column">
     <div class name='NewsPageLayout'>
         <MuiNavBar/>
         <MuiCategoryBar/>
@@ -103,8 +105,9 @@ return (
             <GenericNews/>
         ) */}
         </div>
-        
-        <MuiFooter/>
+    
+    </div>
+        <HomePageFooter/>
     </div>
     );
 }
