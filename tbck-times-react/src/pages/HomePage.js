@@ -40,6 +40,7 @@ export function HomePage() {
             </div>
             <div className="home-page-horizontal-spacer" />
             <WotMSection />
+            <div className="home-page-horizontal-spacer" />
             <HomePageFooter />
         </div>
     );
