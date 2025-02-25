@@ -4,10 +4,15 @@ import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
 import { MuiCommentBox } from '../components/news-components/MuiCommentBox.js'
 import { MuiLikeButton } from '../components/news-components/MuiLikeButton.js'
 import { MuiSuggestedStories } from '../components/SuggestedStories.js';
+import NewsImageSlideshow from '../components/news-components/NewsImageSlideshow.js';
 
 import "../css/GenericNews.css";
 
-function GenericNews({title, about, author, date, image, content}) {
+function GenericNews({title, about, author, date, images, contentOne, contentTwo, contentThree}) {
+
+    if (images.length > 2) {
+        var newImages = images.slice(2);
+    }
 
     return (
         <div className="GenericNews">
@@ -15,42 +20,80 @@ function GenericNews({title, about, author, date, image, content}) {
                     
                     <div className="news-layout">
 
-                    <h1 className='main-title'>
-                        {title}
-                    </h1>
+                        <h1 className='main-title'>
+                            {title}
+                        </h1>
+                            {about}
+                            <h5>
+                                By: {author} | {date} | {images.length}
+                            </h5>
+                            <div>
+                                <div className='image-layout'>
+                                    <><img src={images[0].url} />
+                                    <p className='image-caption'>
+                                    {images[0].caption}
+                                    </p></>
+                                </div>
+                            
+                                <p className='news-page-content'>
+                                    
+                                        <strong>
+                                        {contentOne}
+                                        </strong>
+                                    
+                                </p>
+                            </div>
+                            
+                            <br/>
+                            {contentTwo !== "No Content Two" &&
+                            <>
+                            <div className='second-image-layout'>
+                            {images.length > 1 &&
+                                <><img src={images[1].url} />
+                                <p className='image-caption'>
+                                        {images[1].caption}
+                                </p></>
+                            }
+                            </div>
+                            <p className='news-page-content'>
+                                {contentTwo}
+                            </p></>
+                            }
+                            
+                            <br/>
+                            {contentThree !== "No Content Two" &&
+
+                            
+                            <div>
+                                <br/>
+                                
+                                <div >
+                                <p className='news-page-content'>
+                                    {contentThree}
+                                </p>
+                                {images.length > 2 &&
+                                    <>
+                                    
+                                    <p className="main-title">
+                                        <strong>Additional Images:</strong>
+                                    </p>
+                                    <NewsImageSlideshow images={newImages} />
+                                    </>
+                                }
+                                </div>
+                            
                     
-                        <h5>
-                            By: {author} | {date}
-                        </h5>
-                        <div className='image-layout'>
-                            <img src={image.url}/>
-                            <p>
-                            {image.caption}
-                            </p>
-                            <MuiLikeButton/>
+                            </div>
+                            } 
+                        
                         </div>
-                        <p className='news-page-content'>
-                            {content}
-                        </p>
-            </div>
             <div className='sidebar-layout'>
             <MuiSuggestedStories/>
             <MuiCommentBox/>
-                {/* <div className="mt-4 bg-gray-50 rounded-lg p-4 suggested-stories comments">
-                    <div className="flex flex-col items-center space-y-3">
-                        <h2 className="text-gray-600">Sign in to leave a comment</h2>
-                        <button
-                        onClick={function(){ user = "me"}}
-                        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                        >
-                        Sign In
-                        </button>
-                    </div>
-                </div>  */}
             </div>
         </div>
-        </div>
-      );
+    </div>
+    );
 }
 
 export default GenericNews;

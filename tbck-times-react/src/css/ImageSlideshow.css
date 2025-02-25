@@ -5,6 +5,14 @@
     border: 4px solid #00595a;
     border-radius: 3%;
   }
+
+  .newspage-slideshow-image {
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+    border: 4px solid #00595a;
+    border-radius: 3%;
+  }
   
   .slideshow-button {
     background-color: #ff2779;
