@@ -11,17 +11,11 @@ import { HomePageSection } from '../components/home-page-components/HomePageSect
 
 export function HomePage() {
     const [news, setNews] = useState([]);
-    // const [warriorOfTheMonth, setWarriorOfTheMonth] = useState([]);
 
     useEffect(() => {
         axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/News')
             .then((response) => setNews(response.data));
     }, []);
-
-    // useEffect(() => {
-    //     axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/WarriorOfTheMonth')
-    //         .then((response) => setWarriorOfTheMonth(response.data));
-    // }, []);
 
     return (
         <div className='home-page'>
@@ -49,9 +43,9 @@ export function HomePage() {
             <WotMSection />
             <div className="home-page-horizontal-spacer" />
             <div className="home-page-sections">
-                <HomePageSection title="Section Title" />
-                <HomePageSection title="Section Title" id="hp-middle-section" />
-                <HomePageSection title="Section Title" />
+                <HomePageSection title="Events" />
+                <HomePageSection title="Research" id="hp-middle-section" />
+                <HomePageSection title="Sports" />
             </div>
             <div className="home-page-horizontal-spacer" />
             <HomePageFooter />
