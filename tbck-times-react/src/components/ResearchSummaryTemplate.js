@@ -3,7 +3,7 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import { Paper, Typography, Link, Box } from '@mui/material';
 import { MuiSuggestedStories } from '../components/SuggestedStories.js';
 
-export function ResearchSummaryTemplate({title, category, summary, link}) {
+export function ResearchSummaryTemplate({title, category, contentOne, contentTwo, ContentThree, link}) {
     return(
         <div className="container">
                 <div className='left-bar'>
@@ -51,7 +51,7 @@ export function ResearchSummaryTemplate({title, category, summary, link}) {
                 fontSize: '1.1rem',
             }}
             >
-            {summary}
+            {contentOne}
             </Typography>
             
             <Box
