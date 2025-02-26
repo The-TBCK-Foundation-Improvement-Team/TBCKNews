@@ -57,21 +57,33 @@ return (
         <div>
         {story.category === "News" && <GenericNews
             title={story.title}
-            author={story.author}
-            date={story.date}
-            images={story.images}
             contentOne={story.contentOne}
             contentTwo={story.contentTwo}
             contentThree={story.contentThree}
+            images={story.images}
+            existingComments={story.comments}
+            category={story.category}
+            newsId={newsId}
+        />}
+        {story.category === "Events" && <GenericNews
+            title={story.title}
+            contentOne={story.contentOne}
+            contentTwo={story.contentTwo}
+            contentThree={story.contentThree}
+            images={story.images}
+            existingComments={story.comments}
+            category={story.category}
+            newsId={newsId}
         />}
         {story.category === "Sports" && <GenericNews
             title={story.title}
-            author={story.author}
-            date={story.date}
-            images={story.images}
             contentOne={story.contentOne}
             contentTwo={story.contentTwo}
             contentThree={story.contentThree}
+            images={story.images}
+            existingComments={story.comments}
+            category={story.category}
+            newsId={newsId}
         />}
         {story.category === "WarriorOfTheMonth" && <WarriorOfTheMonthTemplate
             title={story.title}
@@ -80,18 +92,28 @@ return (
             contentThree={story.contentThree}
             images={story.images}
             existingComments={story.comments}
+            category={story.category}
             newsId={newsId}
         />}
         {story.category === "Newsletter" && <NewsLetter
-        
-        />}
-        {story.category === "Research" && <ResearchSummaryTemplate
             title={story.title}
-            category={story.category}
             contentOne={story.contentOne}
             contentTwo={story.contentTwo}
             contentThree={story.contentThree}
-            link={story.externalLink}
+            images={story.images}
+            existingComments={story.comments}
+            category={story.category}
+            newsId={newsId}
+        />}
+        {story.category === "Research" && <ResearchSummaryTemplate
+            title={story.title}
+            contentOne={story.contentOne}
+            contentTwo={story.contentTwo}
+            contentThree={story.contentThree}
+            images={story.images}
+            existingComments={story.comments}
+            category={story.category}
+            newsId={newsId}
         />}
         {/* {story.category === 'research'}(
             <ResearchSummary/>
