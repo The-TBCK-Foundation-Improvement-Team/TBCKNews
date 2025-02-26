@@ -26,17 +26,21 @@ export function HomePage() {
                 <h1>Latest News</h1>
 
                 <div className="news-stories">
-                    {news.length > 0 ? news.map((newsStory) => (
-                        <NewsStoryCover
-                            title={newsStory.title}
-                            author={newsStory.author}
-                            date={newsStory.date}
-                            blurb={newsStory.contentOne.split(".")[0] + "."}
-                            imgSrc={newsStory.images[0].url}
-                            imgAlt={newsStory.images[0].altText}
-                            newsId={newsStory.newsId}
-                        />
-                    )) : <></>}
+                    {news.length > 0 ? news.map((newsStory, index) => {
+                        if (index >= 5) {
+                            return <></>
+                        } else {
+                            return <NewsStoryCover
+                                title={newsStory.title}
+                                author={newsStory.author}
+                                date={newsStory.date}
+                                blurb={newsStory.contentOne.split(".")[0] + "."}
+                                imgSrc={newsStory.images[0].url}
+                                imgAlt={newsStory.images[0].altText}
+                                newsId={newsStory.newsId}
+                            />
+                        }
+                    }) : <></>}
                 </div>
             </div>
             <div className="home-page-horizontal-spacer" />
