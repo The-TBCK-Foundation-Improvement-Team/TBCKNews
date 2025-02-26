@@ -29,14 +29,13 @@ function GenericNews({title, about, author, date, images, contentOne, contentTwo
                             </h5>
                             <div>
                                 <div className='image-layout'>
-                                    <><img src={images[0].url} />
+                                    <><img className="image-border" src={images[0].url} />
                                     <p className='image-caption'>
                                     {images[0].caption}
                                     </p></>
                                 </div>
                             
                                 <p className='news-page-content'>
-                                    
                                         <strong>
                                         {contentOne}
                                         </strong>
@@ -49,7 +48,7 @@ function GenericNews({title, about, author, date, images, contentOne, contentTwo
                             <>
                             <div className='second-image-layout'>
                             {images.length > 1 &&
-                                <><img src={images[1].url} />
+                                <><img className="image-border" src={images[1].url} />
                                 <p className='image-caption'>
                                         {images[1].caption}
                                 </p></>
