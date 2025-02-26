@@ -6,7 +6,7 @@ import { MuiCommentBox } from '../components/news-components/MuiCommentBox.js'
 import { MuiSuggestedStories } from "../components/SuggestedStories.js";
 import ImageSlideShow from '../components/ImageSlideshow.js';
 
-function WarriorOfTheMonth({title, contentOne, contentTwo, contentThree, images, existingComments, newsId}) {
+function WarriorOfTheMonth({title, contentOne, contentTwo, contentThree, images, existingComments, newsId, category}) {
     const contents = [contentOne, contentTwo, contentThree];
     
     const splitTitle = title.split(' '); // Split title into words
@@ -45,7 +45,7 @@ function WarriorOfTheMonth({title, contentOne, contentTwo, contentThree, images,
                 </div>
             </div>
         <div className='sidebar-layout'>
-            <MuiSuggestedStories />
+            <MuiSuggestedStories category={category} />
             <MuiCommentBox existingComments={existingComments} newsId={newsId} />
         </div>
         

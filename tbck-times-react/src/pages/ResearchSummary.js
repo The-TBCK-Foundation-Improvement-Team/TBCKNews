@@ -3,9 +3,10 @@ import { MuiFooter } from '../components/MuiFooter.js';
 import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
 import { MuiSuggestedStories } from '../components/SuggestedStories.js';
 import { ResearchSummaryTemplate } from '../components/ResearchSummaryTemplate.js';
+import { MuiCommentBox } from '../components/news-components/MuiCommentBox.js';
 
 
-function ResearchSummary() {
+function ResearchSummary( {category, existingComments, newsId} ) {
     return (
         <div className='ResearchSummary'>
             <MuiNavBar/>
@@ -23,7 +24,8 @@ function ResearchSummary() {
                     />
                 </div>
                 <div className='sidebar-layout'>
-                    <MuiSuggestedStories/>
+                    <MuiSuggestedStories category={category} />
+                    <MuiCommentBox existingComments={existingComments} newsId={newsId} />
                 </div>
             </div>
             <MuiFooter/>
