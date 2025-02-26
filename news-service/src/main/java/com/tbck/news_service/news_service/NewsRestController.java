@@ -165,7 +165,21 @@ public class NewsRestController {
             existingNews.setCategory(news.getCategory());
         }
         if (news.getImages() != null) {
-            existingNews.setImages(news.getImages());
+            List<Image> mergedImages = new ArrayList<>(existingNews.getImages());
+            mergedImages.addAll(news.getImages());
+            existingNews.setImages(mergedImages);
+        }
+        if(news.getComments() != null){
+            //each new comment needs to have its id set randomly
+
+            for (Comment comment : news.getComments()) {
+                comment.setCommentId(UUID.randomUUID());
+                comment.setNewsId(newsId);
+            }
+            
+            List<Comment> mergedComments = new ArrayList<>(existingNews.getComments());
+            mergedComments.addAll(news.getComments());
+            existingNews.setComments(mergedComments);
         }
         if (news.getTemplate() != null) {
             existingNews.setTemplate(news.getTemplate());

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   TextField,
@@ -13,39 +13,145 @@ import {
   Divider,
 } from '@mui/material';
 
-export function MuiCommentBox() {
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      author: 'John Doe',
-      content: 'This is a great post! Thanks for sharing.',
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50&h=50&fit=crop',
-      timestamp: new Date('2024-02-20T10:30:00'),
-    },
-    {
-      id: 2,
-      author: 'Jane Smith',
-      content: 'Really interesting perspective. I learned a lot from this.',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop',
-      timestamp: new Date('2024-02-20T11:15:00'),
-    },
-  ]);
+
+// private UUID commentId;
+//     private UUID userId;
+//     private UUID newsId;
+//     private String content;
+//     private String date;
+
+function fetchUserData() {
+  //use jwt token in session to get user data
+  try{
+
+    const storedUserJWT = sessionStorage.getItem("jwt");
+
+    if (storedUserJWT) {
+      const user = JSON.parse(atob(storedUserJWT.split('.')[1]));
+
+      return user;
+    }else{
+      return null;
+    }
+
+  }catch(error){
+    console.log("Error decoding JWT:", error);
+    return null;
+  }
+}
+
+async function fetchCommentAuthor(userId) {
+  try {
+    const response = await fetch(`http://localhost:8080/user/name/${userId}`);
+    console.log("response" + response);
+    if (!response.ok) throw new Error("Failed to fetch user data");
+    
+    const userData = await response.text();
+    return userData;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    return "Unknown User";
+  }
+}
+
+async function patchComment(userId, newsId, content, date){
+
+  try{
+
+    const response = await fetch(`http://localhost:8081/news/comment/${newsId}` , {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem("jwt")}`
+      },
+      body: JSON.stringify({
+        userId: userId,
+        newsId: newsId,
+        content: content,
+        date: date
+      })
+
+    });
+
+    if(!response.ok){
+      throw new Error('Network response was not ok');
+    }else{
+      return await response.json();
+    }
+
+  }catch(error){
+    console.error("Error patching comment:", error);
+    return null;
+  }
+}
+
+
+export function MuiCommentBox({existingComments, newsId}) {
+  const [user, setUser] = useState(fetchUserData());
+  const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    //console.log("Existing comments:", existingComments);
+    if (!existingComments || existingComments.length === 0) return;
+
+    const fetchCommentAuthors = async () => {
+      const updatedComments = await Promise.all(
+        existingComments.map(async (comment) => {
+          const author = await fetchCommentAuthor(comment.userId);
+          return { ...comment, author }
+        })
+      );
+      setComments(updatedComments);
+    };
+
+    fetchCommentAuthors();
+    //console.log("fetch comment authors in use effect" + fetchCommentAuthors());
+  }, [existingComments]);
+
+  // useEffect(() => {
+  //   console.log("Comments updated:", comments);
+  // }, [comments]);
+
+
+
+  const handleSubmit = async (e) => {
+    console.log("user" + user);
+
     e.preventDefault();
     if (!newComment.trim()) return;
 
-    const comment = {
-      id: comments.length + 1,
-      author: 'Current User',
+    const commentData = {
+      userId: user.userId, // Ensure userId is correctly retrieved
+      newsId: newsId,
       content: newComment,
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop',
-      timestamp: new Date(),
+      date: new Date().toISOString(), // Convert to proper date format
     };
 
-    setComments([...comments, comment]);
-    setNewComment('');
+    try{
+      setComments([...comments,{
+        author: `${user.firstName} ${user.lastName}`,
+        content: newComment,
+        date: new Date().toISOString(),
+      }]);
+
+      setNewComment('');
+      
+      // Send PATCH request to API
+      const updatedComment = await patchComment(
+        commentData.userId,
+        commentData.newsId,
+        commentData.content,
+        commentData.date
+      );
+
+      if (!updatedComment) {
+        console.error("Failed to patch comment.");
+      }
+
+    }catch(error){
+      console.error("Error adding comment:", error);
+    }
   };
 
   return (
@@ -78,11 +184,12 @@ export function MuiCommentBox() {
       <Box sx={{ maxHeight: 300, overflow: 'auto', paddingBottom: 8 }}>
       <List>
         {comments.map((comment, index) => (
-          <React.Fragment key={comment.id}>
+          console.log("comment in list" + JSON.stringify(comment)),
+          <React.Fragment key={index}>
             {index > 0 && <Divider variant="inset" component="li" />}
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
-                <Avatar src={comment.avatar} alt={comment.author} />
+              <Avatar>{comment.author ? comment.author.charAt(0) : '?'}</Avatar>
               </ListItemAvatar>
               <ListItemText
                 primary={
@@ -110,7 +217,7 @@ export function MuiCommentBox() {
                       variant="caption"
                       color="Whitesmoke"
                     >
-                      {comment.timestamp.toLocaleString()}
+                      {new Date(comment.date).toLocaleString()}
                     </Typography>
                   </>
                 }

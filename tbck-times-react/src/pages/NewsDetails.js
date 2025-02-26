@@ -12,6 +12,7 @@ import { MuiCommentBox } from '../components/news-components/MuiCommentBox.js'
 import { MuiLikeButton } from '../components/news-components/MuiLikeButton.js'
 import { MuiSuggestedStories } from '../components/SuggestedStories.js';
 import { ResearchSummaryTemplate } from "../components/ResearchSummaryTemplate.js";
+import { HomePageFooter } from '../components/home-page-components/HomePageFooter.js'
 
 
 const fetchStory = async (newsId) => {
@@ -39,7 +40,7 @@ export default function NewsDetails() {
     useEffect(() => {
         const fetchAndGetStory = async () => {
             let story = await fetchStory(newsId);
-            console.log(story);
+            //.log("story" + JSON.stringify(story.comments));
             setStory(story);
         };
 
@@ -49,6 +50,7 @@ export default function NewsDetails() {
     }, [newsId]);
 
 return (
+    <div className="NewsDetails-column">
     <div class name='NewsPageLayout'>
         <MuiNavBar/>
         <MuiCategoryBar/>
@@ -77,6 +79,8 @@ return (
             contentTwo={story.contentTwo}
             contentThree={story.contentThree}
             images={story.images}
+            existingComments={story.comments}
+            newsId={newsId}
         />}
         {story.category === "Newsletter" && <NewsLetter
         
@@ -101,8 +105,9 @@ return (
             <GenericNews/>
         ) */}
         </div>
-        
-        <MuiFooter/>
+    
+    </div>
+        <HomePageFooter/>
     </div>
     );
 }
