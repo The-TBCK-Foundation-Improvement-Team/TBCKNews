@@ -10,7 +10,7 @@ export function HomePageSection({ title, id }) {
     useEffect(() => {
         axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/'+ title)
             .then((response) => setNews(response.data));
-    }, []);
+    }, [title]);
 
     return (
         <>
@@ -31,6 +31,7 @@ export function HomePageSection({ title, id }) {
                     date={news[1].date}
                     imgSrc={news[1].images[0] ? news[0].images[0].url : "https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"}
                     imgAlt={news[1].images[0] ? news[1].images[0].altText : ""}
+                    newsId={news[1].newsId ?? ""}
                 /> : <></>}
                 {news[2] ? 
                 <SubStory 
@@ -38,6 +39,7 @@ export function HomePageSection({ title, id }) {
                     date={news[2].date}
                     imgSrc={news[2].images[0] ? news[0].images[0].url : "https://static.vecteezy.com/system/resources/thumbnails/001/950/054/small_2x/newspaper-mockup-template-free-vector.jpg"}
                     imgAlt={news[2].images[0] ? news[2].images[0].altText : ""}
+                    newsId={news[2].newsId ?? ""}
                 /> : <></>}
             </div> : <></>}
         </>
