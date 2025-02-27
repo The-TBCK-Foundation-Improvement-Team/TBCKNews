@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../../css/home-page-components/SubStory.css';
 import { Link } from 'react-router-dom';
 
-export function SubStory({ imgSrc, imgAlt, title, date }) {
+export function SubStory({ imgSrc, imgAlt, title, date, newsId }) {
     const [link, setLink] = useState('');
 
     useEffect(() => {
@@ -22,7 +22,7 @@ export function SubStory({ imgSrc, imgAlt, title, date }) {
 
     return (
         <div className="sub-story">
-            <Link to={link} style={{ textDecoration: 'none', display: 'block' }}>
+            <Link key={newsId} to={link} state={{ newsId: newsId }} style={{ textDecoration: 'none', display: 'block' }}>
                 <div className="sub-story-content">
                     <img 
                         className="sub-story-image" 
