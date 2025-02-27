@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,9 +48,9 @@ public class NewsRestController {
     public News getNews(@PathVariable("newsId") UUID newsId) {
 
         GetItemRequest getItemRequest = GetItemRequest.builder()
-            .tableName("TBCKStories")
-            .key(Map.of("newsId", AttributeValue.builder().s(newsId.toString()).build()))
-            .build();
+                .tableName("TBCKStories")
+                .key(Map.of("newsId", AttributeValue.builder().s(newsId.toString()).build()))
+                .build();
 
         GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
 
@@ -66,15 +67,15 @@ public class NewsRestController {
     public Iterable<News> getNewestNews() {
 
         ScanRequest scanRequest = ScanRequest.builder()
-            .tableName("TBCKStories")
-            .build();
+                .tableName("TBCKStories")
+                .build();
 
         ScanResponse response = dynamoDbClient.scan(scanRequest);
 
         return response.items().stream()
-            .map(News::fromMap)
-            .sorted(Comparator.comparing(News::getDate).reversed()) // Sort by date, newest first
-            .toList();
+                .map(News::fromMap)
+                .sorted(Comparator.comparing(News::getDate).reversed()) // Sort by date, newest first
+                .toList();
     }
 
     //get all the news by the category and return in order of newest to oldest
@@ -83,16 +84,16 @@ public class NewsRestController {
     public Iterable<News> getNewsByCategory(@PathVariable("category") String category) {
 
         ScanRequest scanRequest = ScanRequest.builder()
-            .tableName("TBCKStories")
-            .build();
+                .tableName("TBCKStories")
+                .build();
 
         ScanResponse response = dynamoDbClient.scan(scanRequest);
 
         return response.items().stream()
-            .map(News::fromMap)
-            .filter(news -> news.getCategory().equals(category))
-            .sorted(Comparator.comparing(News::getDate).reversed()) // Sort by date, newest first
-            .toList();
+                .map(News::fromMap)
+                .filter(news -> news.getCategory().equals(category))
+                .sorted(Comparator.comparing(News::getDate).reversed()) // Sort by date, newest first
+                .toList();
     }
 
     @GetMapping
@@ -100,8 +101,8 @@ public class NewsRestController {
     public Iterable<News> getNews() {
 
         ScanRequest scanRequest = ScanRequest.builder()
-            .tableName("TBCKStories")
-            .build();
+                .tableName("TBCKStories")
+                .build();
 
         ScanResponse response = dynamoDbClient.scan(scanRequest);
 
@@ -113,7 +114,7 @@ public class NewsRestController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public News createNews(@RequestBody News news) {
 
-        try{
+        try {
             news.setNewsId(UUID.randomUUID());
 
             for (Image image : news.getImages()) {
@@ -128,7 +129,7 @@ public class NewsRestController {
 
             return saveNews(news);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -141,7 +142,9 @@ public class NewsRestController {
 
         News existingNews = getNewsFromDB(newsId);
 
-        if (existingNews == null) { return null; }
+        if (existingNews == null) {
+            return null;
+        }
 
         if (news.getTitle() != null) {
             existingNews.setTitle(news.getTitle());
@@ -165,18 +168,45 @@ public class NewsRestController {
             existingNews.setCategory(news.getCategory());
         }
         if (news.getImages() != null) {
-            List<Image> mergedImages = new ArrayList<>(existingNews.getImages());
-            mergedImages.addAll(news.getImages());
-            existingNews.setImages(mergedImages);
+            // Convert existing images to a Map for quick lookup
+            Map<UUID, Image> existingImagesMap = existingNews.getImages()
+                    .stream()
+                    .collect(Collectors.toMap(Image::getImageId, img -> img));
+
+            for (Image newImage : news.getImages()) {
+                if (newImage.getImageId() != null && existingImagesMap.containsKey(newImage.getImageId())) {
+                    // Update existing image fields
+                    Image existingImage = existingImagesMap.get(newImage.getImageId());
+
+                    if (newImage.getUrl() != null) {
+                        existingImage.setUrl(newImage.getUrl());
+                    }
+                    if (newImage.getAltText() != null) {
+                        existingImage.setAltText(newImage.getAltText());
+                    }
+                    if (newImage.getCaption() != null) {
+                        existingImage.setCaption(newImage.getCaption());
+                    }
+                } else {
+                    // New image, set its newsId and add to the list
+                    newImage.setImageId(UUID.randomUUID());  // Ensure unique ID
+                    newImage.setNewsId(newsId);
+                    existingImagesMap.put(newImage.getImageId(), newImage);
+                }
+            }
+
+            // Convert the map back to a list and update the news object
+            existingNews.setImages(new ArrayList<>(existingImagesMap.values()));
         }
-        if(news.getComments() != null){
+
+        if (news.getComments() != null) {
             //each new comment needs to have its id set randomly
 
             for (Comment comment : news.getComments()) {
                 comment.setCommentId(UUID.randomUUID());
                 comment.setNewsId(newsId);
             }
-            
+
             List<Comment> mergedComments = new ArrayList<>(existingNews.getComments());
             mergedComments.addAll(news.getComments());
             existingNews.setComments(mergedComments);
@@ -187,10 +217,10 @@ public class NewsRestController {
         if (news.getExternalLink() != null) {
             existingNews.setExternalLink(news.getExternalLink());
         }
-        
+
         return saveNews(existingNews);
     }
-    
+
     @DeleteMapping(path = "/{newsId}")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
@@ -215,7 +245,9 @@ public class NewsRestController {
 
         News existingNews = getNews(newsId);
 
-        if (existingNews == null) { return null; }
+        if (existingNews == null) {
+            return null;
+        }
 
         comment.setNewsId(existingNews.getNewsId());
         comment.setCommentId(UUID.randomUUID());
@@ -235,7 +267,9 @@ public class NewsRestController {
 
         GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
 
-        if (!getItemResponse.hasItem()) { return null; }
+        if (!getItemResponse.hasItem()) {
+            return null;
+        }
 
         return News.fromMap(getItemResponse.item());
     }
