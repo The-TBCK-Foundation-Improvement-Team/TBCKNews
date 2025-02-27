@@ -10,7 +10,7 @@ export function HomePageSection({ title, id }) {
     useEffect(() => {
         axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/'+ title)
             .then((response) => setNews(response.data));
-    }, []);
+    }, [title]);
 
     return (
         <>

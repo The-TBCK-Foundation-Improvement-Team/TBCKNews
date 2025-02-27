@@ -10,7 +10,7 @@ export function SubStory({ imgSrc, imgAlt, title, date }) {
         let titleWords = title.split(" ");
         let link = "/details/";
         for (let i = 0; i < titleWords.length; i++) {
-            if (i == 0) {
+            if (i === 0) {
                 link += titleWords[i];
                 continue;
             }
@@ -18,11 +18,11 @@ export function SubStory({ imgSrc, imgAlt, title, date }) {
         }
         link += "/" + date;
         setLink(link);
-    });
+    }, [title, date]);
 
     return (
         <div className="sub-story">
-            <Link to="/GenericNews" style={{ textDecoration: 'none', display: 'block' }}>
+            <Link to={link} style={{ textDecoration: 'none', display: 'block' }}>
                 <div className="sub-story-content">
                     <img 
                         className="sub-story-image" 
