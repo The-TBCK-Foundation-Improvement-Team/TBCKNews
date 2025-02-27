@@ -41,6 +41,7 @@ export function WotMSection() {
                         date={warriorOfTheMonth[1].date}
                         imgSrc={warriorOfTheMonth[1].images[0] ? warriorOfTheMonth[1].images[0].url : ""}
                         imgAlt={warriorOfTheMonth[1].images[0] ? warriorOfTheMonth[1].images[0].altText : ""}
+                        newsId={warriorOfTheMonth[1].newsId ?? ""}
                     /> : <></>}
                     {warriorOfTheMonth[2] ? 
                     <SubStory 
@@ -48,6 +49,7 @@ export function WotMSection() {
                         date={warriorOfTheMonth[2].date}
                         imgSrc={warriorOfTheMonth[2].images[0] ? warriorOfTheMonth[2].images[0].url : ""}
                         imgAlt={warriorOfTheMonth[2].images[0] ? warriorOfTheMonth[2].images[0].altText : ""}
+                        newsId={warriorOfTheMonth[2].newsId ?? ""}
                     /> : <></>}
                     {warriorOfTheMonth[3] ? 
                     <SubStory 
@@ -55,6 +57,7 @@ export function WotMSection() {
                         date={warriorOfTheMonth[3].date}
                         imgSrc={warriorOfTheMonth[3].images[0] ? warriorOfTheMonth[3].images[0].url : ""}
                         imgAlt={warriorOfTheMonth[3].images[0] ? warriorOfTheMonth[3].images[0].altText : ""}
+                        newsId={warriorOfTheMonth[3].newsId ?? ""}
                     /> : <></>}
                     {warriorOfTheMonth[4] ? 
                     <SubStory 
@@ -62,6 +65,7 @@ export function WotMSection() {
                         date={warriorOfTheMonth[4].date}
                         imgSrc={warriorOfTheMonth[0].images[0] ? warriorOfTheMonth[4].images[0].url : ""}
                         imgAlt={warriorOfTheMonth[0].images[0] ? warriorOfTheMonth[4].images[0].altText : ""}
+                        newsId={warriorOfTheMonth[4].newsId ?? ""}
                     /> : <></>}
                 </div>
             </div>: <></>}
