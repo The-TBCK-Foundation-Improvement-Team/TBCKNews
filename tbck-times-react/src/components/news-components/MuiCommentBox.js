@@ -87,7 +87,7 @@ async function patchComment(userId, newsId, content, date){
 
 
 export function MuiCommentBox({existingComments, newsId}) {
-  const [user, setUser] = useState(fetchUserData());
+  const [user, setUser] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
 
@@ -113,7 +113,12 @@ export function MuiCommentBox({existingComments, newsId}) {
   //   console.log("Comments updated:", comments);
   // }, [comments]);
 
-
+  useEffect(() => {
+    let user = fetchUserData();
+    if (user) {
+      setUser(user);
+    }
+  }, [])
 
   const handleSubmit = async (e) => {
     console.log("user" + user);
@@ -175,7 +180,7 @@ export function MuiCommentBox({existingComments, newsId}) {
             variant="contained"
             color="primary"
             type="submit"
-            disabled={!newComment.trim()}
+            disabled={!newComment.trim() || !user}
           >
             Post Comment
           </Button>

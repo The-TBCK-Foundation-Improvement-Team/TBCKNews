@@ -8,7 +8,7 @@ import { MuiLikeButton } from '../components/news-components/MuiLikeButton.js'
 
 import "../css/Newsletter.css";
 
-function NewsletterTemplate() {
+function NewsletterTemplate( {category, existingComments, newsId} ) {
 
     return (
         <div>
@@ -28,8 +28,8 @@ function NewsletterTemplate() {
                 </div>
                 
                 <div className='sidebar-section'>
-                    <MuiSuggestedStories/>
-                    <MuiCommentBox/>
+                    <MuiSuggestedStories category={category} />
+                    <MuiCommentBox existingComments={existingComments} newsId={newsId} />
                 </div>
             </div>
             <MuiFooter/>

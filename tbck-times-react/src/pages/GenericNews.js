@@ -8,7 +8,7 @@ import NewsImageSlideshow from '../components/news-components/NewsImageSlideshow
 
 import "../css/GenericNews.css";
 
-function GenericNews({title, about, author, date, images, contentOne, contentTwo, contentThree}) {
+function GenericNews({title, about, author, date, images, contentOne, contentTwo, contentThree, existingComments, newsId, category}) {
 
     if (images.length > 2) {
         var newImages = images.slice(2);
@@ -87,8 +87,8 @@ function GenericNews({title, about, author, date, images, contentOne, contentTwo
                         
                         </div>
             <div className='sidebar-layout'>
-            <MuiSuggestedStories/>
-            <MuiCommentBox/>
+                <MuiSuggestedStories category={category} />
+                <MuiCommentBox existingComments={existingComments} newsId={newsId} />
             </div>
         </div>
     </div>

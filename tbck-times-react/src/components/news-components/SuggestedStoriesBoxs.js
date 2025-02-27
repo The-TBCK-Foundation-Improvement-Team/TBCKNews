@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import '../../css/SideBar.css';
 
-function SuggestedStoriesBoxs({ imgSrc, imgAlt, newsId, title, date }) {
+function SuggestedStoriesBoxs({ imgSrc, imgAlt, newsId, title, date, author}) {
     return (
         <Box className="suggested-story-container">
             <Link className="suggested-story-link"
@@ -17,7 +17,7 @@ function SuggestedStoriesBoxs({ imgSrc, imgAlt, newsId, title, date }) {
                     {title}
                     </Typography>
                     <Typography variant="body2" className="suggested-story-subtext">
-                    Recommended for you
+                    {author} | {date}
                     </Typography>
                 </CardContent>
                 </Card>
