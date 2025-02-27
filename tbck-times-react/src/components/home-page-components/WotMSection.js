@@ -35,10 +35,34 @@ export function WotMSection() {
                 </div>
                 <div className="hp-wotm-right-section">
                     <h2>Past Articles</h2>
-                    <SubStory />
-                    <SubStory />
-                    <SubStory />
-                    <SubStory />
+                    {warriorOfTheMonth[1] ? 
+                    <SubStory 
+                        title={warriorOfTheMonth[1].title}
+                        date={warriorOfTheMonth[1].date}
+                        imgSrc={warriorOfTheMonth[1].images[0] ? warriorOfTheMonth[1].images[0].url : ""}
+                        imgAlt={warriorOfTheMonth[1].images[0] ? warriorOfTheMonth[1].images[0].altText : ""}
+                    /> : <></>}
+                    {warriorOfTheMonth[2] ? 
+                    <SubStory 
+                        title={warriorOfTheMonth[2].title}
+                        date={warriorOfTheMonth[2].date}
+                        imgSrc={warriorOfTheMonth[2].images[0] ? warriorOfTheMonth[2].images[0].url : ""}
+                        imgAlt={warriorOfTheMonth[2].images[0] ? warriorOfTheMonth[2].images[0].altText : ""}
+                    /> : <></>}
+                    {warriorOfTheMonth[3] ? 
+                    <SubStory 
+                        title={warriorOfTheMonth[3].title}
+                        date={warriorOfTheMonth[3].date}
+                        imgSrc={warriorOfTheMonth[3].images[0] ? warriorOfTheMonth[3].images[0].url : ""}
+                        imgAlt={warriorOfTheMonth[3].images[0] ? warriorOfTheMonth[3].images[0].altText : ""}
+                    /> : <></>}
+                    {warriorOfTheMonth[4] ? 
+                    <SubStory 
+                        title={warriorOfTheMonth[4].title}
+                        date={warriorOfTheMonth[4].date}
+                        imgSrc={warriorOfTheMonth[0].images[0] ? warriorOfTheMonth[4].images[0].url : ""}
+                        imgAlt={warriorOfTheMonth[0].images[0] ? warriorOfTheMonth[4].images[0].altText : ""}
+                    /> : <></>}
                 </div>
             </div>: <></>}
         </div>
