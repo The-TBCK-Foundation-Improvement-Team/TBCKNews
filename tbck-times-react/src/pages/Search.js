@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { MuiNavBar } from '../components/MuiNavBar.js';
-import { MuiFooter } from '../components/MuiFooter.js';
+import { HomePageFooter } from '../components/home-page-components/HomePageFooter.js';
 import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
 import "../css/App.css";
 
@@ -150,7 +150,7 @@ const SearchPage = () => {
                 )}
             </div>
         </div>
-        <MuiFooter/>
+        <HomePageFooter/>
     </div>
   );
 };
