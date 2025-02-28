@@ -25,9 +25,15 @@ export const MuiSuggestedStories = ({category, currentNewsId}) => {
                     throw new Error("Failed to fetch stories");
                 }
 
-                const data = await response.json();
+                let data = await response.json();
                 
-                // Use the first 3 stories only
+                // Use the first 3 non-current stories only
+                data = data.map((story) => {
+                    if (story.newsId === currentNewsId) {
+                        return null;
+                    }
+                    return story;
+                }).filter(story => story != null);
                 setStories(data.slice(0, 3));
             } catch (err) {
                 setError(err.message);
@@ -52,7 +58,6 @@ export const MuiSuggestedStories = ({category, currentNewsId}) => {
 
             <div >
                 {stories.map((story) => (
-                    story.newsId === currentNewsId ? <></> :
                     <Link to={`/details/${story.title.replace(/\s+/g, "-")}/${story.date.replace(/\s+/g, "-")}`} 
                     style={{ textDecoration: 'none' }}
                     key={story.newsId}
