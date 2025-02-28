@@ -220,7 +220,7 @@ const EditButton = ({ isAdmin, newsData }) => {
 
             {images.map((img, index) => (
               <div key={index} className="image-inputs">
-                <p className="image-filename"><strong>File:</strong> {img.fileName}</p> {/* Display file name */}
+                <p className="image-filename"><strong>File:</strong> {img.url.split('/').pop()}</p> {/* Display file name */}
                 <input
                   type="text"
                   placeholder="Alt Text"
