@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import "../css/SideBar.css";
 import { Link } from 'react-router-dom';
 
-export const MuiSuggestedStories = ({category}) => {
+export const MuiSuggestedStories = ({category, currentNewsId}) => {
 
 
     //fetch suggested stories from the database when the page loads
@@ -52,6 +52,7 @@ export const MuiSuggestedStories = ({category}) => {
 
             <div >
                 {stories.map((story) => (
+                    story.newsId === currentNewsId ? <></> :
                     <Link to={`/details/${story.title.replace(/\s+/g, "-")}/${story.date.replace(/\s+/g, "-")}`} 
                     style={{ textDecoration: 'none' }}
                     key={story.newsId}
