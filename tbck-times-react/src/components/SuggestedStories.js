@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import "../css/SideBar.css";
 import { Link } from 'react-router-dom';
 
-export const MuiSuggestedStories = ({category}) => {
+export const MuiSuggestedStories = ({category, currentNewsId}) => {
 
 
     //fetch suggested stories from the database when the page loads
@@ -25,9 +25,15 @@ export const MuiSuggestedStories = ({category}) => {
                     throw new Error("Failed to fetch stories");
                 }
 
-                const data = await response.json();
+                let data = await response.json();
                 
-                // Use the first 3 stories only
+                // Use the first 3 non-current stories only
+                data = data.map((story) => {
+                    if (story.newsId === currentNewsId) {
+                        return null;
+                    }
+                    return story;
+                }).filter(story => story != null);
                 setStories(data.slice(0, 3));
             } catch (err) {
                 setError(err.message);
