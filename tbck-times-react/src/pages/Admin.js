@@ -89,11 +89,30 @@ const Admin = () => {
     setImages(updatedImages);
   };
 
-  const removeImage = (index) => {
-    const updatedImages = images.filter((_, i) => i !== index);
-    setImages(updatedImages);
+  const removeImage = async (index) => {
+    const token = sessionStorage.getItem("jwt");
+    const imageToDelete = images[index];
+  
+    if (!imageToDelete || !imageToDelete.url) {
+      console.error("Invalid image object:", imageToDelete);
+      return;
+    }
+  
+    try {
+      await axios.delete(`http://localhost:8081/image/delete`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { key: imageToDelete.url }, // Pass the URL as a query parameter
+      });
+  
+      const updatedImages = images.filter((_, i) => i !== index);
+      setImages(updatedImages);
+      alert("Image deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting image:", error);
+      alert("Failed to delete image.");
+    }
   };
-
+  
   const handleArticleSubmit = async (e) => {
     e.preventDefault();
     const token = sessionStorage.getItem("jwt");
