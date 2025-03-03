@@ -59,7 +59,6 @@ export function ResearchSummaryTemplate({ title, category, contentOne, contentTw
                         target="_blank"
                         href={link}
                         sx={{
-
                             alignItems: 'center',
                             gap: 1,
                             color: '#FA1882 !important',

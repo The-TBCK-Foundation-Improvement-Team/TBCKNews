@@ -114,6 +114,7 @@ export default function NewsDetails() {
                         existingComments={story.comments}
                         category={story.category}
                         newsId={newsId}
+                        link={story.externalLink}
                     />}
                     {/* {story.category === 'research'}(
             <ResearchSummary/>
