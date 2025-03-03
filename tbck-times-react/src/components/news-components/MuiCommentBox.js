@@ -43,7 +43,7 @@ function fetchUserData() {
 async function fetchCommentAuthor(userId) {
   try {
     const response = await fetch(`http://localhost:8080/user/name/${userId}`);
-    console.log("response" + response);
+    //console.log("response" + response);
     if (!response.ok) throw new Error("Failed to fetch user data");
     
     const userData = await response.text();
@@ -189,7 +189,7 @@ export function MuiCommentBox({existingComments, newsId}) {
       <Box sx={{ maxHeight: 300, overflow: 'auto', paddingBottom: 8 }}>
       <List>
         {comments.map((comment, index) => (
-          console.log("comment in list" + JSON.stringify(comment)),
+          //console.log("comment in list" + JSON.stringify(comment)),
           <React.Fragment key={index}>
             {index > 0 && <Divider variant="inset" component="li" />}
             <ListItem alignItems="flex-start">

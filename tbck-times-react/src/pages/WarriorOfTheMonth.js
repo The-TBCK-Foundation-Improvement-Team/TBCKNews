@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {use, useState, useEffect} from 'react';
 import '../css/WarriorOfTheMonth.css';
 import '../css/GenericNews.css';
 
@@ -6,7 +6,8 @@ import { MuiCommentBox } from '../components/news-components/MuiCommentBox.js'
 import { MuiSuggestedStories } from "../components/SuggestedStories.js";
 import ImageSlideShow from '../components/ImageSlideshow.js';
 
-function WarriorOfTheMonth({title, contentOne, contentTwo, contentThree, images, existingComments, newsId, category}) {
+
+function WarriorOfTheMonth({title, contentOne, contentTwo, contentThree, images, existingComments, newsId, category, author, date}) {
     const contents = [contentOne, contentTwo, contentThree];
     
     const splitTitle = title.split(' '); // Split title into words
