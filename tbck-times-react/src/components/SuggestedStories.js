@@ -45,7 +45,7 @@ export const MuiSuggestedStories = ({category, currentNewsId}) => {
         if (category) {
             fetchSuggestedStories();
         }
-    }, [category]);
+    }, [category, currentNewsId]);
 
 
 
@@ -64,8 +64,8 @@ export const MuiSuggestedStories = ({category, currentNewsId}) => {
                     state={{ newsId: story.newsId }}>
                         <SuggestedStoriesboxs
                             key={story.newsId}
-                            imgSrc={story.images[0].url}
-                            imgAlt={story.imgAlt || "News Image"}
+                            imgSrc={story.images[0] ? story.images[0].url : ""}
+                            imgAlt={story.images[0] ? story.images[0].imgAlt : "News Image"}
                             title={story.title}
                             newsId={story.newsId}
                             date={story.date}

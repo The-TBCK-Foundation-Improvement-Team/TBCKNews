@@ -24,7 +24,7 @@ function ResearchSummary( {category, existingComments, newsId} ) {
                     />
                 </div>
                 <div className='sidebar-layout'>
-                    <MuiSuggestedStories category={category} />
+                    <MuiSuggestedStories category={category} currentNewsId={newsId} />
                     <MuiCommentBox existingComments={existingComments} newsId={newsId} />
                 </div>
             </div>

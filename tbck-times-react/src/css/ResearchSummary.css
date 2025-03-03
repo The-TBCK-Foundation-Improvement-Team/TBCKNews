@@ -1,9 +1,25 @@
+.NewsDetails-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+}
+
+.NewsPageLayout {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.news-details-container {
+    flex-grow: 1;
+}
+
 .container {
     display: flex;
 }
 
 .news-format {
-    flex: 5;
     background-color: white;
     border: 1px solid white;
     font-family: Gill Sans, sans-serif;
