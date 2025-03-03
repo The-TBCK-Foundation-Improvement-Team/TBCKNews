@@ -168,35 +168,25 @@ public class NewsRestController {
             existingNews.setCategory(news.getCategory());
         }
         if (news.getImages() != null) {
-            // Convert existing images to a Map for quick lookup
-            Map<UUID, Image> existingImagesMap = existingNews.getImages()
-                    .stream()
-                    .collect(Collectors.toMap(Image::getImageId, img -> img));
-
+            List<Image> updatedImages = new ArrayList<>();
+    
             for (Image newImage : news.getImages()) {
-                if (newImage.getImageId() != null && existingImagesMap.containsKey(newImage.getImageId())) {
-                    // Update existing image fields
-                    Image existingImage = existingImagesMap.get(newImage.getImageId());
-
-                    if (newImage.getUrl() != null) {
-                        existingImage.setUrl(newImage.getUrl());
-                    }
-                    if (newImage.getAltText() != null) {
-                        existingImage.setAltText(newImage.getAltText());
-                    }
-                    if (newImage.getCaption() != null) {
-                        existingImage.setCaption(newImage.getCaption());
-                    }
-                } else {
-                    // New image, set its newsId and add to the list
-                    newImage.setImageId(UUID.randomUUID());  // Ensure unique ID
-                    newImage.setNewsId(newsId);
-                    existingImagesMap.put(newImage.getImageId(), newImage);
+                // If the image does not have an imageId, we need to assign a new UUID
+                if (newImage.getImageId() == null) {
+                    newImage.setImageId(UUID.randomUUID());  // Assign new imageId
                 }
+    
+                // If the image does not have a newsId, set it to the current newsId
+                if (newImage.getNewsId() == null) {
+                    newImage.setNewsId(newsId);  // Set the newsId
+                }
+    
+                // Add the image to the list of updated images
+                updatedImages.add(newImage);
             }
-
-            // Convert the map back to a list and update the news object
-            existingNews.setImages(new ArrayList<>(existingImagesMap.values()));
+    
+            // Replace the old images with the updated list of images
+            existingNews.setImages(updatedImages);
         }
 
         if (news.getComments() != null) {

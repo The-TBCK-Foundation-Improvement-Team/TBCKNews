@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, TextField, CircularProgress } from "@mui/material";
+import axios from "axios";
 import PopUp from './PopUp.js';
 
 const EditButton = ({ isAdmin, newsData }) => {
@@ -11,67 +12,71 @@ const EditButton = ({ isAdmin, newsData }) => {
 
   if (!isAdmin) return null; // Hide button for non-admins
 
-  const handleArticleSubmit = (e) => {
-  };
+  const handleArticleSubmit = async (e, newsId) => {
+    e.preventDefault();
 
-  const uploadImageToS3 = async (image) => {
+    console.log("Submitting edited news article:", JSON.stringify(editedNews));
 
-    try {
+  try {
+    const token = sessionStorage.getItem("jwt");
 
-      // Create a new form data object
-      const formData = new FormData();
-
-      // Append the image to the form data
-      formData.append("file", image);
-
-      // Send the image to the server
-      const response = await fetch("http://localhost:8080/image/upload", {
+    const response = await axios.patch(
+      `http://localhost:8081/news/${newsId}`, // Adjust the endpoint if necessary
+      editedNews,
+      {
         headers: {
-          "Content-Type": "multipart/form-data",
-          "Authorization": `Bearer ${sessionStorage.getItem("jwt")}` // Replace with your actual token if needed
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
-        method: "POST",
-        body: formData,
-      });
-
-      // Get the image URL from the response
-      const imageUrl = await response.text();
-
-      return imageUrl;
-
-    } catch (error) {
-      console.error("Error uploading image to S3:", error);
-    }
-
-  };
-
-  const deleteImageFromS3 = async (imageUrl) => {
-
-    try {
-
-      // Send a DELETE request to the server
-      const response = await fetch(`http://localhost:8080/image/delete/${imageUrl}`, {
-        headers: {
-          "Authorization": `Bearer ${sessionStorage.getItem("jwt")}` // Replace with your actual token if needed
-        },
-        method: "DELETE",
-      });
-
-
-      if (response.ok) {
-        console.log("Image deleted successfully!");
       }
+    );
 
-    } catch (error) {
-      console.error("Error deleting image:", error);
-    }
+    console.log("Updated news article:", JSON.stringify(response.data));
+    
+    // Optionally, reset the form or navigate away
+    setEditedNews({ title: "", content: "", images: [] });
+    setImages([]);
+
+  } catch (error) {
+    console.error("Error updating news:", error);
+    alert("Failed to update the news article.");
+  }
   };
 
   const handleImageUpload = async (e) => {
-    
+    const files = Array.from(e.target.files);
+    const formData = new FormData();
+
+    files.forEach((file) => formData.append("images", file));
+
+    try {
+      const token = sessionStorage.getItem("jwt");
+      const response = await axios.post("http://localhost:8081/image/add/many", formData, {
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
+      });
+
+      const uploadedImages = response.data.map((url, index) => ({
+        url,
+        altText: "",
+        caption: "",
+        imageId: "",
+        newsId: "",
+      }));
+
+      setImages((prevImages) => [...prevImages, ...uploadedImages]);
+      // Update the editedNews object with new images
+      setEditedNews((prevNews) => ({
+        ...prevNews,
+        images: [...(prevNews.images || []), ...uploadedImages],
+      }));
+    } catch (error) {
+      console.error("Error uploading images:", error);
+      console.Log("Failed to upload images.");
+    }
 
   };
 
+  //changes the test for the images
   const handleImageChange = (index, key, value) => {
     setImages((prevImages) => {
       const updatedImages = [...prevImages];
@@ -88,7 +93,8 @@ const EditButton = ({ isAdmin, newsData }) => {
     }));
   };
 
-  const removeImage = (index) => {
+  const removeImage = async(index) => {
+
     setImages((prevImages) => {
       const updatedImages = prevImages.filter((_, i) => i !== index);
 
@@ -146,7 +152,7 @@ const EditButton = ({ isAdmin, newsData }) => {
       <PopUp trigger={buttonPopup} setTrigger={setButtonPopup}>
         <div className="article-container">
           <h2 className="adminh2">Create Article</h2>
-          <form onSubmit={handleArticleSubmit}>
+          <form onSubmit={(e) => handleArticleSubmit(e, newsData.newsId)}>
             {/* Template Dropdown */}
             <select className="admin-dropdown" placeholder="Template" value={editedNews.template} onChange={(e) => setEditedNews({ ...editedNews, template: e.target.value })} required>
               <option value="Template">Template</option>
