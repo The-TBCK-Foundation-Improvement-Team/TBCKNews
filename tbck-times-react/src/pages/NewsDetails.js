@@ -19,14 +19,14 @@ const fetchStory = async (newsId) => {
 
     let url = 'http://localhost:8081/news/get/' + newsId;
 
-    try{
+    try {
         const response = await fetch(url);
-        if(!response.ok){
+        if (!response.ok) {
             throw new Error('Network response was not ok');
-        }else{
+        } else {
             return await response.json();
         }
-    }catch(error){
+    } catch (error) {
         console.log(error);
         return [];
     }
@@ -34,7 +34,7 @@ const fetchStory = async (newsId) => {
 
 export default function NewsDetails() {
     const location = useLocation();
-    const {newsId} = location.state;
+    const { newsId } = location.state;
     const [story, setStory] = useState([]);
 
     useEffect(() => {
@@ -49,73 +49,73 @@ export default function NewsDetails() {
         }
     }, [newsId]);
 
-return (
-    <div className="NewsDetails-column">
-    <div class name='NewsPageLayout'>
-        <MuiNavBar/>
-        <MuiCategoryBar/>
-        <div>
-        {story.category === "News" && <GenericNews
-            title={story.title}
-            contentOne={story.contentOne}
-            contentTwo={story.contentTwo}
-            contentThree={story.contentThree}
-            images={story.images}
-            existingComments={story.comments}
-            category={story.category}
-            newsId={newsId}
-        />}
-        {story.category === "Events" && <GenericNews
-            title={story.title}
-            contentOne={story.contentOne}
-            contentTwo={story.contentTwo}
-            contentThree={story.contentThree}
-            images={story.images}
-            existingComments={story.comments}
-            category={story.category}
-            newsId={newsId}
-        />}
-        {story.category === "Sports" && <GenericNews
-            title={story.title}
-            contentOne={story.contentOne}
-            contentTwo={story.contentTwo}
-            contentThree={story.contentThree}
-            images={story.images}
-            existingComments={story.comments}
-            category={story.category}
-            newsId={newsId}
-        />}
-        {story.category === "WarriorOfTheMonth" && <WarriorOfTheMonthTemplate
-            title={story.title}
-            contentOne={story.contentOne}
-            contentTwo={story.contentTwo}
-            contentThree={story.contentThree}
-            images={story.images}
-            existingComments={story.comments}
-            category={story.category}
-            newsId={newsId}
-        />}
-        {story.category === "Newsletter" && <NewsLetter
-            title={story.title}
-            contentOne={story.contentOne}
-            contentTwo={story.contentTwo}
-            contentThree={story.contentThree}
-            images={story.images}
-            existingComments={story.comments}
-            category={story.category}
-            newsId={newsId}
-        />}
-        {story.category === "Research" && <ResearchSummaryTemplate
-            title={story.title}
-            contentOne={story.contentOne}
-            contentTwo={story.contentTwo}
-            contentThree={story.contentThree}
-            images={story.images}
-            existingComments={story.comments}
-            category={story.category}
-            newsId={newsId}
-        />}
-        {/* {story.category === 'research'}(
+    return (
+        <div className="NewsDetails-column">
+            <div className='NewsPageLayout'>
+                <MuiNavBar />
+                <MuiCategoryBar />
+                <div className="news-details-container">
+                    {story.category === "News" && <GenericNews
+                        title={story.title}
+                        contentOne={story.contentOne}
+                        contentTwo={story.contentTwo}
+                        contentThree={story.contentThree}
+                        images={story.images}
+                        existingComments={story.comments}
+                        category={story.category}
+                        newsId={newsId}
+                    />}
+                    {story.category === "Events" && <GenericNews
+                        title={story.title}
+                        contentOne={story.contentOne}
+                        contentTwo={story.contentTwo}
+                        contentThree={story.contentThree}
+                        images={story.images}
+                        existingComments={story.comments}
+                        category={story.category}
+                        newsId={newsId}
+                    />}
+                    {story.category === "Sports" && <GenericNews
+                        title={story.title}
+                        contentOne={story.contentOne}
+                        contentTwo={story.contentTwo}
+                        contentThree={story.contentThree}
+                        images={story.images}
+                        existingComments={story.comments}
+                        category={story.category}
+                        newsId={newsId}
+                    />}
+                    {story.category === "WarriorOfTheMonth" && <WarriorOfTheMonthTemplate
+                        title={story.title}
+                        contentOne={story.contentOne}
+                        contentTwo={story.contentTwo}
+                        contentThree={story.contentThree}
+                        images={story.images}
+                        existingComments={story.comments}
+                        category={story.category}
+                        newsId={newsId}
+                    />}
+                    {story.category === "Newsletter" && <NewsLetter
+                        title={story.title}
+                        contentOne={story.contentOne}
+                        contentTwo={story.contentTwo}
+                        contentThree={story.contentThree}
+                        images={story.images}
+                        existingComments={story.comments}
+                        category={story.category}
+                        newsId={newsId}
+                    />}
+                    {story.category === "Research" && <ResearchSummaryTemplate
+                        title={story.title}
+                        contentOne={story.contentOne}
+                        contentTwo={story.contentTwo}
+                        contentThree={story.contentThree}
+                        images={story.images}
+                        existingComments={story.comments}
+                        category={story.category}
+                        newsId={newsId}
+                    />}
+                    {/* {story.category === 'research'}(
             <ResearchSummary/>
         ){story.category === 'genericNews'}(
             <GenericNews/>
@@ -126,11 +126,11 @@ return (
         ){story.category === 'News'}(
             <GenericNews/>
         ) */}
+                </div>
+
+            </div>
+            <HomePageFooter />
         </div>
-    
-    </div>
-        <HomePageFooter/>
-    </div>
     );
 }
 
