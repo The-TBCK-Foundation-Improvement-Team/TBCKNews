@@ -87,7 +87,7 @@ function GenericNews({title, about, author, date, images, contentOne, contentTwo
                         
                         </div>
             <div className='sidebar-layout'>
-                <MuiSuggestedStories category={category} />
+                <MuiSuggestedStories category={category} currentNewsId={newsId} />
                 <MuiCommentBox existingComments={existingComments} newsId={newsId} />
             </div>
         </div>

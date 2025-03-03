@@ -25,7 +25,12 @@ function WarriorOfTheMonth({title, contentOne, contentTwo, contentThree, images,
                                 <>
                                     {/* If it's the 1st, 2nd or 3rd content and there are enough images, display slideshow */}
                                     {index === contents.length - 1 && contents.length > 1 && (
-                                        <ImageSlideShow images={images} />
+                                        <ImageSlideShow images={images.map((image, index) => {
+                                            if (index > 1) {
+                                                return image;
+                                            }
+                                            return null;
+                                        }).filter(image => image != null)} />
                                     )}
                                     {images[index].url && index !== contents.length - 1 && (
                                         <img src={images[index].url} alt={`image-${index}`} className="content-image" />
@@ -45,7 +50,7 @@ function WarriorOfTheMonth({title, contentOne, contentTwo, contentThree, images,
                 </div>
             </div>
         <div className='sidebar-layout'>
-            <MuiSuggestedStories category={category} />
+            <MuiSuggestedStories category={category} currentNewsId={newsId} />
             <MuiCommentBox existingComments={existingComments} newsId={newsId} />
         </div>
         
