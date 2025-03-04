@@ -43,6 +43,35 @@ const EditButton = ({ isAdmin, newsData }) => {
   }
   };
 
+  const deleteArticle = async (newsId) => {
+
+    try {
+      const token = sessionStorage.getItem("jwt");
+
+      const response = await axios.delete(
+        `http://localhost:8081/news/${newsId}`, // Adjust the endpoint if necessary
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Deleted news article:", JSON.stringify(response.data));
+      
+      // Optionally, reset the form or navigate away
+      setEditedNews({ title: "", content: "", images: [] });
+      setImages([]);
+      setButtonPopup(false);
+
+    } catch (error) {
+      console.error("Error deleting news:", error);
+      alert("Failed to delete the news article.");
+    }
+
+  };
+
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
     const formData = new FormData();
@@ -246,8 +275,11 @@ const EditButton = ({ isAdmin, newsData }) => {
                 <button type="button" className="remove" onClick={() => removeImage(index)}>Remove</button>
               </div>
             ))}
-
-            <button type="submit" className="submit-article">Submit Article</button>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <button type="submit" className="submit-article">Submit Article</button>
+              <button type="button" className="submit-article" onClick={() => { if(window.confirm("are you sure you want to delete this article?")){deleteArticle(newsData.newsId)} }}>Delete Article</button>
+            </div>
+            
           </form>
         </div>
       </PopUp>
