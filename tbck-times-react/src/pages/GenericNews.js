@@ -5,14 +5,20 @@ import { MuiCommentBox } from '../components/news-components/MuiCommentBox.js'
 import { MuiLikeButton } from '../components/news-components/MuiLikeButton.js'
 import { MuiSuggestedStories } from '../components/SuggestedStories.js';
 import NewsImageSlideshow from '../components/news-components/NewsImageSlideshow.js';
+import EditButton from '../components/EditButton.js';
+import {jwtDecode} from "jwt-decode";
+
 
 import "../css/GenericNews.css";
 
 function GenericNews({title, about, author, date, images, contentOne, contentTwo, contentThree, existingComments, newsId, category}) {
 
+
     if (images.length > 2) {
         var newImages = images.slice(2);
     }
+
+    
 
     return (
         <div className="GenericNews">
@@ -22,7 +28,7 @@ function GenericNews({title, about, author, date, images, contentOne, contentTwo
 
                         <h1 className='main-title'>
                             {title}
-                        </h1>
+                        </h1> 
                             {about}
                             <h5>
                                 By: {author} | {date} | {images.length}

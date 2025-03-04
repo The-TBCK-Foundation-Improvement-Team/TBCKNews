@@ -16,7 +16,7 @@ const Admin = () => {
     date: "",
     contentOne: "",
     contentTwo: "",
-    contentThree: "", 
+    contentThree: "",
     category: "Category",
     images: [],
     comments: [],
@@ -57,15 +57,15 @@ const Admin = () => {
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
     const formData = new FormData();
-    
+
     files.forEach((file) => formData.append("images", file));
-  
+
     try {
       const token = sessionStorage.getItem("jwt");
       const response = await axios.post("http://localhost:8081/image/add/many", formData, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
       });
-  
+
       const uploadedImages = response.data.map((url, index) => ({
         url,
         fileName: files[index].name, // Store file name for display
@@ -74,7 +74,7 @@ const Admin = () => {
         imageId: "",
         newsId: "",
       }));
-  
+
       setImages((prevImages) => [...prevImages, ...uploadedImages]);
     } catch (error) {
       console.error("Error uploading images:", error);
@@ -89,11 +89,30 @@ const Admin = () => {
     setImages(updatedImages);
   };
 
-  const removeImage = (index) => {
-    const updatedImages = images.filter((_, i) => i !== index);
-    setImages(updatedImages);
+  const removeImage = async (index) => {
+    const token = sessionStorage.getItem("jwt");
+    const imageToDelete = images[index];
+  
+    if (!imageToDelete || !imageToDelete.url) {
+      console.error("Invalid image object:", imageToDelete);
+      return;
+    }
+  
+    try {
+      await axios.delete(`http://localhost:8081/image/delete`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { key: imageToDelete.url }, // Pass the URL as a query parameter
+      });
+  
+      const updatedImages = images.filter((_, i) => i !== index);
+      setImages(updatedImages);
+      alert("Image deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting image:", error);
+      alert("Failed to delete image.");
+    }
   };
-
+  
   const handleArticleSubmit = async (e) => {
     e.preventDefault();
     const token = sessionStorage.getItem("jwt");
@@ -163,7 +182,7 @@ const Admin = () => {
             <textarea placeholder="Content One" className="admintext" value={newArticle.contentOne} onChange={(e) => setNewArticle({ ...newArticle, contentOne: e.target.value })} required />
             {contentFieldsVisible >= 2 && (<textarea placeholder="Content Two" className="admintext" value={newArticle.contentTwo} onChange={(e) => setNewArticle({ ...newArticle, contentTwo: e.target.value })} required />)}
             {contentFieldsVisible >= 3 && (<textarea placeholder="Content Three" className="admintext" value={newArticle.contentThree} onChange={(e) => setNewArticle({ ...newArticle, contentThree: e.target.value })} required />)}
-            
+
             {/* Buttons to Add/Remove Content Fields */}
             <div className="content-buttons">
               {contentFieldsVisible < 3 && (
@@ -173,7 +192,7 @@ const Admin = () => {
                 <button type="button" className="ARTremove" onClick={() => setContentFieldsVisible(contentFieldsVisible - 1)}>- Remove Content</button>
               )}
             </div>
-              {/* Category Dropdown */}
+            {/* Category Dropdown */}
             <select className="admin-dropdown" placeholder="Category" value={newArticle.category} onChange={(e) => setNewArticle({ ...newArticle, category: e.target.value })} required>
               <option value="Category">Category</option>
               <option value="News">News</option>
@@ -184,52 +203,52 @@ const Admin = () => {
               <option value="Research">Research</option>
             </select>
             {newArticle.template === "Research" && (
-            <input
-            type="text"
-            placeholder="External Link"
-            className="admintext"
-            value={newArticle.externalLink}
-            onChange={(e) =>
-            setNewArticle({ ...newArticle, externalLink: e.target.value })
-          }
-        />
-      )}
-          <div className="file-upload-container">
-  <label htmlFor="file-upload" className="file-upload-label">
-    Upload Images
-  </label>
-  <input
-    id="file-upload"
-    type="file"
-    className="adminfile"
-    multiple
-    onChange={handleImageUpload}
-  />
-  {images.length > 0 && <span className="file-name-display">{images.length} file(s) selected</span>}
-</div>
+              <input
+                type="text"
+                placeholder="External Link"
+                className="admintext"
+                value={newArticle.externalLink}
+                onChange={(e) =>
+                  setNewArticle({ ...newArticle, externalLink: e.target.value })
+                }
+              />
+            )}
+            <div className="file-upload-container">
+              <label htmlFor="file-upload" className="file-upload-label">
+                Upload Images
+              </label>
+              <input
+                id="file-upload"
+                type="file"
+                className="adminfile"
+                multiple
+                onChange={handleImageUpload}
+              />
+              {images.length > 0 && <span className="file-name-display">{images.length} file(s) selected</span>}
+            </div>
 
-{images.map((img, index) => (
-  <div key={index} className="image-inputs">
-    <p className="image-filename"><strong>File:</strong> {img.fileName}</p> {/* Display file name */}
-    <input
-      type="text"
-      placeholder="Alt Text"
-      className="admintext"
-      value={img.altText}
-      onChange={(e) => handleImageChange(index, "altText", e.target.value)}
-      required
-    />
-    <input
-      type="text"
-      placeholder="Caption"
-      className="admintext"
-      value={img.caption}
-      onChange={(e) => handleImageChange(index, "caption", e.target.value)}
-      required
-    />
-    <button type="button" className="remove" onClick={() => removeImage(index)}>Remove</button>
-  </div>
-))}
+            {images.map((img, index) => (
+              <div key={index} className="image-inputs">
+                <p className="image-filename"><strong>File:</strong> {img.fileName}</p> {/* Display file name */}
+                <input
+                  type="text"
+                  placeholder="Alt Text"
+                  className="admintext"
+                  value={img.altText}
+                  onChange={(e) => handleImageChange(index, "altText", e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Caption"
+                  className="admintext"
+                  value={img.caption}
+                  onChange={(e) => handleImageChange(index, "caption", e.target.value)}
+                  required
+                />
+                <button type="button" className="remove" onClick={() => removeImage(index)}>Remove</button>
+              </div>
+            ))}
 
             <button type="submit" className="submit-article">Submit Article</button>
           </form>

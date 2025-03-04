@@ -13,20 +13,21 @@ import { MuiLikeButton } from '../components/news-components/MuiLikeButton.js'
 import { MuiSuggestedStories } from '../components/SuggestedStories.js';
 import { ResearchSummaryTemplate } from "../components/ResearchSummaryTemplate.js";
 import { HomePageFooter } from '../components/home-page-components/HomePageFooter.js'
+import EditButton from '../components/EditButton.js';
 
 
 const fetchStory = async (newsId) => {
 
     let url = 'http://localhost:8081/news/get/' + newsId;
 
-    try{
+    try {
         const response = await fetch(url);
-        if(!response.ok){
+        if (!response.ok) {
             throw new Error('Network response was not ok');
-        }else{
+        } else {
             return await response.json();
         }
-    }catch(error){
+    } catch (error) {
         console.log(error);
         return [];
     }
@@ -34,8 +35,36 @@ const fetchStory = async (newsId) => {
 
 export default function NewsDetails() {
     const location = useLocation();
-    const {newsId} = location.state;
+    const { newsId } = location.state;
     const [story, setStory] = useState([]);
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        const checkAdmin = () => {
+            const token = sessionStorage.getItem("jwt");
+            console.log("Token on warrior page: " +  token);
+            if (!token) return false;
+            const decoded = JSON.parse(atob(token.split('.')[1]));
+            console.log("decoded: ", decoded);
+            return decoded.role === "ROLE_ADMIN";
+        };
+
+        setIsAdmin(checkAdmin()); // Set the admin status
+    }, []);
+
+    var data = {
+        newsId: story.newsId,
+        title: story.title,
+        contentOne: story.contentOne,
+        contentTwo: story.contentTwo,
+        contentThree: story.contentThree,
+        author: story.author,
+        date: story.date,
+        category: story.category,
+        images: story.images,
+        template: story.template,
+        externalLink: story.externalLink
+    }
 
     useEffect(() => {
         const fetchAndGetStory = async () => {
@@ -54,7 +83,8 @@ return (
     <div class name='NewsPageLayout'>
         <MuiNavBar/>
         <MuiCategoryBar/>
-        <div>
+        <div style={isAdmin ? { marginTop: '-28px', } : {}}>
+        {isAdmin && < EditButton isAdmin={isAdmin} newsData={data} /> }
         {story.category === "News" && <GenericNews
             title={story.title}
             contentOne={story.contentOne}
@@ -94,6 +124,8 @@ return (
             existingComments={story.comments}
             category={story.category}
             newsId={newsId}
+            author={story.author}
+            date={story.date}
         />}
         {story.category === "Newsletter" && <NewsLetter
             title={story.title}
@@ -114,6 +146,7 @@ return (
             existingComments={story.comments}
             category={story.category}
             newsId={newsId}
+            externalLink={story.externalLink}
         />}
         {/* {story.category === 'research'}(
             <ResearchSummary/>
@@ -126,11 +159,11 @@ return (
         ){story.category === 'News'}(
             <GenericNews/>
         ) */}
+                </div>
+
+            </div>
+            <HomePageFooter />
         </div>
-    
-    </div>
-        <HomePageFooter/>
-    </div>
     );
 }
 
