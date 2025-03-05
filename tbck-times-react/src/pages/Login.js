@@ -14,7 +14,7 @@ const Login = () => {
     const handleLogin = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post("http://localhost:8080/authenticate/login", {
+            const response = await axios.post("http://tbckuserservice-env.eba-y8qwbxqf.us-east-2.elasticbeanstalk.com/authenticate/login", {
                 email,
                 password
             }, { withCredentials: true });

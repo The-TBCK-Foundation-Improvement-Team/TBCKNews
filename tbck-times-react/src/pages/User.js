@@ -41,7 +41,7 @@ const User = () => {
         try {
             const jwtToken = sessionStorage.getItem("jwt");
             const response = await axios.patch(
-                `http://localhost:8080/user/${user.userId}`,
+                `http://tbckuserservice-env.eba-y8qwbxqf.us-east-2.elasticbeanstalk.com/user/${user.userId}`,
                 editedUser,
                 {
                     headers: {

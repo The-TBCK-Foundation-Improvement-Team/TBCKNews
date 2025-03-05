@@ -21,7 +21,7 @@ const EditButton = ({ isAdmin, newsData }) => {
     const token = sessionStorage.getItem("jwt");
 
     const response = await axios.patch(
-      `http://localhost:8081/news/${newsId}`, // Adjust the endpoint if necessary
+      `http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/${newsId}`, // Adjust the endpoint if necessary
       editedNews,
       {
         headers: {
@@ -49,7 +49,7 @@ const EditButton = ({ isAdmin, newsData }) => {
       const token = sessionStorage.getItem("jwt");
 
       const response = await axios.delete(
-        `http://localhost:8081/news/${newsId}`, // Adjust the endpoint if necessary
+        `http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/${newsId}`, // Adjust the endpoint if necessary
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -80,7 +80,7 @@ const EditButton = ({ isAdmin, newsData }) => {
 
     try {
       const token = sessionStorage.getItem("jwt");
-      const response = await axios.post("http://localhost:8081/image/add/many", formData, {
+      const response = await axios.post("http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/image/add/many", formData, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
       });
 
