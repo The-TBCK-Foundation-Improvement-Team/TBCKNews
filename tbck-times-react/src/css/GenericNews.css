@@ -4,7 +4,13 @@
     padding: 5px;
 }
 
+@font-face {
+    font-family: 'Glacial Indifference';
+    src: url(Fonts/GlacialIndifference-Regular.otf) format('opentype');
+}
+
 .main-title {
+    font-family: 'Glacial Indifference';
     font-size: 2.25rem;
     font-weight: 900;
     color: #2C6460;
@@ -34,7 +40,7 @@
 }
 
 .news-page-content {
-    font-family: 'Gill Sans', sans-serif;
+    font-family: 'Glacial Indifference', sans-serif;
     font-size: 1.2rem;
     line-height: 1.5;
     padding-left: 10px;
@@ -45,7 +51,7 @@
 .news-layout {
     flex: 5;
     background-color: white;
-    font-family: Gill Sans, sans-serif;
+    font-family: 'Glacial Indifference', sans-serif;
     font-size:large;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: left;

@@ -31,7 +31,7 @@ function GenericNews({title, about, author, date, images, contentOne, contentTwo
                         </h1> 
                             {about}
                             <h5>
-                                By: {author} | {date} | {images.length}
+                                By: {author} | {date}
                             </h5>
                             <div>
                                 <div className='image-layout'>
@@ -60,6 +60,7 @@ function GenericNews({title, about, author, date, images, contentOne, contentTwo
                                 </p></>
                             }
                             </div>
+                            
                             <p className='news-page-content'>
                                 {contentTwo}
                             </p></>
@@ -78,7 +79,28 @@ function GenericNews({title, about, author, date, images, contentOne, contentTwo
                                 </p>
                                 {images.length > 2 &&
                                     <>
-                                    
+                                    {contentTwo === "" &&
+                                    <>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+</>
+}
                                     <p className="main-title">
                                         <strong>Additional Images:</strong>
                                     </p>
