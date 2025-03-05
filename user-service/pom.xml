@@ -11,7 +11,7 @@
 	<groupId>com.tbck.user-service</groupId>
 	<artifactId>user-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>user management service </name>
 	<description>A service for managing user accounts, including registration, authentication, and profile updates.</description>
 	<url/>
