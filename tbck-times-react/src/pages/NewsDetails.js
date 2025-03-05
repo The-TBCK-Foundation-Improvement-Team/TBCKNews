@@ -90,6 +90,8 @@ return (
             contentOne={story.contentOne}
             contentTwo={story.contentTwo}
             contentThree={story.contentThree}
+            author={story.author}
+            date={story.date}
             images={story.images}
             existingComments={story.comments}
             category={story.category}
@@ -100,6 +102,8 @@ return (
             contentOne={story.contentOne}
             contentTwo={story.contentTwo}
             contentThree={story.contentThree}
+            author={story.author}
+            date={story.date}
             images={story.images}
             existingComments={story.comments}
             category={story.category}
@@ -110,6 +114,8 @@ return (
             contentOne={story.contentOne}
             contentTwo={story.contentTwo}
             contentThree={story.contentThree}
+            author={story.author}
+            date={story.date}
             images={story.images}
             existingComments={story.comments}
             category={story.category}
@@ -132,6 +138,8 @@ return (
             contentOne={story.contentOne}
             contentTwo={story.contentTwo}
             contentThree={story.contentThree}
+            author={story.author}
+            date={story.date}
             images={story.images}
             existingComments={story.comments}
             category={story.category}
@@ -142,6 +150,8 @@ return (
             contentOne={story.contentOne}
             contentTwo={story.contentTwo}
             contentThree={story.contentThree}
+            author={story.author}
+            date={story.date}
             images={story.images}
             existingComments={story.comments}
             category={story.category}

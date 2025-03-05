@@ -16,13 +16,17 @@ const ImageSlideshow = ({ images }) => {
   
     return (
       <div className="slideshow">
+        {images.length > 1 && 
         <button className="slideshow-button" onClick={prevImage}>&lt;</button>
+    }
         <img
           src={images[currentImageIndex].url}
           alt={`slideshow-image-${currentImageIndex}`}
           className="slideshow-image"
         />
+        {images.length > 1 && 
         <button className="slideshow-button" onClick={nextImage}>&gt;</button>
+    }
       </div>
     );
   };
