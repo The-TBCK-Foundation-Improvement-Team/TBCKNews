@@ -48,6 +48,8 @@ function GenericNews({title, about, author, date, images, contentOne, contentTwo
                                     
                                 </p>
                             </div>
+
+                            <div style={{ clear: "both" }}></div>
                             
                             <br/>
                             {contentTwo !== "No Content Two" &&
@@ -57,7 +59,8 @@ function GenericNews({title, about, author, date, images, contentOne, contentTwo
                                 <><img className="image-border" src={images[1].url} />
                                 <p className='image-caption'>
                                         {images[1].caption}
-                                </p></>
+                                </p>
+                                </>
                             }
                             </div>
                             
@@ -81,24 +84,8 @@ function GenericNews({title, about, author, date, images, contentOne, contentTwo
                                     <>
                                     {contentTwo === "" &&
                                     <>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
+
+                                    <div style={{ clear: "both" }}></div>
 </>
 }
                                     <p className="main-title">

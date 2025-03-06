@@ -1,4 +1,5 @@
 .home-page-footer {
+    font-family: 'Glacial Indifference', sans-serif;
     background-color: var(--tbck-black);
     color: var(--tbck-white);
     display: flex;
@@ -11,6 +12,7 @@
 }
 
 .home-page-footer-note {
+    font-family: 'Glacial Indifference', sans-serif;
     margin-right: 10vw;
     margin-left: 10vw;
     color: var(--tbck-green);
