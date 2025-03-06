@@ -31,7 +31,7 @@ const Admin = () => {
   const fetchUnverifiedUsers = async () => {
     try {
       const token = sessionStorage.getItem("jwt");
-      const response = await axios.get("http://localhost:8080/user/unverified", {
+      const response = await axios.get("http://tbckuserservice-env.eba-y8qwbxqf.us-east-2.elasticbeanstalk.com/user/unverified", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUnverifiedUsers(response.data);
@@ -43,7 +43,7 @@ const Admin = () => {
   const verifyUser = async (userId) => {
     try {
       const token = sessionStorage.getItem("jwt");
-      await axios.patch(`http://localhost:8080/user/verify/${userId}/GUEST`, {}, {
+      await axios.patch(`http://tbckuserservice-env.eba-y8qwbxqf.us-east-2.elasticbeanstalk.com/user/verify/${userId}/GUEST`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUnverifiedUsers(prev => prev.filter(user => user.userId !== userId));
@@ -62,7 +62,7 @@ const Admin = () => {
 
     try {
       const token = sessionStorage.getItem("jwt");
-      const response = await axios.post("http://localhost:8081/image/add/many", formData, {
+      const response = await axios.post("http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/image/add/many", formData, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
       });
 
@@ -99,7 +99,7 @@ const Admin = () => {
     }
   
     try {
-      await axios.delete(`http://localhost:8081/image/delete`, {
+      await axios.delete(`http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/image/delete`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { key: imageToDelete.url }, // Pass the URL as a query parameter
       });
@@ -123,7 +123,7 @@ const Admin = () => {
     };
 
     try {
-      await axios.post("http://localhost:8081/news", articleData, {
+      await axios.post("http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news", articleData, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
       });
       alert("Article created successfully!");

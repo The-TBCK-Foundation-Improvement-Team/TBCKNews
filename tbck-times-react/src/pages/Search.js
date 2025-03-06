@@ -10,7 +10,7 @@ const categories = ['News', 'Advocacy', 'Events', 'WarriorOfTheMonth', "Sports",
 //method to get the news by the newest-latest date from the API
 const fetchNews = async (search) => {
 
-  let url = 'http://localhost:8081/news/newest';
+  let url = 'http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/newest';
 
   console.log("Search: " + search);
 
@@ -24,7 +24,7 @@ const fetchNews = async (search) => {
 
       if (matchingCategory) {
         console.log("Found matching category:", matchingCategory); // Debugging the category match
-        url = `http://localhost:8081/news/category/${matchingCategory}`;
+        url = `http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/${matchingCategory}`;
       } else {
         console.log("No matching category found.");
       }
