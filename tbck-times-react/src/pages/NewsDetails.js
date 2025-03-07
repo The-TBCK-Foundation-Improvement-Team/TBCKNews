@@ -83,7 +83,7 @@ return (
     <div class name='NewsPageLayout'>
         <MuiNavBar/>
         <MuiCategoryBar/>
-        <div style={isAdmin ? { marginTop: '-28px', } : {}}>
+        <div style={isAdmin ? { marginTop: '-29px', } : {}}>
         {isAdmin && < EditButton isAdmin={isAdmin} newsData={data} /> }
         {story.category === "News" && <GenericNews
             title={story.title}

@@ -92,7 +92,7 @@ export function ResearchSummaryTemplate({ title, category, contentOne, contentTw
                 <ArrowOutwardIcon className="arrow" fontSize="small" />
                 </Box>
                 <p className="image-caption">
-                "Questions? Contact Emily at <a href="mailto:emily@tbckfoundation.org">emily@tbckfoundation.org</a>"
+                    Questions? Contact Emily at <a href="mailto:emily@tbckfoundation.org">emily@tbckfoundation.org</a>
                 </p>
             </div>
         </div>
