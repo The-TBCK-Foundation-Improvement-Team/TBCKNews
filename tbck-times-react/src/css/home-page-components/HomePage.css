@@ -22,7 +22,7 @@
 
 .news-stories {
     font-family: 'Glacial Indifference', sans-serif;
-    background-color: rgba(76, 188, 202, 0.4);
+    background-color: var(--tbck-light-blue);
     display: flex;
     flex-direction: row;
     justify-content: center;
