@@ -35,10 +35,12 @@ function GenericNews({title, about, author, date, images, contentOne, contentTwo
                             </h5>
                             <div>
                                 <div className='image-layout'>
+                                    {images.length > 0 &&
                                     <><img className="image-border" src={images[0].url} />
                                     <p className='image-caption'>
                                     {images[0].caption}
                                     </p></>
+                                    }
                                 </div>
                             
                                 <p className='news-page-content'>

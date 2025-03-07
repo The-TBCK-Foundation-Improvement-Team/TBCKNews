@@ -5,7 +5,7 @@ export const MuiCategoryBar = () => {
     return (
         
         <AppBar position="static"  sx={{backgroundColor: 'rgba(0, 89, 90)', height: "40px"}} >  
-            <Stack direction="row" spacing={2} sx={{height: "100%", alignItems: "center", justifyContent: "center"}}>
+            <Stack fontFamily='Glacial Indifference' direction="row" spacing={2} sx={{height: "100%", alignItems: "center", justifyContent: "center"}}>
                 <Button color="inherit" component={Link} to={'/Search/News'} >News</Button>
                 <Button color="inherit" component={Link} to={'/Search/Advocacy'}>Advocacy</Button>
                 <Button color="inherit" component={Link} to={'/Search/WarriorOfTheMonth'}>Warrior Of The Month</Button>

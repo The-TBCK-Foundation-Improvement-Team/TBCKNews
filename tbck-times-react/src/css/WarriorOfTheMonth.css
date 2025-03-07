@@ -23,16 +23,19 @@
 }
 
 .content-item {
+  font-family: 'Glacial Indifference', sans-serif;
   display: flex;
   justify-content: space-between;
 }
 
 .content-one{
+  font-family: 'Glacial Indifference', sans-serif;
   font: bold;
   color: #ffa600;
 }
 
 .content-two{
+  font-family: 'Glacial Indifference', sans-serif;
   font: bold;
   color: #ff2779;
 }
@@ -46,16 +49,18 @@
 }
 
 .content-text {
+  font-family: 'Glacial Indifference', sans-serif;
   flex: 1;
   margin-left: 20px;
   margin-top: 20pX;
-  font: 1.3em sans-serif;
+  font: 1.3em;
 }
 
 .warrior-title {
+  font-family: 'Glacial Indifference', sans-serif;
   font-weight: bold;
   color: #00595a;
-  font: 3em sans-serif;
+  font: 3em;
 
 }
 .pink-name{

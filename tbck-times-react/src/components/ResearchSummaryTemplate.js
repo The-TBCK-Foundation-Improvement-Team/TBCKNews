@@ -21,6 +21,7 @@ export function ResearchSummaryTemplate({ title, category, contentOne, contentTw
             >
                 <Typography
                 variant="h4"
+                fontFamily='Glacial Indifference'
                 component="h1"
                 gutterBottom
                 className="main-title"
@@ -34,6 +35,7 @@ export function ResearchSummaryTemplate({ title, category, contentOne, contentTw
 
                 <Typography
                 variant="subtitle1"
+                fontFamily='Glacial Indifference'
                 sx={{
                     color: '#2C6460',
                     mb: 3,
@@ -44,6 +46,7 @@ export function ResearchSummaryTemplate({ title, category, contentOne, contentTw
                 Category: {category}
                 </Typography>
                 <Typography
+                fontFamily='Glacial Indifference'
                 variant="body1"
                 sx={{
                     mb: 4,
@@ -65,6 +68,7 @@ export function ResearchSummaryTemplate({ title, category, contentOne, contentTw
                 </Typography>
                 
                 <Box
+                fontFamily='Glacial Indifference'
                 component={Link}
                 target="_blank"
                 href={link}

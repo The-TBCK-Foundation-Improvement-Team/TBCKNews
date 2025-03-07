@@ -196,6 +196,7 @@ const Admin = () => {
             <select className="admin-dropdown" placeholder="Category" value={newArticle.category} onChange={(e) => setNewArticle({ ...newArticle, category: e.target.value })} required>
               <option value="Category">Category</option>
               <option value="News">News</option>
+              <option value="Newsletter">Newsletter</option>
               <option value="Advocacy">Advocacy</option>
               <option value="Events">Events</option>
               <option value="WarriorOfTheMonth">Warrior Of The Month</option>

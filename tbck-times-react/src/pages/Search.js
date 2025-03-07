@@ -73,12 +73,12 @@ const SearchPage = () => {
     <div style={{ backgroundColor: "#f4f4f4", minHeight: "100vh" }}>
         <MuiNavBar/>
         <MuiCategoryBar/>
-        <div style={{ padding: "20px", maxWidth: "1200px", margin: "0 auto", minHeight: "100vh" }}>
+        <div style={{ fontFamily: 'Glacial Indifference', padding: "20px", maxWidth: "1200px", margin: "0 auto", minHeight: "100vh" }}>
             <header style={{ marginBottom: "30px", textAlign: "left" }}>
-                <h1 style={{ fontSize: "36px", fontWeight: "bold", color: "#222", color: "#00595a" }}>
+                <h1 style={{ fontFamily: 'Glacial Indifference', fontSize: "36px", fontWeight: "bold", color: "#222", color: "#00595a" }}>
                   {searchQuery}
                 </h1>
-                <p style={{ fontSize: "18px", color: "#555" }}>
+                <p style={{ fontFamily: 'Glacial Indifference', fontSize: "18px", color: "#555" }}>
                   {news.length} results found.
                 </p>
             </header>
@@ -99,6 +99,7 @@ const SearchPage = () => {
                             to={`/details/${result.title.replace(/\s+/g, "-")}/${result.date.replace(/\s+/g, "-")}`} // Navigates to a detail page for the result
                             state={{ newsId: result.newsId }} // Passes the newsId to the detail page
                             style={{
+                                fontFamily: 'Glacial Indifference',
                                 textDecoration: "none", // Remove underline from the link
                                 width: "100%", // Full width with some margin on small screens
                                 maxWidth: "1200px", // Ensure cards don't stretch too wide
@@ -128,7 +129,7 @@ const SearchPage = () => {
                                 <h2 className="adminh2" style={{ fontSize: "24px", fontWeight: "600", color: "#00595a" }}>
                                     {result.title}
                                 </h2>
-                                <p style={{ fontSize: "16px", color: "#777", marginBottom: "5px" }}>
+                                <p style={{ fontFamily: 'Glacial Indifference', fontSize: "16px", color: "#777", marginBottom: "5px" }}>
                                     {result.contentOne.split('.')[0] + "."} {/* Display the first sentence */}
                                 </p>
                                 <p

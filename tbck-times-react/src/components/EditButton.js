@@ -222,6 +222,7 @@ const EditButton = ({ isAdmin, newsData }) => {
             <select className="admin-dropdown" placeholder="Category" value={editedNews.category} onChange={(e) => setEditedNews({ ...editedNews, category: e.target.value })} required>
               <option value="Category">Category</option>
               <option value="News">News</option>
+              <option value="Newsletter">Newsletter</option>
               <option value="Advocacy">Advocacy</option>
               <option value="Events">Events</option>
               <option value="WarriorOfTheMonth">Warrior Of The Month</option>
