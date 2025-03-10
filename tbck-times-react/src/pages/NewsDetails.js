@@ -16,6 +16,7 @@ import { HomePageFooter } from '../components/home-page-components/HomePageFoote
 import EditButton from '../components/EditButton.js';
 
 
+
 const fetchStory = async (newsId) => {
 
     let url = 'http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/get/' + newsId;
@@ -83,7 +84,7 @@ return (
     <div class name='NewsPageLayout'>
         <MuiNavBar/>
         <MuiCategoryBar/>
-        <div style={isAdmin ? { marginTop: '-28px', } : {}}>
+        <div style={isAdmin ? { marginTop: '-29px', } : {}}>
         {isAdmin && < EditButton isAdmin={isAdmin} newsData={data} /> }
         {story.category === "News" && <GenericNews
             title={story.title}
@@ -108,6 +109,7 @@ return (
             existingComments={story.comments}
             category={story.category}
             newsId={newsId}
+            externalLink={story.externalLink}
         />}
         {story.category === "Events" && <GenericNews
             title={story.title}

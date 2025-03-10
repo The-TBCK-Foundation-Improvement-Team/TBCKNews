@@ -7,11 +7,13 @@ import { MuiSuggestedStories } from '../components/SuggestedStories.js';
 import NewsImageSlideshow from '../components/news-components/NewsImageSlideshow.js';
 import EditButton from '../components/EditButton.js';
 import {jwtDecode} from "jwt-decode";
+import { Paper, Typography, Link, Box } from '@mui/material';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 
 
 import "../css/GenericNews.css";
 
-function GenericNews({title, about, author, date, images, contentOne, contentTwo, contentThree, existingComments, newsId, category}) {
+function GenericNews({title, about, author, date, images, contentOne, contentTwo, contentThree, existingComments, newsId, category, externalLink}) {
 
 
     if (images.length > 2) {
@@ -33,6 +35,33 @@ function GenericNews({title, about, author, date, images, contentOne, contentTwo
                             <h5>
                                 By: {author} | {date}
                             </h5>
+                            {category === "Newsletter" && externalLink !== "" &&
+                            <>
+                            <Box
+                                fontFamily='Glacial Indifference'
+                                component={Link}
+                                target="_blank"
+                                href={externalLink}
+                                sx={{
+                                    
+                                    alignItems: 'center',
+                                    gap: 1,
+                                    color: '#FA1882 !important',
+                                    fontWeight: 600,
+                                    fontSize: '1.1rem',
+                                    textDecoration: 'none',
+                                    '&:hover': {
+                                    color: '#FA1882 !important',
+                                    '& .arrow': {
+                                        transform: 'translate(4px, -4px)'
+                                    }
+                                    }
+                                }}
+                                >
+                                Read full Newsletter
+                                <ArrowOutwardIcon className="arrow" fontSize="small" />
+                            </Box>
+                            </>}
                             <div>
                                 <div className='image-layout'>
                                     {images.length > 0 &&

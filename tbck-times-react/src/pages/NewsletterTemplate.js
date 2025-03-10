@@ -5,6 +5,8 @@ import { MuiCommentBox } from '../components/news-components/MuiCommentBox.js';
 import { MuiCategoryBar } from '../components/MuiCategoryBar.js';
 import { MuiSuggestedStories } from '../components/SuggestedStories.js';
 import { MuiLikeButton } from '../components/news-components/MuiLikeButton.js'
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import { Box } from '@mui/material';
 
 import "../css/Newsletter.css";
 
@@ -15,6 +17,9 @@ function NewsletterTemplate( {category, existingComments, newsId} ) {
             <MuiNavBar/>
             <MuiCategoryBar/>
             <div className="news-container">
+            
+                Read full article
+                <ArrowOutwardIcon className="arrow" fontSize="small" />
                 <div className="newsletter-section">
                     <MuiNewsLetterTop/>
                     <MuiLikeButton/>

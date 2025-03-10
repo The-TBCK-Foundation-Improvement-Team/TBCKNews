@@ -214,6 +214,17 @@ const Admin = () => {
                 }
               />
             )}
+            {newArticle.template === "Newsletter" && (
+              <input
+                type="text"
+                placeholder="Newsletter PDF Link"
+                className="admintext"
+                value={newArticle.externalLink}
+                onChange={(e) =>
+                  setNewArticle({ ...newArticle, externalLink: e.target.value })
+                }
+              />
+            )}
             <div className="file-upload-container">
               <label htmlFor="file-upload" className="file-upload-label">
                 Upload Images

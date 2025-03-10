@@ -5,7 +5,7 @@ import { MuiSuggestedStories } from '../components/SuggestedStories.js';
 import { MuiCommentBox } from './news-components/MuiCommentBox.js';
 import '../css/ResearchSummary.css';
 
-export function ResearchSummaryTemplate({ title, category, contentOne, contentTwo, ContentThree, link, newsId, existingComments }) {
+export function ResearchSummaryTemplate({ title, category, contentOne, contentTwo, ContentThree, externalLink, newsId, existingComments }) {
     return (
         <div className="container">
             <div className="news-layout">
@@ -67,11 +67,11 @@ export function ResearchSummaryTemplate({ title, category, contentOne, contentTw
                 }
                 </Typography>
                 
-                <Box
+                <Link
                 fontFamily='Glacial Indifference'
                 component={Link}
                 target="_blank"
-                href={link}
+                href={externalLink}
                 sx={{
                     
                     alignItems: 'center',
@@ -88,11 +88,11 @@ export function ResearchSummaryTemplate({ title, category, contentOne, contentTw
                     }
                 }}
                 >
-                Read full article
+                Read Full Article
                 <ArrowOutwardIcon className="arrow" fontSize="small" />
-                </Box>
+                </Link>
                 <p className="image-caption">
-                "Questions? Contact Emily at <a href="mailto:emily@tbckfoundation.org">emily@tbckfoundation.org</a>"
+                Questions? Contact Emily at <a href="mailto:emily@tbckfoundation.org">emily@tbckfoundation.org</a>
                 </p>
             </div>
         </div>
