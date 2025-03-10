@@ -240,6 +240,17 @@ const EditButton = ({ isAdmin, newsData }) => {
                 }
               />
             )}
+            {editedNews.template === "Newsletter" && (
+              <input
+                type="text"
+                placeholder="External PDF Link"
+                className="admintext"
+                value={editedNews.externalLink}
+                onChange={(e) =>
+                  setEditedNews({ ...editedNews, externalLink: e.target.value })
+                }
+              />
+            )}
             <div className="file-upload-container">
               <label htmlFor="file-upload" className="file-upload-label">
                 Upload Images
