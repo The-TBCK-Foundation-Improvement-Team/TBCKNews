@@ -16,6 +16,7 @@ import { HomePageFooter } from '../components/home-page-components/HomePageFoote
 import EditButton from '../components/EditButton.js';
 
 
+
 const fetchStory = async (newsId) => {
 
     let url = 'http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/get/' + newsId;
@@ -108,6 +109,7 @@ return (
             existingComments={story.comments}
             category={story.category}
             newsId={newsId}
+            externalLink={story.externalLink}
         />}
         {story.category === "Events" && <GenericNews
             title={story.title}
