@@ -121,6 +121,18 @@ return (
             category={story.category}
             newsId={newsId}
         />}
+        {story.category === "Advocacy" && <GenericNews
+            title={story.title}
+            contentOne={story.contentOne}
+            contentTwo={story.contentTwo}
+            contentThree={story.contentThree}
+            author={story.author}
+            date={story.date}
+            images={story.images}
+            existingComments={story.comments}
+            category={story.category}
+            newsId={newsId}
+        />}
         {story.category === "Sports" && <GenericNews
             title={story.title}
             contentOne={story.contentOne}

@@ -13,7 +13,6 @@ export function HomePageFooter() {
                 <Button color="inherit" component={Link} to={'/Search/Events'}>Events</Button>
                 <Button color="inherit" component={Link} to={'/Search/Newsletter'}>Newsletter</Button>
                 <Button color="inherit" component={Link} to={'/Search/Research'}>Research</Button>
-                <Button color="inherit" component={Link} to={'/Search/Sports'}>Sports</Button>
                 <Button color="inherit" target="_blank" component={Link} to={'https://linktr.ee/tbckfoundation'}>Connect</Button>
                 <Button color="inherit" target="_blank" component={Link} to={'https://www.bonfire.com/store/the-tbck-foundation-store/'}>Shop Support Gear</Button>
             </div>
