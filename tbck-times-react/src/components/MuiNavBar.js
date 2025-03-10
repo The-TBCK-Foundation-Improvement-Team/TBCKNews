@@ -62,7 +62,7 @@ export const MuiNavBar = () => {
                                 {isAdmin && (
                                     <Button variant="text" color="White" size="small" startIcon={<AdminPanelSettingsIcon />} component={Link} to={'/Admin'}>Admin Page</Button>
                                 )}
-                                <Button variant="text" color="White" size="small" startIcon={<LoginIcon />} component={Link} to={'/Login'}>Login/Logout</Button>
+                                <Button variant="text" color="White" size="small" startIcon={<LoginIcon />} component={Link} to={'/Login'}>Login/Signup</Button>
                             </div>
                         }
                         placement="bottom"

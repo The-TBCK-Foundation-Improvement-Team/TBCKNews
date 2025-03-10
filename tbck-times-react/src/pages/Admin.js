@@ -57,31 +57,44 @@ const Admin = () => {
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
     const formData = new FormData();
-
+  
     files.forEach((file) => formData.append("images", file));
-
+  
+    const token = sessionStorage.getItem("jwt");
+    if (!token) {
+      alert("No authentication token found. Please log in.");
+      return;
+    }
+  
     try {
-      const token = sessionStorage.getItem("jwt");
-      const response = await axios.post("http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/image/add/many", formData, {
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
-      });
-
+      console.log("JWT Token:", token); // Debugging
+  
+      const response = await axios.post(
+        "http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/image/add/many",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            // Remove "Content-Type"; Axios will set it automatically
+          },
+        }
+      );
+  
       const uploadedImages = response.data.map((url, index) => ({
         url,
-        fileName: files[index].name, // Store file name for display
+        fileName: files[index].name,
         altText: "",
         caption: "",
         imageId: "",
         newsId: "",
       }));
-
+  
       setImages((prevImages) => [...prevImages, ...uploadedImages]);
     } catch (error) {
       console.error("Error uploading images:", error);
-      alert("Failed to upload images.");
+      alert("Failed to upload images. Check the console for details.");
     }
   };
-
 
   const handleImageChange = (index, field, value) => {
     const updatedImages = [...images];
