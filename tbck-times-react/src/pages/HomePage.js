@@ -49,7 +49,7 @@ export function HomePage() {
             <div className="home-page-sections">
                 <HomePageSection title="Events" />
                 <HomePageSection title="Research" id="hp-middle-section" />
-                <HomePageSection title="Sports" />
+                <HomePageSection title="Advocacy" />
             </div>
             <div className="home-page-horizontal-spacer" />
             <HomePageFooter />
