@@ -37,7 +37,7 @@ import software.amazon.awssdk.services.dynamodb.model.ScanResponse;
 /**
  * Handles user authentication and account management.
  */
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = "http://tbcktimes.org", allowCredentials = "true")
 @RestController
 @RequestMapping("/user")
 public class UserRestController {
@@ -103,7 +103,7 @@ public class UserRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Map<String, String>> createUser(@RequestBody User user, HttpServletResponse response) {
         // Set CORS headers
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.setHeader("Access-Control-Allow-Origin", "http://tbcktimes.org");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "*");
         response.setHeader("Access-Control-Allow-Credentials", "true");

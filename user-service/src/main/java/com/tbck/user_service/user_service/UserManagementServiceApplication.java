@@ -19,7 +19,7 @@ public class UserManagementServiceApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000")  // Restrict to frontend origin
+                        .allowedOrigins("http://tbcktimes.org")  // Restrict to frontend origin
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);  // Required for cookies/auth
