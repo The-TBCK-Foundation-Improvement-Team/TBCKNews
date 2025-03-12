@@ -103,7 +103,7 @@ public class UserRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Map<String, String>> createUser(@RequestBody User user, HttpServletResponse response) {
         // Set CORS headers
-        response.setHeader("Access-Control-Allow-Origin", "http://tbcktimes.org");
+        response.setHeader("Access-Control-Allow-Origin", "https://tbcktimes.org");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "*");
         response.setHeader("Access-Control-Allow-Credentials", "true");
