@@ -37,7 +37,7 @@ import software.amazon.awssdk.services.dynamodb.model.ScanResponse;
 /**
  * Handles user authentication and account management.
  */
-@CrossOrigin(origins = "http://tbcktimes.org", allowCredentials = "true")
+@CrossOrigin(origins = "https://tbcktimes.org", allowCredentials = "true")
 @RestController
 @RequestMapping("/user")
 public class UserRestController {

@@ -13,7 +13,7 @@ export function HomePage() {
     const [news, setNews] = useState([]);
 
     useEffect(() => {
-        axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/News')
+        axios.get('https://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/News')
             .then((response) => setNews(response.data));
     }, []);
 

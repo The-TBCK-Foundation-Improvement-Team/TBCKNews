@@ -7,7 +7,7 @@ export function WotMSection() {
     const [warriorOfTheMonth, setWarriorOfTheMonth] = useState([]);
     
     useEffect(() => {
-        axios.get('http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/WarriorOfTheMonth')
+        axios.get('https://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/WarriorOfTheMonth')
             .then((response) => setWarriorOfTheMonth(response.data));
     }, []);
 
