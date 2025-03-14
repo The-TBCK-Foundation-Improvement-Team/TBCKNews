@@ -46,7 +46,7 @@
   background: var(--tbck-pink);
 }
 
-.logout-btn:hover {
+.logout-btn:hover, .deny:hover {
   background: #e6005c;
 }
 
@@ -63,4 +63,16 @@
   margin-top: 10px;
   font-weight: bold;
   color: var(--tbck-green);
+}
+
+.deny {
+  margin: 10px;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  background: var(--tbck-pink);
+  color: var(--tbck-black);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
 }
