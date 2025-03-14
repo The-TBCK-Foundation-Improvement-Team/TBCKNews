@@ -129,12 +129,10 @@ public class UserRestController {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 
         // Ensure verification field is set
-        if (user.getVerified() == null || user.getVerified() == false) {
-            user.setVerified(false);
-        }
-        if (user.getRole() == null || user.getRole().isEmpty()) {
-            user.setRole("GUEST");
-        }
+        user.setVerified(false);
+       
+        user.setRole("GUEST");
+        
 
         saveUser(user);
 
