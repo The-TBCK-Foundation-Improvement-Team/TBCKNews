@@ -54,6 +54,34 @@ const Admin = () => {
     }
   };
 
+  const deleteUser = async (userId) => {
+    try {
+      const token = sessionStorage.getItem("jwt");
+      await axios.delete(`https://api.tbcktimes.org/user/delete/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUnverifiedUsers(prev => prev.filter(user => user.userId !== userId));
+      alert("User deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("Failed to delete user.");
+    }
+  };
+
+  const verifyUserAsAdmin = async (userId) => {
+    try {
+      const token = sessionStorage.getItem("jwt");
+      await axios.patch(`https://api.tbcktimes.org/user/verify/${userId}/ADMIN`, {}, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUnverifiedUsers(prev => prev.filter(user => user.userId !== userId));
+      alert("User verified successfully!");
+    } catch (error) {
+      console.error("Error verifying user:", error);
+      alert("Failed to verify user.");
+    }
+  };
+
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
     const formData = new FormData();
@@ -172,7 +200,9 @@ const Admin = () => {
               <div key={user.userId} className="user-card">
                 <p className="admintext"><strong>Name:</strong> {user.firstName} {user.lastName}</p>
                 <p className="admintext"><strong>Email:</strong> {user.email}</p>
-                <button className="approve" onClick={() => verifyUser(user.userId)}>Verify</button>
+                <button className="approve" onClick={() => verifyUser(user.userId)}>Verify as Guest</button>
+                <button className="approve" onClick={() => verifyUserAsAdmin(user.userId)}>Verify as Admin</button>
+                <button className="deny" onClick={() => deleteUser(user.userId)}>Deny</button>
               </div>
             ))
           ) : <p>No unverified users.</p>}
