@@ -57,7 +57,7 @@ const Admin = () => {
   const deleteUser = async (userId) => {
     try {
       const token = sessionStorage.getItem("jwt");
-      await axios.delete(`https://api.tbcktimes.org/user/delete/${userId}`, {
+      await axios.delete(`https://api.tbcktimes.org/user/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUnverifiedUsers(prev => prev.filter(user => user.userId !== userId));
