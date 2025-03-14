@@ -14,7 +14,7 @@ const Login = () => {
     const handleLogin = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post("https://tbckuserservice-env.eba-y8qwbxqf.us-east-2.elasticbeanstalk.com/authenticate/login", {
+            const response = await axios.post("https://api.tbcktimes.org/authenticate/login", {
                 email,
                 password
             }, { withCredentials: true });

@@ -19,7 +19,7 @@ import EditButton from '../components/EditButton.js';
 
 const fetchStory = async (newsId) => {
 
-    let url = 'http://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/get/' + newsId;
+    let url = 'https://api.tbcktimes.org/news/get/' + newsId;
 
     try {
         const response = await fetch(url);

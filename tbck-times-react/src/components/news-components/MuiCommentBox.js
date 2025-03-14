@@ -42,7 +42,7 @@ function fetchUserData() {
 
 async function fetchCommentAuthor(userId) {
   try {
-    const response = await fetch(`https://tbckuserservice-env.eba-y8qwbxqf.us-east-2.elasticbeanstalk.com/user/name/${userId}`);
+    const response = await fetch(`https://api.tbcktimes.org/user/name/${userId}`);
     //console.log("response" + response);
     if (!response.ok) throw new Error("Failed to fetch user data");
     
@@ -58,7 +58,7 @@ async function patchComment(userId, newsId, content, date){
 
   try{
 
-    const response = await fetch(`https://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/comment/${newsId}` , {
+    const response = await fetch(`https://api.tbcktimes.org/news/comment/${newsId}` , {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

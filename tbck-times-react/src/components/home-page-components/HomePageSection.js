@@ -8,7 +8,7 @@ export function HomePageSection({ title, id }) {
     const [news, setNews] = useState([]);
 
     useEffect(() => {
-        axios.get('https://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/'+ title)
+        axios.get('https://api.tbcktimes.org/news/category/'+ title)
             .then((response) => setNews(response.data));
     }, [title]);
 

@@ -18,7 +18,7 @@ const Signup = () => {
         event.preventDefault();
         try {
             const response = await axios.post(
-                "http://tbckuserservice-env.eba-y8qwbxqf.us-east-2.elasticbeanstalk.com/user",
+                "https://api.tbcktimes.org/user",
                 { 
                     firstName: firstName.trim(),
                     lastName: lastName.trim(),

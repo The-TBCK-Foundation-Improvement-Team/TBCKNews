@@ -19,7 +19,7 @@ export const MuiSuggestedStories = ({category, currentNewsId}) => {
                 setError(null);
 
                 // Replace with your actual API endpoint
-                const response = await fetch(`https://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news/category/${category}`);
+                const response = await fetch(`https://api.tbcktimes.org/news/category/${category}`);
                 
                 if (!response.ok) {
                     throw new Error("Failed to fetch stories");

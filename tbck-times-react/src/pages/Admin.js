@@ -31,7 +31,7 @@ const Admin = () => {
   const fetchUnverifiedUsers = async () => {
     try {
       const token = sessionStorage.getItem("jwt");
-      const response = await axios.get("https://tbckuserservice-env.eba-y8qwbxqf.us-east-2.elasticbeanstalk.com/user/unverified", {
+      const response = await axios.get("https://api.tbcktimes.org/user/unverified", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUnverifiedUsers(response.data);
@@ -43,7 +43,7 @@ const Admin = () => {
   const verifyUser = async (userId) => {
     try {
       const token = sessionStorage.getItem("jwt");
-      await axios.patch(`https://tbckuserservice-env.eba-y8qwbxqf.us-east-2.elasticbeanstalk.com/user/verify/${userId}/GUEST`, {}, {
+      await axios.patch(`https://api.tbcktimes.org/user/verify/${userId}/GUEST`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUnverifiedUsers(prev => prev.filter(user => user.userId !== userId));
@@ -70,7 +70,7 @@ const Admin = () => {
       console.log("JWT Token:", token); // Debugging
   
       const response = await axios.post(
-        "https://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/image/add/many",
+        "https://api.tbcktimes.org/image/add/many",
         formData,
         {
           headers: {
@@ -112,7 +112,7 @@ const Admin = () => {
     }
   
     try {
-      await axios.delete(`https://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/image/delete`, {
+      await axios.delete(`https://api.tbcktimes.org/image/delete`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { key: imageToDelete.url }, // Pass the URL as a query parameter
       });
@@ -136,7 +136,7 @@ const Admin = () => {
     };
 
     try {
-      await axios.post("https://newsserviceapi-env.eba-kaahc5te.us-east-2.elasticbeanstalk.com/news", articleData, {
+      await axios.post("https://api.tbcktimes.org/news", articleData, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
       });
       alert("Article created successfully!");
