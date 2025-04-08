@@ -1,317 +1,253 @@
-import React, { useState, useEffect } from "react";
+"use client";
+import { useState } from "react";
 import axios from "axios";
-import "../css/Admin.css";
-import { MuiNavBar } from "../components/MuiNavBar";
-import { MuiCategoryBar } from "../components/MuiCategoryBar";
-import { MuiFooter } from "../components/MuiFooter";
 
-const Admin = () => {
-  const [unverifiedUsers, setUnverifiedUsers] = useState([]);
-  const [images, setImages] = useState([]);
-  const [contentFieldsVisible, setContentFieldsVisible] = useState(1);
+export default function Admin() {
+  const [articles, setArticles] = useState([
+    { title: "", text: "", images: [], videos: [] },
+  ]);
+  const [youtubeURL, setYoutubeURL] = useState("");
 
-  const [newArticle, setNewArticle] = useState({
-    title: "",
-    author: "",
-    date: "",
-    contentOne: "",
-    contentTwo: "",
-    contentThree: "",
-    category: "Category",
-    images: [],
-    comments: [],
-    template: "Template",
-    externalLink: "",
-  });
-
-  useEffect(() => {
-    fetchUnverifiedUsers();
-  }, []);
-
-  const fetchUnverifiedUsers = async () => {
-    try {
-      const token = sessionStorage.getItem("jwt");
-      const response = await axios.get("https://api.tbcktimes.org/user/unverified", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setUnverifiedUsers(response.data);
-    } catch (error) {
-      console.error("Error fetching unverified users:", error);
-    }
+  const handleTitleChange = (index, value) => {
+    const newArticles = [...articles];
+    newArticles[index].title = value;
+    setArticles(newArticles);
   };
 
-  const verifyUser = async (userId) => {
-    try {
-      const token = sessionStorage.getItem("jwt");
-      await axios.patch(`https://api.tbcktimes.org/user/verify/${userId}/GUEST`, {}, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setUnverifiedUsers(prev => prev.filter(user => user.userId !== userId));
-      alert("User verified successfully!");
-    } catch (error) {
-      console.error("Error verifying user:", error);
-      alert("Failed to verify user.");
-    }
+  const handleTextChange = (index, value) => {
+    const newArticles = [...articles];
+    newArticles[index].text = value;
+    setArticles(newArticles);
   };
 
-  const deleteUser = async (userId) => {
-    try {
-      const token = sessionStorage.getItem("jwt");
-      await axios.delete(`https://api.tbcktimes.org/user/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setUnverifiedUsers(prev => prev.filter(user => user.userId !== userId));
-      alert("User deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      alert("Failed to delete user.");
-    }
+  const handleImageChange = (articleIndex, imageIndex, field, value) => {
+    const updatedArticles = [...articles];
+    updatedArticles[articleIndex].images[imageIndex][field] = value;
+    setArticles(updatedArticles);
   };
 
-  const verifyUserAsAdmin = async (userId) => {
-    try {
-      const token = sessionStorage.getItem("jwt");
-      await axios.patch(`https://api.tbcktimes.org/user/verify/${userId}/ADMIN`, {}, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setUnverifiedUsers(prev => prev.filter(user => user.userId !== userId));
-      alert("User verified successfully!");
-    } catch (error) {
-      console.error("Error verifying user:", error);
-      alert("Failed to verify user.");
-    }
+  const handleVideoChange = (index, field, value) => {
+    const updatedArticles = [...articles];
+    updatedArticles[0].videos[index][field] = value;
+    setArticles(updatedArticles);
   };
 
-  const handleImageUpload = async (e) => {
-    const files = Array.from(e.target.files);
-    const formData = new FormData();
-  
-    files.forEach((file) => formData.append("images", file));
-  
-    const token = sessionStorage.getItem("jwt");
-    if (!token) {
-      alert("No authentication token found. Please log in.");
-      return;
-    }
-  
-    try {
-      console.log("JWT Token:", token); // Debugging
-  
-      const response = await axios.post(
-        "https://api.tbcktimes.org/image/add/many",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            // Remove "Content-Type"; Axios will set it automatically
-          },
-        }
-      );
-  
-      const uploadedImages = response.data.map((url, index) => ({
-        url,
-        fileName: files[index].name,
-        altText: "",
+  const removeImage = (articleIndex, imageIndex) => {
+    const updatedArticles = [...articles];
+    updatedArticles[articleIndex].images.splice(imageIndex, 1);
+    setArticles(updatedArticles);
+  };
+
+  const removeVideo = (index) => {
+    const updatedArticles = [...articles];
+    updatedArticles[0].videos.splice(index, 1);
+    setArticles(updatedArticles);
+  };
+
+  const extractYouTubeId = (url) => {
+    const regex = /(?:youtube\.com\/.*v=|youtu\.be\/)([a-zA-Z0-9_-]+)/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  };
+
+  const addYoutubeLink = () => {
+    const videoId = extractYouTubeId(youtubeURL);
+    if (videoId) {
+      const newVideo = {
+        url: youtubeURL,
+        fileName: `YouTube - ${videoId}`,
         caption: "",
-        imageId: "",
-        newsId: "",
-      }));
-  
-      setImages((prevImages) => [...prevImages, ...uploadedImages]);
-    } catch (error) {
-      console.error("Error uploading images:", error);
-      alert("Failed to upload images. Check the console for details.");
+        type: "youtube",
+      };
+      setArticles((prev) => {
+        const updated = [...prev];
+        updated[0].videos.push(newVideo);
+        return updated;
+      });
+      setYoutubeURL("");
+    } else {
+      alert("Invalid YouTube URL");
     }
   };
 
-  const handleImageChange = (index, field, value) => {
-    const updatedImages = [...images];
-    updatedImages[index][field] = value;
-    setImages(updatedImages);
+  const handleVideoUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const newVideos = files.map((file) => ({
+      file,
+      fileName: file.name,
+      preview: URL.createObjectURL(file),
+      caption: "",
+      type: "mp4",
+    }));
+    setArticles((prev) => {
+      const updated = [...prev];
+      updated[0].videos.push(...newVideos);
+      return updated;
+    });
   };
 
-  const removeImage = async (index) => {
-    const token = sessionStorage.getItem("jwt");
-    const imageToDelete = images[index];
-  
-    if (!imageToDelete || !imageToDelete.url) {
-      console.error("Invalid image object:", imageToDelete);
-      return;
-    }
-  
+  const handleImageUpload = (e, articleIndex) => {
+    const files = Array.from(e.target.files);
+    const newImages = files.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+      caption: "",
+    }));
+    const updatedArticles = [...articles];
+    updatedArticles[articleIndex].images.push(...newImages);
+    setArticles(updatedArticles);
+  };
+
+  const handleSubmit = async () => {
     try {
-      await axios.delete(`https://api.tbcktimes.org/image/delete`, {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { key: imageToDelete.url }, // Pass the URL as a query parameter
-      });
-  
-      const updatedImages = images.filter((_, i) => i !== index);
-      setImages(updatedImages);
-      alert("Image deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting image:", error);
-      alert("Failed to delete image.");
-    }
-  };
-  
-  const handleArticleSubmit = async (e) => {
-    e.preventDefault();
-    const token = sessionStorage.getItem("jwt");
-    const articleData = {
-      ...newArticle,
-      images: images,
-      comments: [],
-    };
+      const formData = new FormData();
+      articles.forEach((article, articleIndex) => {
+        formData.append(`articles[${articleIndex}][title]`, article.title);
+        formData.append(`articles[${articleIndex}][text]`, article.text);
 
-    try {
-      await axios.post("https://api.tbcktimes.org/news", articleData, {
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        article.images.forEach((image, imageIndex) => {
+          if (image.file) {
+            formData.append(`articles[${articleIndex}][images][${imageIndex}]`, image.file);
+          }
+          formData.append(
+            `articles[${articleIndex}][captions][${imageIndex}]`,
+            image.caption || ""
+          );
+        });
+
+        article.videos.forEach((video, videoIndex) => {
+          if (video.type === "mp4" && video.file) {
+            formData.append(`articles[${articleIndex}][videos][${videoIndex}]`, video.file);
+          } else {
+            formData.append(`articles[${articleIndex}][videos][${videoIndex}]`, video.url);
+          }
+          formData.append(
+            `articles[${articleIndex}][videoCaptions][${videoIndex}]`,
+            video.caption || ""
+          );
+        });
       });
-      alert("Article created successfully!");
-      setNewArticle({
-        template: "Template",
-        title: "",
-        author: "",
-        date: "",
-        contentOne: "",
-        contentTwo: "",
-        contentThree: "",
-        category: "Category",
-        images: [],
-        comments: [],
-        externalLink: "",
+
+      const response = await axios.post("/api/articles", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
-      setImages([]);
+
+      console.log("Upload successful:", response.data);
+      alert("Articles uploaded!");
     } catch (error) {
-      console.error("Error creating article:", error);
-      alert("Failed to create article.");
+      console.error("Upload failed:", error);
+      alert("Upload failed.");
     }
   };
 
   return (
-    <div className="admin-background">
-      <MuiNavBar />
-      <MuiCategoryBar />
-      <div className="admin-container">
-        <div className="verification-container">
-          <h2 className="adminh2">Unverified Users</h2>
-          {unverifiedUsers.length > 0 ? (
-            unverifiedUsers.map((user) => (
-              <div key={user.userId} className="user-card">
-                <p className="admintext"><strong>Name:</strong> {user.firstName} {user.lastName}</p>
-                <p className="admintext"><strong>Email:</strong> {user.email}</p>
-                <button className="approve" onClick={() => verifyUser(user.userId)}>Verify as Guest</button>
-                <button className="approve" onClick={() => verifyUserAsAdmin(user.userId)}>Verify as Admin</button>
-                <button className="deny" onClick={() => deleteUser(user.userId)}>Deny</button>
-              </div>
-            ))
-          ) : <p>No unverified users.</p>}
-        </div>
+    <div className="p-4 max-w-4xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
+      {articles.map((article, index) => (
+        <div key={index} className="mb-8 border p-4 rounded shadow">
+          <input
+            type="text"
+            placeholder="Article Title"
+            className="border p-2 w-full mb-2"
+            value={article.title}
+            onChange={(e) => handleTitleChange(index, e.target.value)}
+          />
+          <textarea
+            placeholder="Article Text"
+            className="border p-2 w-full mb-4"
+            rows="5"
+            value={article.text}
+            onChange={(e) => handleTextChange(index, e.target.value)}
+          />
 
-        <div className="article-container">
-          <h2 className="adminh2">Create Article</h2>
-          <form onSubmit={handleArticleSubmit}>
-            {/* Template Dropdown */}
-            <select className="admin-dropdown" placeholder="Template" value={newArticle.template} onChange={(e) => setNewArticle({ ...newArticle, template: e.target.value })} required>
-              <option value="Template">Template</option>
-              <option value="News">News</option>
-              <option value="Research">Research</option>
-              <option value="Newsletter">Newsletter</option>
-              <option value="Generic">Generic</option>
-            </select>
-            <input type="text" placeholder="Title" className="admintext" value={newArticle.title} onChange={(e) => setNewArticle({ ...newArticle, title: e.target.value })} required />
-            <input type="text" placeholder="Author" className="admintext" value={newArticle.author} onChange={(e) => setNewArticle({ ...newArticle, author: e.target.value })} required />
-            <input type="date" placeholder="Date" value={newArticle.date} className="admintext" onChange={(e) => setNewArticle({ ...newArticle, date: e.target.value })} required />
-            <textarea placeholder="Content One" className="admintext" value={newArticle.contentOne} onChange={(e) => setNewArticle({ ...newArticle, contentOne: e.target.value })} required />
-            {contentFieldsVisible >= 2 && (<textarea placeholder="Content Two" className="admintext" value={newArticle.contentTwo} onChange={(e) => setNewArticle({ ...newArticle, contentTwo: e.target.value })} required />)}
-            {contentFieldsVisible >= 3 && (<textarea placeholder="Content Three" className="admintext" value={newArticle.contentThree} onChange={(e) => setNewArticle({ ...newArticle, contentThree: e.target.value })} required />)}
-
-            {/* Buttons to Add/Remove Content Fields */}
-            <div className="content-buttons">
-              {contentFieldsVisible < 3 && (
-                <button type="button" className="ARTapprove" onClick={() => setContentFieldsVisible(contentFieldsVisible + 1)}>+ Add More Content</button>
-              )}
-              {contentFieldsVisible > 1 && (
-                <button type="button" className="ARTremove" onClick={() => setContentFieldsVisible(contentFieldsVisible - 1)}>- Remove Content</button>
-              )}
-            </div>
-            {/* Category Dropdown */}
-            <select className="admin-dropdown" placeholder="Category" value={newArticle.category} onChange={(e) => setNewArticle({ ...newArticle, category: e.target.value })} required>
-              <option value="Category">Category</option>
-              <option value="News">News</option>
-              <option value="Newsletter">Newsletter</option>
-              <option value="Advocacy">Advocacy</option>
-              <option value="Events">Events</option>
-              <option value="WarriorOfTheMonth">Warrior Of The Month</option>
-              <option value="Sports">Sports</option>
-              <option value="Research">Research</option>
-            </select>
-            {newArticle.template === "Research" && (
-              <input
-                type="text"
-                placeholder="External Link"
-                className="admintext"
-                value={newArticle.externalLink}
-                onChange={(e) =>
-                  setNewArticle({ ...newArticle, externalLink: e.target.value })
-                }
-              />
-            )}
-            {newArticle.template === "Newsletter" && (
-              <input
-                type="text"
-                placeholder="Newsletter PDF Link"
-                className="admintext"
-                value={newArticle.externalLink}
-                onChange={(e) =>
-                  setNewArticle({ ...newArticle, externalLink: e.target.value })
-                }
-              />
-            )}
-            <div className="file-upload-container">
-              <label htmlFor="file-upload" className="file-upload-label">
-                Upload Images
-              </label>
-              <input
-                id="file-upload"
-                type="file"
-                className="adminfile"
-                multiple
-                onChange={handleImageUpload}
-              />
-              {images.length > 0 && <span className="file-name-display">{images.length} file(s) selected</span>}
-            </div>
-
-            {images.map((img, index) => (
-              <div key={index} className="image-inputs">
-                <p className="image-filename"><strong>File:</strong> {img.fileName}</p> {/* Display file name */}
-                <input
-                  type="text"
-                  placeholder="Alt Text"
-                  className="admintext"
-                  value={img.altText}
-                  onChange={(e) => handleImageChange(index, "altText", e.target.value)}
-                  required
-                />
+          <div className="mb-4">
+            <label className="block font-semibold mb-1">Images:</label>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={(e) => handleImageUpload(e, index)}
+              className="mb-2"
+            />
+            {article.images.map((img, imgIndex) => (
+              <div key={imgIndex} className="mb-2">
+                <img src={img.preview} alt={`Preview ${imgIndex}`} className="w-32 h-32 object-cover" />
                 <input
                   type="text"
                   placeholder="Caption"
-                  className="admintext"
                   value={img.caption}
-                  onChange={(e) => handleImageChange(index, "caption", e.target.value)}
-                  required
+                  onChange={(e) => handleImageChange(index, imgIndex, "caption", e.target.value)}
+                  className="border p-1 w-full"
                 />
-                <button type="button" className="remove" onClick={() => removeImage(index)}>Remove</button>
+                <button
+                  onClick={() => removeImage(index, imgIndex)}
+                  className="text-red-600 text-sm"
+                >
+                  Remove
+                </button>
               </div>
             ))}
+          </div>
 
-            <button type="submit" className="submit-article">Submit Article</button>
-          </form>
+          <div className="mb-4">
+            <label className="block font-semibold mb-1">Upload MP4 Videos:</label>
+            <input type="file" accept="video/mp4" multiple onChange={handleVideoUpload} />
+            <div className="mt-2">
+              {article.videos.map((vid, vidIndex) => (
+                <div key={vidIndex} className="mb-2">
+                  {vid.type === "youtube" ? (
+                    <iframe
+                      width="320"
+                      height="180"
+                      src={`https://www.youtube.com/embed/${extractYouTubeId(vid.url)}`}
+                      title="YouTube video player"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  ) : (
+                    <video width="320" height="180" controls src={vid.preview}></video>
+                  )}
+                  <input
+                    type="text"
+                    placeholder="Video Caption"
+                    value={vid.caption}
+                    onChange={(e) => handleVideoChange(vidIndex, "caption", e.target.value)}
+                    className="border p-1 w-full"
+                  />
+                  <button
+                    onClick={() => removeVideo(vidIndex)}
+                    className="text-red-600 text-sm"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <label className="block font-semibold mb-1">Add YouTube Video:</label>
+            <input
+              type="text"
+              placeholder="YouTube URL"
+              value={youtubeURL}
+              onChange={(e) => setYoutubeURL(e.target.value)}
+              className="border p-1 w-full mb-2"
+            />
+            <button onClick={addYoutubeLink} className="bg-blue-500 text-white px-4 py-1 rounded">
+              Add YouTube Video
+            </button>
+          </div>
         </div>
-      </div>
-      <MuiFooter />
+      ))}
+
+      <button
+        onClick={handleSubmit}
+        className="bg-green-600 text-white px-6 py-2 rounded font-semibold"
+      >
+        Submit Articles
+      </button>
     </div>
   );
-};
-
-export default Admin;
+}
