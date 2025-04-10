@@ -6,7 +6,7 @@ export default function Admin() {
   const [articles, setArticles] = useState([
     { title: "", text: "", images: [], videos: [] },
   ]);
-  const [youtubeURL, setYoutubeURL] = useState("");
+  const [youtubeURLs, setYoutubeURLs] = useState([""]);
 
   const handleTitleChange = (index, value) => {
     const newArticles = [...articles];
@@ -26,9 +26,9 @@ export default function Admin() {
     setArticles(updatedArticles);
   };
 
-  const handleVideoChange = (index, field, value) => {
+  const handleVideoChange = (articleIndex, index, field, value) => {
     const updatedArticles = [...articles];
-    updatedArticles[0].videos[index][field] = value;
+    updatedArticles[articleIndex].videos[index][field] = value;
     setArticles(updatedArticles);
   };
 
@@ -38,9 +38,9 @@ export default function Admin() {
     setArticles(updatedArticles);
   };
 
-  const removeVideo = (index) => {
+  const removeVideo = (articleIndex, index) => {
     const updatedArticles = [...articles];
-    updatedArticles[0].videos.splice(index, 1);
+    updatedArticles[articleIndex].videos.splice(index, 1);
     setArticles(updatedArticles);
   };
 
@@ -50,27 +50,32 @@ export default function Admin() {
     return match ? match[1] : null;
   };
 
-  const addYoutubeLink = () => {
-    const videoId = extractYouTubeId(youtubeURL);
+  const addYoutubeLink = (articleIndex) => {
+    const url = youtubeURLs[articleIndex];
+    const videoId = extractYouTubeId(url);
     if (videoId) {
       const newVideo = {
-        url: youtubeURL,
+        url,
         fileName: `YouTube - ${videoId}`,
         caption: "",
         type: "youtube",
       };
       setArticles((prev) => {
         const updated = [...prev];
-        updated[0].videos.push(newVideo);
+        updated[articleIndex].videos.push(newVideo);
         return updated;
       });
-      setYoutubeURL("");
+      setYoutubeURLs((prev) => {
+        const copy = [...prev];
+        copy[articleIndex] = "";
+        return copy;
+      });
     } else {
       alert("Invalid YouTube URL");
     }
   };
 
-  const handleVideoUpload = (e) => {
+  const handleVideoUpload = (e, articleIndex) => {
     const files = Array.from(e.target.files);
     const newVideos = files.map((file) => ({
       file,
@@ -81,7 +86,7 @@ export default function Admin() {
     }));
     setArticles((prev) => {
       const updated = [...prev];
-      updated[0].videos.push(...newVideos);
+      updated[articleIndex].videos.push(...newVideos);
       return updated;
     });
   };
@@ -191,7 +196,12 @@ export default function Admin() {
 
           <div className="mb-4">
             <label className="block font-semibold mb-1">Upload MP4 Videos:</label>
-            <input type="file" accept="video/mp4" multiple onChange={handleVideoUpload} />
+            <input
+              type="file"
+              accept="video/mp4"
+              multiple
+              onChange={(e) => handleVideoUpload(e, index)}
+            />
             <div className="mt-2">
               {article.videos.map((vid, vidIndex) => (
                 <div key={vidIndex} className="mb-2">
@@ -206,17 +216,17 @@ export default function Admin() {
                       allowFullScreen
                     ></iframe>
                   ) : (
-                    <video width="320" height="180" controls src={vid.preview}></video>
+                    <video width="320" height="180" controls src={vid.preview || ""}></video>
                   )}
                   <input
                     type="text"
                     placeholder="Video Caption"
                     value={vid.caption}
-                    onChange={(e) => handleVideoChange(vidIndex, "caption", e.target.value)}
+                    onChange={(e) => handleVideoChange(index, vidIndex, "caption", e.target.value)}
                     className="border p-1 w-full"
                   />
                   <button
-                    onClick={() => removeVideo(vidIndex)}
+                    onClick={() => removeVideo(index, vidIndex)}
                     className="text-red-600 text-sm"
                   >
                     Remove
@@ -231,16 +241,33 @@ export default function Admin() {
             <input
               type="text"
               placeholder="YouTube URL"
-              value={youtubeURL}
-              onChange={(e) => setYoutubeURL(e.target.value)}
+              value={youtubeURLs[index] || ""}
+              onChange={(e) => {
+                const updated = [...youtubeURLs];
+                updated[index] = e.target.value;
+                setYoutubeURLs(updated);
+              }}
               className="border p-1 w-full mb-2"
             />
-            <button onClick={addYoutubeLink} className="bg-blue-500 text-white px-4 py-1 rounded">
+            <button
+              onClick={() => addYoutubeLink(index)}
+              className="bg-blue-500 text-white px-4 py-1 rounded"
+            >
               Add YouTube Video
             </button>
           </div>
         </div>
       ))}
+
+      <button
+        onClick={() => {
+          setArticles([...articles, { title: "", text: "", images: [], videos: [] }]);
+          setYoutubeURLs([...youtubeURLs, ""]);
+        }}
+        className="bg-gray-700 text-white px-4 py-2 rounded mb-4"
+      >
+        Add New Article
+      </button>
 
       <button
         onClick={handleSubmit}
