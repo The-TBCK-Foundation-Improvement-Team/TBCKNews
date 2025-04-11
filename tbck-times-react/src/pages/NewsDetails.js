@@ -36,7 +36,7 @@ const fetchStory = async (newsId) => {
 
 export default function NewsDetails() {
     const location = useLocation();
-    const { newsId } = location.state;
+    const { newsId } = location?.state?.newsId;;
     const [story, setStory] = useState([]);
     const [isAdmin, setIsAdmin] = useState(false);
 
