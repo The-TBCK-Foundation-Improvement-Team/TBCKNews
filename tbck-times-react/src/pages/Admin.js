@@ -8,6 +8,7 @@ import { MuiFooter } from "../components/MuiFooter";
 const Admin = () => {
   const [unverifiedUsers, setUnverifiedUsers] = useState([]);
   const [images, setImages] = useState([]);
+  const [videos, setVideos] = useState([]);
   const [contentFieldsVisible, setContentFieldsVisible] = useState(1);
 
   const [newArticle, setNewArticle] = useState({
@@ -19,6 +20,7 @@ const Admin = () => {
     contentThree: "",
     category: "Category",
     images: [],
+    videos: [],
     comments: [],
     template: "Template",
     externalLink: "",
@@ -85,18 +87,18 @@ const Admin = () => {
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
     const formData = new FormData();
-  
+
     files.forEach((file) => formData.append("images", file));
-  
+
     const token = sessionStorage.getItem("jwt");
     if (!token) {
       alert("No authentication token found. Please log in.");
       return;
     }
-  
+
     try {
       console.log("JWT Token:", token); // Debugging
-  
+
       const response = await axios.post(
         "https://api.tbcktimes.org/image/add/many",
         formData,
@@ -107,7 +109,7 @@ const Admin = () => {
           },
         }
       );
-  
+
       const uploadedImages = response.data.map((url, index) => ({
         url,
         fileName: files[index].name,
@@ -116,11 +118,51 @@ const Admin = () => {
         imageId: "",
         newsId: "",
       }));
-  
+
       setImages((prevImages) => [...prevImages, ...uploadedImages]);
     } catch (error) {
       console.error("Error uploading images:", error);
       alert("Failed to upload images. Check the console for details.");
+    }
+  };
+
+  const handleVideoUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    const formData = new FormData();
+
+    files.forEach((file) => formData.append("videos", file));
+
+    const token = sessionStorage.getItem("jwt");
+    if (!token) {
+      alert("No authentication token found. Please log in.");
+      return;
+    }
+
+    try {
+      console.log("JWT Token:", token); // Debugging
+
+      const response = await axios.post(
+        "https://api.tbcktimes.org/video/add/many",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            // Remove "Content-Type"; Axios will set it automatically
+          },
+        }
+      );
+
+      const uploadedVideos = response.data.map((url, index) => ({
+        url,
+        fileName: files[index].name,
+        videoId: "",  // Adjust as necessary to match API response format
+        newsId: "",   // Adjust as necessary to match API response format
+      }));
+
+      setVideos((prevVideos) => [...prevVideos, ...uploadedVideos]);
+    } catch (error) {
+      console.error("Error uploading videos:", error);
+      alert("Failed to upload videos. Check the console for details.");
     }
   };
 
@@ -130,21 +172,27 @@ const Admin = () => {
     setImages(updatedImages);
   };
 
+  const handleVideoChange = (index, field, value) => {
+    const updatedVideos = [...videos];
+    updatedVideos[index][field] = value;
+    setVideos(updatedVideos);
+  };
+
   const removeImage = async (index) => {
     const token = sessionStorage.getItem("jwt");
     const imageToDelete = images[index];
-  
+
     if (!imageToDelete || !imageToDelete.url) {
       console.error("Invalid image object:", imageToDelete);
       return;
     }
-  
+
     try {
       await axios.delete(`https://api.tbcktimes.org/image/delete`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { key: imageToDelete.url }, // Pass the URL as a query parameter
       });
-  
+
       const updatedImages = images.filter((_, i) => i !== index);
       setImages(updatedImages);
       alert("Image deleted successfully!");
@@ -153,13 +201,38 @@ const Admin = () => {
       alert("Failed to delete image.");
     }
   };
-  
+
+  const removeVideo = async (index) => {
+    const token = sessionStorage.getItem("jwt");
+    const videoToDelete = videos[index];
+
+    if (!videoToDelete || !videoToDelete.url) {
+      console.error("Invalid video object:", videoToDelete);
+      return;
+    }
+
+    try {
+      await axios.delete(`https://api.tbcktimes.org/video/delete`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { key: videoToDelete.url }, // Pass the URL as a query parameter
+      });
+
+      const updatedVideos = videos.filter((_, i) => i !== index);
+      setVideos(updatedVideos);
+      alert("Video deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting video:", error);
+      alert("Failed to delete video.");
+    }
+  };
+
   const handleArticleSubmit = async (e) => {
     e.preventDefault();
     const token = sessionStorage.getItem("jwt");
     const articleData = {
       ...newArticle,
       images: images,
+      videos: videos,
       comments: [],
     };
 
@@ -178,10 +251,12 @@ const Admin = () => {
         contentThree: "",
         category: "Category",
         images: [],
+        videos: [],
         comments: [],
         externalLink: "",
       });
       setImages([]);
+      setVideos([]);
     } catch (error) {
       console.error("Error creating article:", error);
       alert("Failed to create article.");
@@ -268,6 +343,7 @@ const Admin = () => {
                 }
               />
             )}
+            {/* Image Upload */}
             <div className="file-upload-container">
               <label htmlFor="file-upload" className="file-upload-label">
                 Upload Images
@@ -304,7 +380,44 @@ const Admin = () => {
                 <button type="button" className="remove" onClick={() => removeImage(index)}>Remove</button>
               </div>
             ))}
+            {/* Video Upload */}
+            <div className="file-upload-container">
+              <label htmlFor="video-upload" className="file-upload-label">
+                Upload Videos
+              </label>
+              <input
+                id="video-upload"
+                type="file"
+                className="adminfile"
+                multiple
+                accept="video/mp4"  // Restrict file type to MP4
+                onChange={handleVideoUpload}
+              />
+              {videos.length > 0 && <span className="file-name-display">{videos.length} file(s) selected</span>}
+            </div>
 
+            {videos.map((video, index) => (
+              <div key={index} className="video-inputs">
+                <p className="video-filename"><strong>File:</strong> {video.fileName}</p> {/* Display file name */}
+                <input
+                  type="text"
+                  placeholder="Video Title"
+                  className="admintext"
+                  value={video.title}
+                  onChange={(e) => handleVideoChange(index, "title", e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Description"
+                  className="admintext"
+                  value={video.description}
+                  onChange={(e) => handleVideoChange(index, "description", e.target.value)}
+                  required
+                />
+                <button type="button" className="remove" onClick={() => removeVideo(index)}>Remove</button>
+              </div>
+            ))}
             <button type="submit" className="submit-article">Submit Article</button>
           </form>
         </div>
