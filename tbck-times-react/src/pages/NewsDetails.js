@@ -36,7 +36,7 @@ const fetchStory = async (newsId) => {
 
 export default function NewsDetails() {
     const location = useLocation();
-    const { newsId } = location?.state?.newsId;;
+    const { newsId } = location?.state;
     const [story, setStory] = useState([]);
     const [isAdmin, setIsAdmin] = useState(false);
 
@@ -63,6 +63,7 @@ export default function NewsDetails() {
         date: story.date,
         category: story.category,
         images: story.images,
+        videos: story.videos,
         template: story.template,
         externalLink: story.externalLink
     }
@@ -94,6 +95,7 @@ return (
             author={story.author}
             date={story.date}
             images={story.images}
+            videos={story.videos}
             existingComments={story.comments}
             category={story.category}
             newsId={newsId}
@@ -106,6 +108,7 @@ return (
             author={story.author}
             date={story.date}
             images={story.images}
+            videos={story.videos}
             existingComments={story.comments}
             category={story.category}
             newsId={newsId}
@@ -119,6 +122,7 @@ return (
             author={story.author}
             date={story.date}
             images={story.images}
+            videos={story.videos}
             existingComments={story.comments}
             category={story.category}
             newsId={newsId}
@@ -131,6 +135,7 @@ return (
             author={story.author}
             date={story.date}
             images={story.images}
+            videos={story.videos}
             existingComments={story.comments}
             category={story.category}
             newsId={newsId}
@@ -143,6 +148,7 @@ return (
             author={story.author}
             date={story.date}
             images={story.images}
+            videos={story.videos}
             existingComments={story.comments}
             category={story.category}
             newsId={newsId}
@@ -153,6 +159,7 @@ return (
             contentTwo={story.contentTwo}
             contentThree={story.contentThree}
             images={story.images}
+            videos={story.videos}
             existingComments={story.comments}
             category={story.category}
             newsId={newsId}
@@ -179,6 +186,7 @@ return (
             author={story.author}
             date={story.date}
             images={story.images}
+            videos={story.videos}
             existingComments={story.comments}
             category={story.category}
             newsId={newsId}

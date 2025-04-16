@@ -120,6 +120,7 @@ const Admin = () => {
       }));
 
       setImages((prevImages) => [...prevImages, ...uploadedImages]);
+      console.log("womp womp");
     } catch (error) {
       console.error("Error uploading images:", error);
       alert("Failed to upload images. Check the console for details.");
@@ -129,42 +130,51 @@ const Admin = () => {
   const handleVideoUpload = async (e) => {
     const files = Array.from(e.target.files);
     const formData = new FormData();
-
-    files.forEach((file) => formData.append("videos", file));
-
+  
+    files.forEach((file) => {
+      if (file.type === "video/mp4") {
+        formData.append("videos", file);
+      } else {
+        console.warn(`Skipped file: ${file.name} (not an MP4)`);
+      }
+    });
+  
     const token = sessionStorage.getItem("jwt");
     if (!token) {
       alert("No authentication token found. Please log in.");
       return;
     }
-
+  
     try {
       console.log("JWT Token:", token); // Debugging
-
+  
       const response = await axios.post(
         "https://api.tbcktimes.org/video/add/many",
         formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            // Remove "Content-Type"; Axios will set it automatically
+            // Let Axios handle Content-Type for FormData
           },
         }
       );
-
+  
       const uploadedVideos = response.data.map((url, index) => ({
         url,
         fileName: files[index].name,
-        videoId: "",  // Adjust as necessary to match API response format
-        newsId: "",   // Adjust as necessary to match API response format
+        title: "", // Placeholder for title metadata
+        description: "",
+        videoId: "",
+        newsId: "",
       }));
-
-      setVideos((prevVideos) => [...prevVideos, ...uploadedVideos]);
+  
+      setVideos((prevVideos) => [...prevVideos, ...uploadedVideos]); // Ensure `setVideos` exists
+      console.log("video being handled");
     } catch (error) {
       console.error("Error uploading videos:", error);
       alert("Failed to upload videos. Check the console for details.");
     }
-  };
+  };  
 
   const handleImageChange = (index, field, value) => {
     const updatedImages = [...images];
@@ -357,7 +367,6 @@ const Admin = () => {
               />
               {images.length > 0 && <span className="file-name-display">{images.length} file(s) selected</span>}
             </div>
-
             {images.map((img, index) => (
               <div key={index} className="image-inputs">
                 <p className="image-filename"><strong>File:</strong> {img.fileName}</p> {/* Display file name */}
