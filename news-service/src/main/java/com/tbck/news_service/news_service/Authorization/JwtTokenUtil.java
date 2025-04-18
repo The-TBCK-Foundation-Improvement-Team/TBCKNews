@@ -1,5 +1,6 @@
 package com.tbck.news_service.news_service.Authorization;
 
+import com.tbck.news_service.news_service.SecretsManagerUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -8,8 +9,6 @@ import java.security.Key;
 import java.util.Date;
 import javax.crypto.spec.SecretKeySpec;
 import org.springframework.stereotype.Component;
-
-import com.tbck.news_service.news_service.SecretsManagerUtil;
 
 
 

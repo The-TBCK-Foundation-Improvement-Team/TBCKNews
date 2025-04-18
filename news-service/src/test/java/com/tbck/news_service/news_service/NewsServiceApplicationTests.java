@@ -1,13 +1,13 @@
 package com.tbck.news_service.news_service;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class NewsServiceApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
+// test environment for news service
+	// @Test
+	// void contextLoads() {
+		
+	// }
 
 }

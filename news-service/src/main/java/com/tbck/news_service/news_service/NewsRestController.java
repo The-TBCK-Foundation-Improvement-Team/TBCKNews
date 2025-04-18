@@ -5,8 +5,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
@@ -227,6 +224,29 @@ public class NewsRestController {
             throw new RuntimeException("Failed to delete item");
         }
     }
+
+    // @GetMapping("/search")
+    // public ResponseEntity<?> getNewsByTitleAndDate(
+    //     @RequestParam("title") String title,
+    //     @RequestParam("date") String date) {
+    
+    //     ScanRequest scanRequest = ScanRequest.builder()
+    //             .tableName("TBCKStories")
+    //             .build();
+    
+    //     ScanResponse response = dynamoDbClient.scan(scanRequest);
+    
+    //     List<News> matchingNews = response.items().stream()
+    //             .map(News::fromMap)
+    //             .filter(news -> title.equals(news.getTitle()) && date.equals(news.getDate()))
+    //             .collect(Collectors.toList());
+    
+    //     if (!matchingNews.isEmpty()) {
+    //         return ResponseEntity.ok(matchingNews.get(0)); // return first match
+    //     } else {
+    //         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("News not found");
+    //     }
+    // }
 
     @PatchMapping(path = "/comment/{newsId}")
     @PreAuthorize("hasRole('ADMIN' or 'GUEST')")

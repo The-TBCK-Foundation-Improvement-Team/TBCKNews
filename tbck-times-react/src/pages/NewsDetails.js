@@ -36,14 +36,42 @@ const fetchStory = async (newsId) => {
 
 export default function NewsDetails() {
     const location = useLocation();
-    const { newsId } = location.state;
+    const params = useParams();
     const [story, setStory] = useState([]);
     const [isAdmin, setIsAdmin] = useState(false);
 
+    // Get the newsId from location.state, or null if not passed
+    const newsIdFromState = location.state?.newsId ?? null;
+
+    // Use this as your fallback when opening via direct link
+    const [newsId, setNewsId] = useState(newsIdFromState);
+
+    useEffect(() => {
+        const fetchByTitleAndDate = async () => {
+          const { title, date } = params;
+      
+          try {
+            const res = await fetch(`https://api.tbcktimes.org/news/search?title=${title}&date=${date}`);
+            const data = await res.json();
+            if (data.newsId) {
+              setNewsId(data.newsId);
+            } else {
+              console.error("No article found.");
+            }
+          } catch (err) {
+            console.error("Failed to get story from title/date", err);
+          }
+        };
+      
+        if (!newsId) {
+          fetchByTitleAndDate();
+        }
+      }, [newsId, params]);
+      
     useEffect(() => {
         const checkAdmin = () => {
             const token = sessionStorage.getItem("jwt");
-            console.log("Token on warrior page: " +  token);
+            console.log("Token on warrior page: " + token);
             if (!token) return false;
             const decoded = JSON.parse(atob(token.split('.')[1]));
             console.log("decoded: ", decoded);
@@ -79,87 +107,87 @@ export default function NewsDetails() {
         }
     }, [newsId]);
 
-return (
-    <div className="NewsDetails-column">
-    <div class name='NewsPageLayout'>
-        <MuiNavBar/>
-        <MuiCategoryBar/>
-        <div style={isAdmin ? { marginTop: '-29px', } : {}}>
-        {isAdmin && < EditButton isAdmin={isAdmin} newsData={data} /> }
-        {story.category === "News" && <GenericNews
-            title={story.title}
-            contentOne={story.contentOne}
-            contentTwo={story.contentTwo}
-            contentThree={story.contentThree}
-            author={story.author}
-            date={story.date}
-            images={story.images}
-            existingComments={story.comments}
-            category={story.category}
-            newsId={newsId}
-        />}
-        {story.category === "Newsletter" && <GenericNews
-            title={story.title}
-            contentOne={story.contentOne}
-            contentTwo={story.contentTwo}
-            contentThree={story.contentThree}
-            author={story.author}
-            date={story.date}
-            images={story.images}
-            existingComments={story.comments}
-            category={story.category}
-            newsId={newsId}
-            externalLink={story.externalLink}
-        />}
-        {story.category === "Events" && <GenericNews
-            title={story.title}
-            contentOne={story.contentOne}
-            contentTwo={story.contentTwo}
-            contentThree={story.contentThree}
-            author={story.author}
-            date={story.date}
-            images={story.images}
-            existingComments={story.comments}
-            category={story.category}
-            newsId={newsId}
-        />}
-        {story.category === "Advocacy" && <GenericNews
-            title={story.title}
-            contentOne={story.contentOne}
-            contentTwo={story.contentTwo}
-            contentThree={story.contentThree}
-            author={story.author}
-            date={story.date}
-            images={story.images}
-            existingComments={story.comments}
-            category={story.category}
-            newsId={newsId}
-        />}
-        {story.category === "Sports" && <GenericNews
-            title={story.title}
-            contentOne={story.contentOne}
-            contentTwo={story.contentTwo}
-            contentThree={story.contentThree}
-            author={story.author}
-            date={story.date}
-            images={story.images}
-            existingComments={story.comments}
-            category={story.category}
-            newsId={newsId}
-        />}
-        {story.category === "WarriorOfTheMonth" && <WarriorOfTheMonthTemplate
-            title={story.title}
-            contentOne={story.contentOne}
-            contentTwo={story.contentTwo}
-            contentThree={story.contentThree}
-            images={story.images}
-            existingComments={story.comments}
-            category={story.category}
-            newsId={newsId}
-            author={story.author}
-            date={story.date}
-        />}
-        {/* {story.category === "Newsletter" && <NewsLetter
+    return (
+        <div className="NewsDetails-column">
+            <div class name='NewsPageLayout'>
+                <MuiNavBar />
+                <MuiCategoryBar />
+                <div style={isAdmin ? { marginTop: '-29px', } : {}}>
+                    {isAdmin && < EditButton isAdmin={isAdmin} newsData={data} />}
+                    {story.category === "News" && <GenericNews
+                        title={story.title}
+                        contentOne={story.contentOne}
+                        contentTwo={story.contentTwo}
+                        contentThree={story.contentThree}
+                        author={story.author}
+                        date={story.date}
+                        images={story.images}
+                        existingComments={story.comments}
+                        category={story.category}
+                        newsId={newsId}
+                    />}
+                    {story.category === "Newsletter" && <GenericNews
+                        title={story.title}
+                        contentOne={story.contentOne}
+                        contentTwo={story.contentTwo}
+                        contentThree={story.contentThree}
+                        author={story.author}
+                        date={story.date}
+                        images={story.images}
+                        existingComments={story.comments}
+                        category={story.category}
+                        newsId={newsId}
+                        externalLink={story.externalLink}
+                    />}
+                    {story.category === "Events" && <GenericNews
+                        title={story.title}
+                        contentOne={story.contentOne}
+                        contentTwo={story.contentTwo}
+                        contentThree={story.contentThree}
+                        author={story.author}
+                        date={story.date}
+                        images={story.images}
+                        existingComments={story.comments}
+                        category={story.category}
+                        newsId={newsId}
+                    />}
+                    {story.category === "Advocacy" && <GenericNews
+                        title={story.title}
+                        contentOne={story.contentOne}
+                        contentTwo={story.contentTwo}
+                        contentThree={story.contentThree}
+                        author={story.author}
+                        date={story.date}
+                        images={story.images}
+                        existingComments={story.comments}
+                        category={story.category}
+                        newsId={newsId}
+                    />}
+                    {story.category === "Sports" && <GenericNews
+                        title={story.title}
+                        contentOne={story.contentOne}
+                        contentTwo={story.contentTwo}
+                        contentThree={story.contentThree}
+                        author={story.author}
+                        date={story.date}
+                        images={story.images}
+                        existingComments={story.comments}
+                        category={story.category}
+                        newsId={newsId}
+                    />}
+                    {story.category === "WarriorOfTheMonth" && <WarriorOfTheMonthTemplate
+                        title={story.title}
+                        contentOne={story.contentOne}
+                        contentTwo={story.contentTwo}
+                        contentThree={story.contentThree}
+                        images={story.images}
+                        existingComments={story.comments}
+                        category={story.category}
+                        newsId={newsId}
+                        author={story.author}
+                        date={story.date}
+                    />}
+                    {/* {story.category === "Newsletter" && <NewsLetter
             title={story.title}
             contentOne={story.contentOne}
             contentTwo={story.contentTwo}
@@ -171,20 +199,20 @@ return (
             category={story.category}
             newsId={newsId}
         />} */}
-        {story.category === "Research" && <ResearchSummaryTemplate
-            title={story.title}
-            contentOne={story.contentOne}
-            contentTwo={story.contentTwo}
-            contentThree={story.contentThree}
-            author={story.author}
-            date={story.date}
-            images={story.images}
-            existingComments={story.comments}
-            category={story.category}
-            newsId={newsId}
-            externalLink={story.externalLink}
-        />}
-        {/* {story.category === 'research'}(
+                    {story.category === "Research" && <ResearchSummaryTemplate
+                        title={story.title}
+                        contentOne={story.contentOne}
+                        contentTwo={story.contentTwo}
+                        contentThree={story.contentThree}
+                        author={story.author}
+                        date={story.date}
+                        images={story.images}
+                        existingComments={story.comments}
+                        category={story.category}
+                        newsId={newsId}
+                        externalLink={story.externalLink}
+                    />}
+                    {/* {story.category === 'research'}(
             <ResearchSummary/>
         ){story.category === 'genericNews'}(
             <GenericNews/>
