@@ -51,7 +51,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         String token = extractJwtFromRequest(request);
         
-        if (token != null && jwtTokenUtil.isTokenValid(token, JwtTokenUtil.extractEmail(token))) {
+        if (token != null && jwtTokenUtil.isTokenValid(token, jwtTokenUtil.extractEmail(token))) {
             Claims claims = jwtTokenUtil.extractAllClaims(token);
             String email = claims.getSubject();
             String role = claims.get("role", String.class); // Extract the role
